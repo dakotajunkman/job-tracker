@@ -18,16 +18,12 @@ class DatabaseConfig {
 
     fun createConnectionPool(): DataSource {
         val config = HikariConfig()
-        config.jdbcUrl = String.format("jdbc:postgresql://%s", DB_NAME)
+        config.jdbcUrl = String.format("jdbc:postgresql:///%s", DB_NAME)
         config.username = DB_USER
         config.password = DB_PW
-        println(CON_NAME)
-        println(DB_USER)
-        println(DB_PW)
-        println(DB_NAME)
-
         config.addDataSourceProperty("socketFactory", "com.google.cloud.sql.postgres.SocketFactory")
         config.addDataSourceProperty("cloudSqlInstance", CON_NAME)
+        config.driverClassName = "org.postgresql.Driver"
         return HikariDataSource(config)
     }
 }
