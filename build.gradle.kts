@@ -27,11 +27,14 @@ dependencies {
     implementation("com.google.cloud:spring-cloud-gcp-starter")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("org.postgresql:postgresql")
+    implementation("org.springframework.data:spring-data-jpa")
+    implementation("com.google.cloud:google-cloud-kms")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    providedCompile("javax.servlet:javax.servlet-api:3.1.0")
-    providedCompile("com.google.appengine:appengine:+")
+    providedCompile("javax.servlet:javax.servlet-api:4.0.1")
+    providedCompile("com.google.appengine:appengine:1.9.98")
 }
 
 dependencyManagement {
