@@ -7,4 +7,5 @@ COPY ./env.txt .
 RUN set -a
 RUN . ./env.txt
 RUN set +a
+RUN printenv 
 RUN ["catalina.sh", "run"]
