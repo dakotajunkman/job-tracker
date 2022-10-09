@@ -7,4 +7,12 @@ COPY ./env.txt .
 COPY ./createdockerenv.sh .
 RUN chmod +x createdockerenv.sh
 RUN ./createdockerenv.sh
+ENV DB_NAME=$DB_NAME
+ENV DB_CON=$DB_CON
+ENV DB_USER=$DB_USER
+ENV DB_PW=$DB_PW
+RUN echo $DB_NAME
+RUN echo $DB_CON
+RUN echo $DB_USER
+RUN echo $DB_PW
 RUN ["catalina.sh", "run"]

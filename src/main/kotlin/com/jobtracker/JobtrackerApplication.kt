@@ -13,7 +13,7 @@ import javax.sql.DataSource
 @SpringBootApplication
 class JobtrackerApplication {
     @Bean
-    fun createDb(): DataSource {
+    fun dataSource(): DataSource {
         return DatabaseConfig().createConnectionPool()
     }
 
