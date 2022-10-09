@@ -18,7 +18,7 @@ class DatabaseConfig {
 
     fun createConnectionPool(): DataSource {
         val config = HikariConfig()
-        config.jdbcUrl = String.format("jdbc:postgresql:///%s", DB_NAME)
+        config.jdbcUrl = String.format("jdbc:postgresql://%s", DB_NAME)
         config.username = DB_USER
         config.password = DB_PW
         println(CON_NAME)
