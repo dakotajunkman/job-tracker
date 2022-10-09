@@ -4,8 +4,7 @@ FROM tomcat:9.0.65-jdk17
 RUN rm -rf /usr/local/tomcat/webapps/*
 COPY ./build/libs/jobtracker-0.0.1-SNAPSHOT.war /usr/local/tomcat/webapps
 COPY ./env.txt .
-RUN set -a
-RUN . ./env.txt
-RUN set +a
-RUN printenv 
+COPY ./createdockerenv.sh .
+RUN chmod +x createdockerenv.sh
+RUN ./createdockerenv.sh
 RUN ["catalina.sh", "run"]
