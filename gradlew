@@ -62,6 +62,12 @@
 #
 ##############################################################################
 
+# Copy env variables to application.properties
+echo spring.cloud.gcp.sql.database-name="$DB_NAME" >> ./src/main/resources/application.properties
+echo spring.cloud.gcp.sql.instance-connection-name="$DB_CON" >> ./src/main/resources/application.properties
+echo spring.datasource.username="$DB_USER" >> ./src/main/resources/application.properties
+echo spring.datasource.password="$DB_PW" >> ./src/main/resources/application.properties
+
 # Attempt to set APP_HOME
 
 # Resolve links: $0 may be a link
