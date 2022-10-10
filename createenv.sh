@@ -10,5 +10,4 @@ echo ENV DB_CON="$DB_CON" >> Dockerfile
 echo ENV DB_NAME="$DB_NAME" >> Dockerfile
 echo ENV DB_USER="$DB_USER" >> Dockerfile
 echo ENV DB_PW="$DB_PW" >> Dockerfile
-echo RUN [\"catalina.sh\", \"run\"] >> Dockerfile
 cat Dockerfile
