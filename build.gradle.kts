@@ -30,7 +30,7 @@ dependencies {
     implementation("org.postgresql:postgresql")
     implementation("com.google.cloud.sql:postgres-socket-factory")
     implementation("javax.persistence:javax.persistence-api")
-    implementation("com.zaxxer:HikariCP:5.0.1")
+    implementation("com.zaxxer:HikariCP:4.0.3")
     implementation("org.springframework.data:spring-data-jpa")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
