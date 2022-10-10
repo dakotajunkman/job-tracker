@@ -1,26 +1,18 @@
 package com.jobtracker
 
-import db.DatabaseConfig
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-import org.springframework.context.annotation.Bean
-import javax.sql.DataSource
+import org.springframework.context.annotation.ComponentScan
+
 
 /**
  * Anything in this class will be called at start up
- * @Bean annotation creates a singleton
+ * Any packages defined outside com.jobtracker need to be added to @ComponentScan to be found
  */
 @SpringBootApplication
-class JobtrackerApplication {
-    @Bean
-    fun dataSource(): DataSource {
-        return DatabaseConfig().createConnectionPool()
-    }
+@ComponentScan("db")
+class JobtrackerApplication
 
-    companion object {
-        @JvmStatic
-        fun main(args: Array<String>) {
-            runApplication<JobtrackerApplication>(*args)
-        }
-    }
+fun main(args: Array<String>) {
+    runApplication<JobtrackerApplication>(*args)
 }

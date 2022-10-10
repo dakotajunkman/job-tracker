@@ -1,22 +1,30 @@
 package db
 
-import org.springframework.context.annotation.Configuration
 import javax.sql.DataSource
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Scope
-import javax.swing.SwingContainer
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.Configuration
+import javax.annotation.PostConstruct
 
+/**
+ * Initializes connection to database
+ * Fills in values from application.properties to initialize the object
+ */
 @Configuration
-@Scope("singleton")
-class DatabaseConfig {
-    val CON_NAME = System.getenv("DB_CON")
-    val DB_USER = System.getenv("DB_USER")
-    val DB_PW = System.getenv("DB_PW")
-    val DB_NAME =System.getenv("DB_NAME")
+class DatabaseConfig(
+    @Value("\${spring.cloud.gcp.sql.instance-connection-name}")
+    val CON_NAME: String,
+    @Value("\${spring.cloud.gcp.sql.database-name}")
+    val DB_NAME: String,
+    @Value("\${spring.datasource.username}")
+    val DB_USER: String,
+    @Value("\${spring.datasource.password}")
+    val DB_PW: String
+) {
 
-    fun createConnectionPool(): DataSource {
+    @PostConstruct
+    fun getDatabaseConfig(): DataSource {
         val config = HikariConfig()
         config.jdbcUrl = String.format("jdbc:postgresql:///%s", DB_NAME)
         config.username = DB_USER
