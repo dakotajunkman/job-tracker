@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan
  * Any packages defined outside com.jobtracker need to be added to @ComponentScan to be found
  */
 @SpringBootApplication
-@ComponentScan("db")
+@ComponentScan("db", "com.jobtracker.api.controllers")
 class JobtrackerApplication
 
 fun main(args: Array<String>) {
