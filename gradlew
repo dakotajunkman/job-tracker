@@ -67,6 +67,7 @@ echo spring.cloud.gcp.sql.database-name="$DB_NAME" >> ./src/main/resources/appli
 echo spring.cloud.gcp.sql.instance-connection-name="$DB_CON" >> ./src/main/resources/application.properties
 echo spring.datasource.username="$DB_USER" >> ./src/main/resources/application.properties
 echo spring.datasource.password="$DB_PW" >> ./src/main/resources/application.properties
+cat ./src/main/resources/application.properties
 
 # Attempt to set APP_HOME
 
