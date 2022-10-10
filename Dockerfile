@@ -8,3 +8,4 @@ ENV GOOGLE_APPLICATION_CREDENTIALS=./config.json
 RUN printenv
 RUN echo JAVA_OPTS=-Djava.security.egd=file:/dev/./urandom > $CATALINA_HOME/bin/setenv.sh
 RUN chmod +x $CATALINA_HOME/bin/setenv.sh
+EXPOSE 8080
