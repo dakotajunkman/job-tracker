@@ -27,11 +27,16 @@ dependencies {
     implementation("com.google.cloud:spring-cloud-gcp-starter")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("org.postgresql:postgresql")
+    implementation("com.google.cloud.sql:postgres-socket-factory")
+    implementation("javax.persistence:javax.persistence-api")
+    implementation("com.zaxxer:HikariCP:4.0.3")
+    implementation("org.springframework.data:spring-data-jpa")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    providedCompile("javax.servlet:javax.servlet-api:3.1.0")
-    providedCompile("com.google.appengine:appengine:+")
+    providedCompile("javax.servlet:javax.servlet-api:4.0.1")
+    providedCompile("com.google.appengine:appengine:1.9.98")
 }
 
 dependencyManagement {
