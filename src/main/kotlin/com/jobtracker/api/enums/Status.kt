@@ -1,0 +1,15 @@
+enum class Status {
+    NONE,       // Debug purposes. If something is NONE something went wrong.
+    APPLIED,
+    ASSIGNED_OA,
+    COMPLETED_OA,
+    PHONE_SCREEN_SCHEDULED,
+    PHONE_SCREEN_COMPLETE,
+    INTERVIEW_SCHEDULED,
+    INTERVIEW_COMPLETE,
+    RECEIVED_OFFER,
+    ACCEPTED_OFFER,
+    REJECTED_OFFER,
+    REJECTED_BY_COMPANY,
+    POSITION_CANCELLED
+}
