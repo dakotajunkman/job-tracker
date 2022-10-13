@@ -14,7 +14,7 @@ data class ContactEntity(
     // Not sure how to set get this as the company's name rather than ID.
     // Citation: https://www.baeldung.com/jpa-one-to-one section 3.2
     // Ommitted from Company because assuming this is unidrectional relationship
-    @JoinColumn(name = "company_name", referencedColumnName = "id") 
+    @JoinColumn(name = "company_id", referencedColumnName = "id") 
     val company: CompanyEntity
 
     @Column(name = "full_name", nullable = false, length = DEFAULT_FIELD_LENGTH) val fullName: String,
