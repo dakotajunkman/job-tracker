@@ -8,6 +8,8 @@ plugins {
     id("org.gretty") version "4.0.3"
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.spring") version "1.6.21"
+    id("org.jetbrains.kotlin.plugin.allopen") version "1.6.21"
+    id("org.jetbrains.kotlin.plugin.jpa") version "1.6.21"
 }
 
 group = "com"
@@ -31,7 +33,7 @@ dependencies {
     implementation("com.google.cloud.sql:postgres-socket-factory")
     implementation("javax.persistence:javax.persistence-api")
     implementation("com.zaxxer:HikariCP:4.0.3")
-    implementation("org.springframework.data:spring-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -55,6 +57,10 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+allOpen {
+    annotations("javax.persistence.Entity", "javax.persistence.MappedSuperclass", "javax.persistence.Embedabble")
 }
 
 appengine {
