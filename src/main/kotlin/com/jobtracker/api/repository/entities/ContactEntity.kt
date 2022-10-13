@@ -7,7 +7,6 @@ import javax.persistence.*
 @Table(name = "contacts")
 data class ContactEntity(
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     val id: UUID,
 
@@ -18,11 +17,11 @@ data class ContactEntity(
     @JoinColumn(name = "company_name", referencedColumnName = "id") 
     val company: CompanyEntity
 
-    @Column(name = "full_name", nullable = false) val fullName: String,
-    @Column(name = "position_title", nullable = false) val positionTitle: String,
-    @Column(name = "email_address", nullable = false) val emailAddress: String
-    @Column(name = "phone_number", nullable = true) val phoneNumber: String?,
-    @Column(name = "comments", nullable = true) val comments: String?,
+    @Column(name = "full_name", nullable = false, length = DEFAULT_FIELD_LENGTH) val fullName: String,
+    @Column(name = "position_title", nullable = false, length = DEFAULT_FIELD_LENGTH) val positionTitle: String,
+    @Column(name = "email_address", nullable = false, length = DEFAULT_FIELD_LENGTH) val emailAddress: String
+    @Column(name = "phone_number", nullable = true, length = DEFAULT_FIELD_LENGTH) val phoneNumber: String?,
+    @Column(name = "comments", nullable = true, length = DEFAULT_NOTES_LENGTH) val comments: String?,
 ) {
   override fun toString() =
       "Contact type with id: $id, fullName: $fullName, positionTitle: $positionTitle, emailAddress: $emailAddress, phoneNumber: $phoneNumber, comments: $comments"

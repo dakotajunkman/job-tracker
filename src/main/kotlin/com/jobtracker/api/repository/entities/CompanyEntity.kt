@@ -13,7 +13,7 @@ data class CompanyEntity(
     @Column(name = "id", nullable = false, updatable = false)
     val id: UUID,
 
-    @Column(name = "name", nullable = false, unique = true)
+    @Column(name = "name", nullable = false, unique = true, length = DEFAULT_FIELD_LENGTH)
     val name: String
 ) {
     override fun toString() = "Company with id: $id, name: $name"

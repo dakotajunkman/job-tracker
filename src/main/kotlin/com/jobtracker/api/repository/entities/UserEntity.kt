@@ -9,13 +9,13 @@ data class UserEntity(
     @Id
     @Column(name = "id", nullable = false, updatable = false)
     val id: UUID,
-    @Column(name = "first_name", nullable = false) val firstName: String,
-    @Column(name = "last_name", nullable = false) val lastName: String,
+    @Column(name = "first_name", nullable = false, length = DEFAULT_FIELD_LENGTH) val firstName: String,
+    @Column(name = "last_name", nullable = false, length = DEFAULT_FIELD_LENGTH) val lastName: String,
 
     @OneToMany(mappedBy = "user")
-    var applications: List<ApplicationEntity>
+    val applications: MutableList<ApplicationEntity>
 
-    @Column(name = "email_address", nullable = false, unique = true) val emailAddress: String
+    @Column(name = "email_address", nullable = false, unique = true, length = DEFAULT_FIELD_LENGTH) val emailAddress: String
 
 ) {
   override fun toString() =
