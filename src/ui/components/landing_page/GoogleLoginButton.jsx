@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Flex, Text} from '@chakra-ui/react';
-import PropTypes, {string} from 'prop-types';
+import PropTypes from 'prop-types';
 import Image from 'next/image';
 
 export default function GoogleLoginButton({children}) {
@@ -23,14 +23,12 @@ export default function GoogleLoginButton({children}) {
           height="50dp"
           width="50dp"
         />
-        <Text>{children}</Text>
+        <Text>Proceed with Google</Text>
       </Flex>
     </Button>
   );
 }
 
-GoogleLoginButton.propTypes = {
-  children: string.isRequired,
-};
+GoogleLoginButton.propTypes = {};
 
 GoogleLoginButton.defaultProps = {};

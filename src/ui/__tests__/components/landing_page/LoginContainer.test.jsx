@@ -22,31 +22,15 @@ describe('LoginContainer', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('Existing Users Block', () => {
-    it('renders text for Existing Users', () => {
-      const component = setup();
-      const text = component.getByText(/Existing Users/i);
-      expect(text).toBeInTheDocument();
-    });
-
-    it('renders a button for Google Sign In', () => {
-      const component = setup();
-      const button = component.getByRole('button', {name: /Sign in with Google/i});
-      expect(button).toBeInTheDocument();
-    });
+  it('renders a heading indicating users can sign in or sign up', () => {
+    const component = setup();
+    const heading = component.getByRole('heading', {name: /Create an Account or Sign in/i});
+    expect(heading).toBeInTheDocument();
   });
 
-  describe('Create an Account Block', () => {
-    it('renders text for Create an Account', () => {
-      const component = setup();
-      const text = component.getByText(/Create an Account/i);
-      expect(text).toBeInTheDocument();
-    });
-
-    it('renders a button to sign up with Google', () => {
-      const component = setup();
-      const button = component.getByRole('button', {name: /Sign up with Google/i});
-      expect(button).toBeInTheDocument();
-    });
+  it('renders a button for Google Sign In', () => {
+    const component = setup();
+    const button = component.getByRole('button', {name: /Google/i});
+    expect(button).toBeInTheDocument();
   });
 });

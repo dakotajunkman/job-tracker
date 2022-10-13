@@ -13,20 +13,11 @@ export default function LoginContainer() {
     <Flex direction="column" gap={16} flexGrow="1" minW={minWidth} data-testid="LoginContainer">
       <Flex direction="column" alignItems="center">
         <Heading fontSize="xl" textAlign="center">
-          Existing Users
+          Create an Account or Sign in
         </Heading>
         <Divider />
         <Box py={4}>
-          <GoogleLoginButton>Sign in with Google</GoogleLoginButton>
-        </Box>
-      </Flex>
-      <Flex direction="column" alignItems="center">
-        <Heading fontSize="xl" textAlign="center">
-          Create an Account
-        </Heading>
-        <Divider />
-        <Box py={4}>
-          <GoogleLoginButton>Sign up with Google</GoogleLoginButton>
+          <GoogleLoginButton />
         </Box>
       </Flex>
     </Flex>

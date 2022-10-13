@@ -4,9 +4,7 @@ import GoogleLoginButton from '../../../components/landing_page/GoogleLoginButto
 import '@testing-library/jest-dom';
 import {ChakraProvider} from '@chakra-ui/react';
 
-const DEFAULT_PROPS = {
-  children: 'Sign in with Google',
-};
+const DEFAULT_PROPS = {};
 
 describe('GoogleLoginButton', () => {
   const setup = (props = DEFAULT_PROPS) => {
@@ -22,9 +20,9 @@ describe('GoogleLoginButton', () => {
     expect(component).toBeTruthy();
   });
 
-  it('renders the children props text inside a button', () => {
+  it('renders the "Proceed with Google" text inside a button', () => {
     const component = setup();
-    const childrenText = component.getByRole('button', DEFAULT_PROPS.children);
+    const childrenText = component.getByRole('button', 'Proceed with Google');
     expect(childrenText).toBeInTheDocument();
   });
 
