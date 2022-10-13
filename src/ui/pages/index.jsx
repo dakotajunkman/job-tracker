@@ -1,20 +1,21 @@
 import React from 'react';
-import useSWR from 'swr';
-
-const fetcher = (...args) => fetch(...args).then(res => res.json());
+import {Flex} from '@chakra-ui/react';
+import PropTypes from 'prop-types';
+import PageWrapper from '../components/common/PageWrapper';
+import WhyJobTracker from '../components/landing_page/WhyJobTracker';
+import LoginContainer from '../components/landing_page/LoginContainer';
 
 export default function Home() {
-  const {data, error} = useSWR('/api/', fetcher);
-
-  if (error) {
-    // return <p>Error</p>;
-  }
-  // if (!data) return <p>Loading...</p>;
-
   return (
-    <>
-      <h1>Job Tracker</h1>
-      <p>{JSON.stringify(data)}</p>
-    </>
+    <PageWrapper>
+      <Flex bg="#ffffff" p={8} borderRadius="lg" shadow="xl" flexWrap="wrap" gap={16} mx={4}>
+        <WhyJobTracker />
+        <LoginContainer />
+      </Flex>
+    </PageWrapper>
   );
 }
+
+Home.propTypes = {};
+
+Home.defaultProps = {};
