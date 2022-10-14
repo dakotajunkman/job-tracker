@@ -23,6 +23,13 @@ data class ContactEntity(
     @Column(name = "email_address", nullable = false, length = DEFAULT_FIELD_LENGTH) val emailAddress: String,
     @Column(name = "phone_number", nullable = true, length = DEFAULT_FIELD_LENGTH) val phoneNumber: String?,
     @Column(name = "comments", nullable = true, length = DEFAULT_NOTES_LENGTH) val comments: String?,
+
+    @ManyToMany
+    @JoinTable(
+        name = "application_contacts",
+        joinColumns = [JoinColumn(name = "contact_id")]
+    )
+    val applications: MutableList<ApplicationEntity>
 ) {
   override fun toString() =
       "Contact type with id: $id, fullName: $fullName, positionTitle: $positionTitle, emailAddress: $emailAddress, phoneNumber: $phoneNumber, comments: $comments"

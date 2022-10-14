@@ -23,13 +23,20 @@ data class ApplicationEntity(
     @Column(name = "skills", length = DEFAULT_FIELD_LENGTH) var skills: String?,
     @Column(name = "notes", length = DEFAULT_NOTES_LENGTH) var notes: String?,
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     val user: UserEntity,
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id", referencedColumnName = "id")
-    val company: CompanyEntity
+    val company: CompanyEntity,
+
+    @ManyToMany
+    @JoinTable(
+        name = "application_contacts",
+        joinColumns = [JoinColumn(name = "application_id")]
+    )
+    val contacts: MutableList<ContactEntity>
 ) {
   override fun toString() =
       "Application type with id: $id, positionTitle: $positionTitle, submitDate: $submitDate, status: $status, skills: $skills, notes: $notes"
