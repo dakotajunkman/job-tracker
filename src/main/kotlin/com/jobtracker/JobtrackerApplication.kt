@@ -1,8 +1,10 @@
 package com.jobtracker
 
+import com.jobtracker.api.repository.ApplicationRepository
 import com.jobtracker.api.repository.CompanyRepository
 import com.jobtracker.api.repository.ContactRepository
 import com.jobtracker.api.repository.UserRepository
+import com.jobtracker.api.repository.entities.ApplicationEntity
 import com.jobtracker.api.repository.entities.CompanyEntity
 import com.jobtracker.api.repository.entities.ContactEntity
 import com.jobtracker.api.repository.entities.UserEntity
@@ -26,10 +28,11 @@ class JobtrackerApplication {
      * TEST CODE for REPO CLASSES
      * Un-comment and pass the repo you'd like to test into the function
      * Call whichever repo class method you'd like for testing
+
     @Bean
-    fun init(contactRepo: ContactRepository) = CommandLineRunner {
-        val myList = contactRepo.findAll()
-        println(myList)
+    fun init(appRepo: ApplicationRepository, userRepository: UserRepository, contactRepository: ContactRepository, companyRepository: CompanyRepository) = CommandLineRunner {
+        val user = appRepo.findAll().first()
+        println(user)
     }
     */
 }

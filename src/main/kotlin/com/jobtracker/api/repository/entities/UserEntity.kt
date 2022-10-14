@@ -13,7 +13,7 @@ data class UserEntity(
     @Column(name = "first_name", nullable = false, length = DEFAULT_FIELD_LENGTH) val firstName: String,
     @Column(name = "last_name", nullable = false, length = DEFAULT_FIELD_LENGTH) val lastName: String,
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     val applications: MutableList<ApplicationEntity>,
 
     @Column(name = "email_address", nullable = false, unique = true, length = DEFAULT_FIELD_LENGTH) val emailAddress: String

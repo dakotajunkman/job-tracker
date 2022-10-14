@@ -4,6 +4,7 @@ package com.jobtracker.api.repository.entities
 import DEFAULT_FIELD_LENGTH
 import DEFAULT_NOTES_LENGTH
 import ApplicationStatus
+import org.hibernate.annotations.Type
 import java.util.Date
 import java.util.UUID
 import javax.persistence.*
@@ -18,7 +19,7 @@ data class ApplicationEntity(
     @Temporal(TemporalType.DATE)
     @Column(name = "submit_date", nullable = false)
     val submitDate: Date,
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false) val status: ApplicationStatus,
     @Column(name = "skills", length = DEFAULT_FIELD_LENGTH) var skills: String?,
     @Column(name = "notes", length = DEFAULT_NOTES_LENGTH) var notes: String?,
@@ -31,10 +32,11 @@ data class ApplicationEntity(
     @JoinColumn(name = "company_id", referencedColumnName = "id")
     val company: CompanyEntity,
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "application_contacts",
-        joinColumns = [JoinColumn(name = "application_id")]
+        joinColumns = [JoinColumn(name = "application_id")],
+        inverseJoinColumns = [JoinColumn(name = "contact_id")]
     )
     val contacts: MutableList<ContactEntity>
 ) {

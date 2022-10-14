@@ -24,11 +24,7 @@ data class ContactEntity(
     @Column(name = "phone_number", nullable = true, length = DEFAULT_FIELD_LENGTH) val phoneNumber: String?,
     @Column(name = "comments", nullable = true, length = DEFAULT_NOTES_LENGTH) val comments: String?,
 
-    @ManyToMany
-    @JoinTable(
-        name = "application_contacts",
-        joinColumns = [JoinColumn(name = "contact_id")]
-    )
+    @ManyToMany(mappedBy = "contacts", fetch = FetchType.EAGER)
     val applications: MutableList<ApplicationEntity>
 ) {
   override fun toString() =
