@@ -14,7 +14,7 @@ data class UserSkillFrequencyEntity(
     @Column(name = "frequency", nullable = false) val frequency: Int,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     val user: UserEntity
 ) {
   override fun toString() =

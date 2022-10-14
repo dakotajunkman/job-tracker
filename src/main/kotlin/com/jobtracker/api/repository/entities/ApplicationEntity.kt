@@ -4,7 +4,7 @@ package com.jobtracker.api.repository.entities
 import DEFAULT_FIELD_LENGTH
 import DEFAULT_NOTES_LENGTH
 import ApplicationStatus
-import java.sql.Date
+import java.util.Date
 import java.util.UUID
 import javax.persistence.*
 
@@ -24,11 +24,11 @@ data class ApplicationEntity(
     @Column(name = "notes", length = DEFAULT_NOTES_LENGTH) var notes: String?,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     val user: UserEntity,
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company", referencedColumnName = "id")
+    @JoinColumn(name = "company_id", referencedColumnName = "id")
     val company: CompanyEntity
 ) {
   override fun toString() =

@@ -12,10 +12,10 @@ data class ContactEntity(
     @Column(name = "id", nullable = false)
     val id: UUID,
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     // Citation: https://www.baeldung.com/jpa-one-to-one section 3.2
     // Ommitted from Company because assuming this is unidrectional relationship
-    @JoinColumn(name = "company_id", referencedColumnName = "companies.id")
+    @JoinColumn(name = "company_id", referencedColumnName = "id")
     val company: CompanyEntity,
 
     @Column(name = "full_name", nullable = false, length = DEFAULT_FIELD_LENGTH) val fullName: String,
