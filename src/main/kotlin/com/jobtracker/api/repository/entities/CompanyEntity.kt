@@ -5,6 +5,7 @@ import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
+import DEFAULT_FIELD_LENGTH
 
 @Entity
 @Table(name = "companies")

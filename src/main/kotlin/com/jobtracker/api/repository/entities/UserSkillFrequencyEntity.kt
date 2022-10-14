@@ -2,6 +2,7 @@ package com.jobtracker.api.repository.entities
 
 import java.util.UUID
 import javax.persistence.*
+import DEFAULT_FIELD_LENGTH
 
 @Entity
 @Table(name = "user_skill_frequencies")
@@ -14,7 +15,7 @@ data class UserSkillFrequencyEntity(
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user", referencedColumnName = "id")
-    val user: User
+    val user: UserEntity
 ) {
   override fun toString() =
       "Skill type with id: $id, skillName: $skillName, frequency: $frequency"
