@@ -28,6 +28,10 @@ Inside the `src/ui` folder, create a file named `.env.local`. This file will sto
 
 ```
 BACKEND_URL=http://localhost:8080
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=<Next-Auth Secret Value>
+GOOGLE_CLIENT_ID=<Google Client ID Value>
+GOOGLE_CLIENT_SECRET=<Google Client Secret>
 ```
 
 _Developers: note that values are stored as key-value pairs. Additional variables may be required in the future._
