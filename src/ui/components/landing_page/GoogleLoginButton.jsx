@@ -1,4 +1,5 @@
 import React from 'react';
+import {signIn} from 'next-auth/react';
 import {Button, Flex, Text} from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import Image from 'next/image';
@@ -15,6 +16,7 @@ export default function GoogleLoginButton({children}) {
       minW="240px"
       borderRadius="sm"
       shadow="md"
+      onClick={() => signIn('google')}
     >
       <Flex alignItems="center" gap="24px" pr="18px" w="100%">
         <Image
