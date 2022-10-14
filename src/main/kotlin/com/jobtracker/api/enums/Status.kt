@@ -1,4 +1,4 @@
-enum class Status {
+enum class ApplicationStatus {
     NONE,       // Debug purposes. If something is NONE something went wrong.
     APPLIED,
     ASSIGNED_OA,

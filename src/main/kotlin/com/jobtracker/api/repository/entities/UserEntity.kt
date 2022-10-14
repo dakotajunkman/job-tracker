@@ -2,6 +2,7 @@ package com.jobtracker.api.repository.entities
 
 import java.util.UUID
 import javax.persistence.*
+import DEFAULT_FIELD_LENGTH
 
 @Entity
 @Table(name = "users")
@@ -12,8 +13,8 @@ data class UserEntity(
     @Column(name = "first_name", nullable = false, length = DEFAULT_FIELD_LENGTH) val firstName: String,
     @Column(name = "last_name", nullable = false, length = DEFAULT_FIELD_LENGTH) val lastName: String,
 
-    @OneToMany(mappedBy = "user")
-    val applications: MutableList<ApplicationEntity>
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    val applications: MutableList<ApplicationEntity>,
 
     @Column(name = "email_address", nullable = false, unique = true, length = DEFAULT_FIELD_LENGTH) val emailAddress: String
 
