@@ -6,7 +6,9 @@ import DEFAULT_FIELD_LENGTH
 import DEFAULT_NOTES_LENGTH
 
 @Entity
-@Table(name = "contacts")
+@Table(name = "contacts", uniqueConstraints = [
+    UniqueConstraint(columnNames = ["full_name", "associated_user_id"])
+])
 data class ContactEntity(
     @Id
     @Column(name = "id", nullable = false)
@@ -23,6 +25,7 @@ data class ContactEntity(
     @Column(name = "email_address", nullable = false, length = DEFAULT_FIELD_LENGTH) val emailAddress: String,
     @Column(name = "phone_number", nullable = true, length = DEFAULT_FIELD_LENGTH) val phoneNumber: String?,
     @Column(name = "comments", nullable = true, length = DEFAULT_NOTES_LENGTH) val comments: String?,
+    @Column(name = "associated_user_id", nullable = false) val associated_user_id: UUID,
 
     @ManyToMany(mappedBy = "contacts", fetch = FetchType.EAGER)
     val applications: MutableList<ApplicationEntity>
