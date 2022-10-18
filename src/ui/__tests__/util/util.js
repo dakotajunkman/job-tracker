@@ -7,6 +7,8 @@ export const mockMatchMedia = () => {
       onchange: null,
       addEventListener: jest.fn(),
       removeEventListener: jest.fn(),
+      addListener: jest.fn(), // Deprecated
+      removeListener: jest.fn(), // Deprecated
       dispatchEvent: jest.fn(),
     })),
   });

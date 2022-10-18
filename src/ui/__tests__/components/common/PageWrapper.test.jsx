@@ -1,5 +1,5 @@
 import React from 'react';
-import {render} from '@testing-library/react';
+import {render, within} from '@testing-library/react';
 import PageWrapper from '../../../components/common/PageWrapper';
 import '@testing-library/jest-dom';
 import {ChakraProvider} from '@chakra-ui/react';
@@ -45,14 +45,27 @@ describe('PageWrapper', () => {
       const component = setup();
       const logo = component.getByTestId('PageWrapperHeader', /Job Tracker/i);
       expect(logo).toBeInTheDocument();
+      expect(within(logo).getByRole('link')).toHaveAttribute('href', '/');
+    });
+
+    it('renders a sign out button', () => {
+      const component = setup();
+      const button = component.getByRole('button', /sign out/i);
+      expect(button).toBeInTheDocument();
+    });
+
+    it('renders a navigation menu', () => {
+      const component = setup();
+      const menu = component.getByTestId('NavigationMenu');
+      expect(menu).toBeInTheDocument();
     });
   });
 
   describe('Footer Content', () => {
     it('renders the Footer', () => {
       const component = setup();
-      const x = component.getByTestId('PageWrapperFooter');
-      expect(x).toBeInTheDocument();
+      const footer = component.getByTestId('PageWrapperFooter');
+      expect(footer).toBeInTheDocument();
     });
 
     it('renders the Job Tracker name', () => {
