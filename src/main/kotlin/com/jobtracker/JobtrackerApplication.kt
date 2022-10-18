@@ -13,6 +13,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
+import org.springframework.security.oauth2.jwt.JwtDecoder
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder
 import java.util.*
 
 
@@ -21,7 +23,7 @@ import java.util.*
  * Any packages defined outside com.jobtracker need to be added to @ComponentScan to be found
  */
 @SpringBootApplication
-@ComponentScan("db", "com.jobtracker.api.controllers", "com.jobtracker.api.repository")
+@ComponentScan("db", "com.jobtracker.api.controllers", "com.jobtracker.api.repository", "com.jobtracker.api.security")
 class JobtrackerApplication {
 
     /**
@@ -35,6 +37,13 @@ class JobtrackerApplication {
         println(user)
     }
     */
+
+    @Bean
+    fun jwtDecoder(): JwtDecoder {
+        return NimbusJwtDecoder
+            .withJwkSetUri("https://www.googleapis.com/oauth2/v3/certs")
+            .build()
+    }
 }
 
 fun main(args: Array<String>) {
