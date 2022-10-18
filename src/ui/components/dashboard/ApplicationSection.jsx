@@ -11,7 +11,7 @@ export default function ApplicationSection({heading, applicationData, startOpene
   }, []);
 
   return (
-    <Flex direction="column">
+    <Flex direction="column" data-testid="ApplicationSection">
       <Flex
         onClick={onToggle}
         alignItems="center"

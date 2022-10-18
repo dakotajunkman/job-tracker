@@ -22,9 +22,9 @@ export default function NavigationSidebar() {
       <Heading size="md" color="#333" pl={8}>
         Navigation
       </Heading>
-      <NavigationLink icon={MdBusiness} label="View Companies" href="#" />
-      <NavigationLink icon={MdPeopleAlt} label="View Contacts" href="#" />
-      <NavigationLink icon={MdBarChart} label="View Analytics" href="#" />
+      <NavigationLink icon={MdBusiness} label="View Companies" href="/#" />
+      <NavigationLink icon={MdPeopleAlt} label="View Contacts" href="/#" />
+      <NavigationLink icon={MdBarChart} label="View Analytics" href="/#" />
     </Flex>
   );
 }

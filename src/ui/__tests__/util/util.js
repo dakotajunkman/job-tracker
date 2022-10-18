@@ -13,3 +13,7 @@ export const mockMatchMedia = () => {
     })),
   });
 };
+
+export const mockScrollTo = () => {
+  Object.defineProperty(window, 'scrollTo', {value: () => {}, writable: true});
+};

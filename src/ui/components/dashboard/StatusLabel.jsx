@@ -2,7 +2,7 @@ import React from 'react';
 import {Tag} from '@chakra-ui/react';
 import PropTypes, {oneOf, string} from 'prop-types';
 
-const APPLICATION_STATUS_MAP = {
+export const APPLICATION_STATUS_MAP = {
   applied: {
     text: 'Applied',
     fontColor: '#fff',
@@ -65,12 +65,12 @@ const APPLICATION_STATUS_MAP = {
   },
 };
 
-export default function StatusLabel({status, key}) {
+export default function StatusLabel({status, id}) {
   const {text, backgroundColor, fontColor} = APPLICATION_STATUS_MAP[status];
   return (
     <Tag
       size={'md'}
-      key={key}
+      key={id}
       bg={backgroundColor}
       color={fontColor}
       borderRadius="full"
@@ -97,7 +97,7 @@ StatusLabel.propTypes = {
     'rejected_by_company',
     'position_cancelled',
   ]).isRequired,
-  key: string.isRequired,
+  id: string.isRequired,
 };
 
 StatusLabel.defaultProps = {};

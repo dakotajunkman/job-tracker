@@ -26,4 +26,12 @@ describe('NavigationLink', () => {
     const component = setup();
     expect(component).toBeTruthy();
   });
+
+  it('renders a link with the label and href', () => {
+    const {label, href} = DEFAULT_PROPS;
+    const component = setup();
+    const link = component.getByRole('link', {name: label});
+    expect(link).toBeInTheDocument();
+    expect(link).toHaveAttribute('href', href);
+  });
 });

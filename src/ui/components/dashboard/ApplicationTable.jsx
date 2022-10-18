@@ -12,7 +12,12 @@ export default function ApplicationTable({applications}) {
       boxShadow="base"
       whiteSpace="wrap"
     >
-      <Table variant="striped" style={{tableLayout: 'fixed'}} minW="600px">
+      <Table
+        variant="striped"
+        style={{tableLayout: 'fixed'}}
+        minW="600px"
+        data-testid="ApplicationTable"
+      >
         <Thead>
           <Tr>
             <Th>Company</Th>
@@ -25,12 +30,12 @@ export default function ApplicationTable({applications}) {
           {applications.map(application => {
             const {company_name, position_title, submit_date, status, application_id} = application;
             return (
-              <Tr>
+              <Tr key={`tr-${application_id}`}>
                 <Td>{company_name}</Td>
                 <Td>{position_title}</Td>
                 <Td>{submit_date}</Td>
                 <Td>
-                  <StatusLabel status={status} key={application_id} />
+                  <StatusLabel status={status} id={application_id} />
                 </Td>
               </Tr>
             );
