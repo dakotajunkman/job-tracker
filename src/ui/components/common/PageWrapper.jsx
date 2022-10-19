@@ -1,8 +1,22 @@
 import React from 'react';
-import {Box, Center, Flex, Heading, Text} from '@chakra-ui/react';
+import {signOut} from 'next-auth/react';
+import {Button, Center, Flex, Heading, Link, Text, useBreakpointValue} from '@chakra-ui/react';
 import PropTypes, {oneOfType, arrayOf, node} from 'prop-types';
+('react-icons/md');
+import PageWrapperMenu from './PageWrapperMenu';
+import NextLink from 'next/link';
 
-export default function PageWrapper({children}) {
+export default function PageWrapper({children, showBackground, showMenu}) {
+  const signoutButton = (
+    <Button variant="link" color="#888" onClick={() => signOut()} _hover={{color: '#396afc'}}>
+      Sign Out
+    </Button>
+  );
+  const hamburgerMenu = <PageWrapperMenu />;
+  const menu = useBreakpointValue({
+    base: hamburgerMenu,
+    lg: signoutButton,
+  });
   return (
     <Flex
       direction="column"
@@ -11,26 +25,40 @@ export default function PageWrapper({children}) {
       minH="100vh"
       justifyContent="space-between"
       bg="#efefef"
-      bgImg="url('./images/backgrounds/landing-tile.png')"
+      bgImg={showBackground && "url('./images/backgrounds/landing-tile.png')"}
       gap={16}
       data-testid="PageWrapper"
     >
-      <Box
+      <Flex
         w="100%"
         minH="60px"
         bg="white"
-        pl={6}
+        px={6}
         py={2}
         boxShadow="xl"
+        justifyContent="space-between"
         data-testid="PageWrapperHeader"
       >
-        <Heading bgGradient="linear(135deg, #396afc, #2948ff)" bgClip="text" fontWeight="extrabold">
-          Job Tracker
-        </Heading>
-      </Box>
-      <Center w="100%" flexGrow="1">
+        <NextLink href={'/'} passHref>
+          <Link
+            py="4px"
+            transition=".25s"
+            _hover={{textDecoration: 'none', padding: '2px 0 6px 0'}}
+          >
+            <Heading
+              bgGradient="linear(135deg, #396afc, #2948ff)"
+              bgClip="text"
+              fontWeight="extrabold"
+            >
+              Job Tracker
+            </Heading>
+          </Link>
+        </NextLink>
+        <Flex>{showMenu && menu}</Flex>
+      </Flex>
+      <Flex w="100%" flexGrow="1" justifyContent="center" data-testid="PageWrapperBody">
         {children}
-      </Center>
+      </Flex>
       <Center
         bgGradient="linear(135deg, #396afc, #2948ff)"
         py={16}
@@ -48,4 +76,7 @@ PageWrapper.propTypes = {
   children: oneOfType([arrayOf(node), node]),
 };
 
-PageWrapper.defaultProps = {};
+PageWrapper.defaultProps = {
+  showBackground: false,
+  showMenu: true,
+};
