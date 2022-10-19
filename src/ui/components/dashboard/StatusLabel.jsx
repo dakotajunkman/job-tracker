@@ -1,6 +1,6 @@
 import React from 'react';
 import {Tag} from '@chakra-ui/react';
-import PropTypes, {oneOf, string} from 'prop-types';
+import PropTypes, {string} from 'prop-types';
 
 export const APPLICATION_STATUS_MAP = {
   applied: {
@@ -63,9 +63,15 @@ export const APPLICATION_STATUS_MAP = {
     fontColor: '#000',
     backgroundColor: '#f7d038',
   },
+  error: {
+    text: 'Error',
+    fontColor: '#fff',
+    backgroundColor: '#666',
+  },
 };
 
 export default function StatusLabel({status, id}) {
+  if (APPLICATION_STATUS_MAP[status] === undefined) status = 'error';
   const {text, backgroundColor, fontColor} = APPLICATION_STATUS_MAP[status];
   return (
     <Tag
@@ -83,20 +89,7 @@ export default function StatusLabel({status, id}) {
 }
 
 StatusLabel.propTypes = {
-  status: oneOf([
-    'applied',
-    'assigned_oa',
-    'completed_oa',
-    'phone_screen_scheduled',
-    'phone_screen_complete',
-    'interview_scheduled',
-    'interview_complete',
-    'received_offer',
-    'accepted_offer',
-    'rejected_offer',
-    'rejected_by_company',
-    'position_cancelled',
-  ]).isRequired,
+  status: string.isRequired,
   id: string.isRequired,
 };
 
