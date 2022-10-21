@@ -14,12 +14,14 @@ export const authOptions = {
       // Persist the OAuth access_token to the token right after signin
       if (account) {
         token.accessToken = account.access_token;
+        token.jwt = account.id_token;
       }
       return token;
     },
     async session({session, token, user}) {
       // Send properties to the client, like an access_token from a provider.
       session.accessToken = token.accessToken;
+      session.jwt = token.jwt;
       return session;
     },
   },
