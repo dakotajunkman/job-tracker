@@ -25,14 +25,12 @@ class ContactController(
     val converter: Converter
 ) {
     @PostMapping("/contacts")
-    fun createContacts(
+    fun createContact(
         @RequestBody contact: ContactModel,
         @RequestHeader("Authorization") token: String):ResponseEntity<Any> {
 
-        val companyObj = converter.convertCompany(contact.companyID)
-        if (companyObj == null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorModel(400, "Company ID not found"))
-        }
+        val companyObj = converter.convertCompany(contact.companyId)
+            ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorModel(400, "Company ID not found"))
 
         val applicationObjs = converter.convertApplication(contact.applications)
 

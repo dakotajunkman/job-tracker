@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import java.util.UUID
 
 data class ContactModel(
-  var companyID: UUID,
+  var companyId: UUID,
   val fullName: String,
   val positionTitle: String,
   val emailAddress: String,

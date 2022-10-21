@@ -2,6 +2,7 @@ package com.jobtracker.api.business
 
 import com.jobtracker.api.repository.ApplicationRepository
 import com.jobtracker.api.repository.CompanyRepository
+import com.jobtracker.api.repository.entities.ApplicationEntity
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
@@ -19,7 +20,8 @@ class Converter(
 
     // ------ MultiConversions ------
 
-    fun convertApplication(applicationIDs: MutableList<UUID>) = applicationRepository.findAllById(applicationIDs)
+    fun convertApplication(applicationIDs: MutableList<UUID>): MutableList<ApplicationEntity> =
+        applicationRepository.findAllById(applicationIDs)
 
 
 }

@@ -4,6 +4,7 @@ import java.util.UUID
 import javax.persistence.*
 import DEFAULT_FIELD_LENGTH
 import DEFAULT_NOTES_LENGTH
+import com.fasterxml.jackson.annotation.JsonIgnore
 
 @Entity
 @Table(name = "contacts")
@@ -24,6 +25,7 @@ data class ContactEntity(
     @Column(name = "phone_number", nullable = true, length = DEFAULT_FIELD_LENGTH) val phoneNumber: String?,
     @Column(name = "comments", nullable = true, length = DEFAULT_NOTES_LENGTH) val comments: String?,
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "contacts", fetch = FetchType.EAGER)
     val applications: MutableList<ApplicationEntity>
 ) {
