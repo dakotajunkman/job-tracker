@@ -57,9 +57,8 @@ const getTodaysDate = () => {
 // formats a string of skills into an array of strings
 // IE: "skill 1, skill 2, skill 3" -> ["skill 1", "skill 2", "skill 3"]
 const formatSkills = skillsString => {
-  if (skillsString.length === 0) return [];
   const skills = skillsString.split(',');
-  return skills.map(skill => skill.trim());
+  return skills.filter(i => i).map(skill => skill.trim());
 };
 
 export default function ApplicationModel({header, isOpen, onClose}) {
