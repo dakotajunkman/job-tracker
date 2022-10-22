@@ -2,6 +2,7 @@ import React from 'react';
 import {Flex, Heading} from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import {MdBusiness, MdPeopleAlt, MdBarChart} from 'react-icons/md';
+import {IoDocumentsSharp} from 'react-icons/io5';
 import NavigationLink from './NavigationLink';
 
 export default function NavigationSidebar() {
@@ -22,6 +23,7 @@ export default function NavigationSidebar() {
       <Heading size="md" color="#333" pl={8}>
         Navigation
       </Heading>
+      <NavigationLink icon={IoDocumentsSharp} label="View Applications" href="/" />
       <NavigationLink icon={MdBusiness} label="View Companies" href="/#" />
       <NavigationLink icon={MdPeopleAlt} label="View Contacts" href="/#" />
       <NavigationLink icon={MdBarChart} label="View Analytics" href="/#" />

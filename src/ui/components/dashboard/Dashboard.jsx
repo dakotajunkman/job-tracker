@@ -1,11 +1,14 @@
 import React from 'react';
 import {useSession} from 'next-auth/react';
-import {Flex, Heading, Text, useBreakpointValue} from '@chakra-ui/react';
+import {Flex, Heading, Icon, Text, useBreakpointValue, useDisclosure} from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import PageWrapper from '../common/PageWrapper';
 import NavigationSidebar from './NavigationSidebar';
 import ApplicationSection from './ApplicationSection';
 import exampleJSON from '../../public/json/applicationsExample.json';
+import {MdPostAdd} from 'react-icons/md';
+import PrimaryButton from '../common/buttons/PrimaryButton';
+import ApplicationModal from './ApplicationModal';
 
 const IN_PROGRESS_STATUSES = [
   'assigned_oa',
@@ -40,6 +43,8 @@ export default function Dashboard() {
     CLOSED_STATUSES.includes(application.status)
   );
 
+  const {isOpen, onOpen, onClose} = useDisclosure();
+
   return (
     <PageWrapper>
       <Flex maxW="1200px" w="100%" gap={4} h="100%" alignItems="flex-start" mx={4}>
@@ -56,20 +61,25 @@ export default function Dashboard() {
           maxW="100%"
           overflowX="hidden"
         >
+          <ApplicationModal isOpen={isOpen} onClose={onClose} />
           <Flex direction="column">
-            <Heading size="lg">Dashboard for {session.user.name}</Heading>
-            <Text color="#888">
-              Applications at a Glance: {inProgressApplications.length} In-Progress,{' '}
-              {openApplications.length} Open, {closedApplications.length} Closed
-            </Text>
+            <Flex wrap="wrap" justifyContent="space-between" gap={8}>
+              <Flex direction="column">
+                <Heading size="lg">My Applications</Heading>
+                <Text color="#888">
+                  At a Glance: {inProgressApplications.length} In-Progress,{' '}
+                  {openApplications.length} Open, {closedApplications.length} Closed
+                </Text>
+              </Flex>
+              <PrimaryButton leftIcon={<Icon as={MdPostAdd} w={6} h={6} />} onClick={onOpen}>
+                Add Application
+              </PrimaryButton>
+            </Flex>
           </Flex>
+          <ApplicationSection heading="In-Progress" applicationData={inProgressApplications} />
+          <ApplicationSection heading="Open" applicationData={openApplications} />
           <ApplicationSection
-            heading="In-Progress Applications"
-            applicationData={inProgressApplications}
-          />
-          <ApplicationSection heading="Open Applications" applicationData={openApplications} />
-          <ApplicationSection
-            heading="Closed Applications"
+            heading="Closed"
             applicationData={closedApplications}
             startOpened={false}
           />
