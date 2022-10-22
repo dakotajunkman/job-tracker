@@ -30,7 +30,7 @@ describe('Dashboard', () => {
 
   it('renders a heading with specific text', () => {
     const component = setup();
-    const heading = component.getByRole('heading', {name: /Dashboard for Test User/i});
+    const heading = component.getByRole('heading', {name: /My Applications/i});
     expect(heading).toBeInTheDocument();
   });
 
