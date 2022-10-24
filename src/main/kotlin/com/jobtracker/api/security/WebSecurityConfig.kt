@@ -32,9 +32,8 @@ class WebSecurityConfig: WebSecurityConfigurerAdapter() {
     @Bean
     fun jwtDecoder(): JwtDecoder {
         val jwtDecoder = JwtDecoders.fromOidcIssuerLocation<NimbusJwtDecoder>(issuer)
-        val issuerValidtor = IssuerValidator(issuer, issuer2)
-        val withIssuer = JwtValidators.createDefaultWithIssuer(issuer)
-        jwtDecoder.setJwtValidator(withIssuer)
+        val validator = IssuerValidator(issuer, issuer2)
+        jwtDecoder.setJwtValidator(validator)
         return jwtDecoder
     }
 

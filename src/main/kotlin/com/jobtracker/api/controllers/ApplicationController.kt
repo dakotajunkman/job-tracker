@@ -35,14 +35,11 @@ class ApplicationController(
         val companyObj = converter.convertCompany(application.companyID)
             ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorModel(400, "Company ID not found"))
 
-        // TODO: HowTF do i take the JWT here and yeet that into this below
         val decoded = jwtDecoder.decode(token.substring(7))
 
-        // val userObj = converter.convertUser()
-        // userRepository.findByEmail(decoded)
+         val user = userRepository.findByEmail(decoded.getClaimAsString("email"))
 
-        // val saved = applicationRepository.save(application.toApplicationEntity(companyObj, userObj))
-        // return ResponseEntity.status(HttpStatus.CREATED).body(saved)
-        return ResponseEntity.status(HttpStatus.CREATED).body("") // DEBUG
+         val saved = applicationRepository.save(application.toApplicationEntity(companyObj, user, mutableListOf()))
+         return ResponseEntity.status(HttpStatus.CREATED).body(saved)
     }
 }
