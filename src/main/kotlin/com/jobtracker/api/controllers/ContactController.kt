@@ -22,7 +22,7 @@ class ContactController(
     @Autowired
     val converter: Converter
 ) {
-    @PostMapping("/contacts}")
+    @PostMapping("/contacts")
     fun createContact(
         @RequestBody contact: ContactModel,
         @RequestHeader("Authorization") token: String):ResponseEntity<Any> {
@@ -38,10 +38,10 @@ class ContactController(
 
     @GetMapping("/contacts/{contactID}")
     fun getContact(
-        @PathVariable contactID: UUID,
+        @PathVariable contactID: String,
         @RequestHeader("Authorization") token: String):ResponseEntity<Any> {
 
-        val retrieved = contactRepository.findByIdOrNull(contactID)
+        val retrieved = contactRepository.findByIdOrNull(UUID.fromString(contactID))
             ?: return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorModel(404, "Contact with ID does not exist"))
 
         return ResponseEntity.status(HttpStatus.OK).body(retrieved)

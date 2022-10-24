@@ -20,6 +20,7 @@ class WebSecurityConfig: WebSecurityConfigurerAdapter() {
 
     @Value("\${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
     val issuer = ""
+    val issuer2 = "accounts.google.com"
 
     @Autowired
     val jwtAuthEntryPoint: JwtAuthEntryPoint? = null
@@ -31,7 +32,7 @@ class WebSecurityConfig: WebSecurityConfigurerAdapter() {
     @Bean
     fun jwtDecoder(): JwtDecoder {
         val jwtDecoder = JwtDecoders.fromOidcIssuerLocation<NimbusJwtDecoder>(issuer)
-        val issuerValidtor = IssuerValidator(issuer)
+        val issuerValidtor = IssuerValidator(issuer, issuer2)
         val withIssuer = JwtValidators.createDefaultWithIssuer(issuer)
         jwtDecoder.setJwtValidator(withIssuer)
         return jwtDecoder
