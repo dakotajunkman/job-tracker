@@ -26,6 +26,7 @@ data class ApplicationEntity(
     val skills: List<String>?,
     @Column(name = "notes", length = DEFAULT_NOTES_LENGTH) var notes: String?,
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     val user: UserEntity,
