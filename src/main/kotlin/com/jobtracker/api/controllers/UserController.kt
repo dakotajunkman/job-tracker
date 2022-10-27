@@ -1,16 +1,15 @@
 package com.jobtracker.api.controllers
 
+import com.jobtracker.api.controllers.models.ErrorModel
 import com.jobtracker.api.controllers.models.UserModel
 import com.jobtracker.api.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.oauth2.jwt.JwtDecoder
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestHeader
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 @RequestMapping("/api")
@@ -31,5 +30,16 @@ class UserController(
          */
         val saved = userRepository.save(user.toUserEntity())
         return ResponseEntity.status(HttpStatus.CREATED).body(saved)
+    }
+
+    @GetMapping("/users/{userID}")
+    fun getContact(
+        @PathVariable userID: String,
+        @RequestHeader("Authorization") token: String):ResponseEntity<Any> {
+
+        val retrieved = userRepository.findByIdOrNull(UUID.fromString(userID))
+            ?: return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorModel(404, "User with ID does not exist"))
+
+        return ResponseEntity.status(HttpStatus.OK).body(retrieved)
     }
 }

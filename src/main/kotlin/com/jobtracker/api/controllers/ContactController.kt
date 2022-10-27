@@ -27,7 +27,7 @@ class ContactController(
         @RequestBody contact: ContactModel,
         @RequestHeader("Authorization") token: String):ResponseEntity<Any> {
 
-        val companyObj = converter.convertCompany(contact.companyId)
+        val companyObj = converter.convertCompany(UUID.fromString(contact.companyId))
             ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorModel(400, "Company ID not found"))
 
         val applicationObjs = converter.convertApplicationList(contact.applications)

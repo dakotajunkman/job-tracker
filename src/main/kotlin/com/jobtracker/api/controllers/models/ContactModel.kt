@@ -6,7 +6,7 @@ import com.jobtracker.api.repository.entities.CompanyEntity
 import java.util.UUID
 
 data class ContactModel(
-  var companyId: UUID,
+  var companyId: String,
   val fullName: String,
   val positionTitle: String,
   val emailAddress: String,

@@ -9,9 +9,9 @@ import java.util.UUID
 import java.util.Date
 
 class ApplicationModel(
-    var companyID: UUID,
-    val position_title: String,
-    val submit_date: Date,
+    var companyID: String,
+    val positionTitle: String,
+    val submitDate: Date,
     val status: String,
     val skills: MutableList<String>?,
     val notes: String?,
@@ -19,7 +19,7 @@ class ApplicationModel(
 ){
 
     fun toApplicationEntity(companyEntity: CompanyEntity, userEntity: UserEntity, contactEntities: MutableList<ContactEntity>)
-    = ApplicationEntity(applicationID, position_title, submit_date, StatusConverter.tryConvertStatus(status),
+    = ApplicationEntity(applicationID, positionTitle, submitDate, StatusConverter.tryConvertStatus(status),
         skills, notes, userEntity, companyEntity, contactEntities)
 }
 
