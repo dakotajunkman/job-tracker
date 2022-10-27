@@ -7,5 +7,5 @@ import java.util.*
 
 interface UserRepository : JpaRepository<UserEntity, UUID>{
     @Query("SELECT * FROM users WHERE email_address = ?1", nativeQuery = true)
-    fun findByEmail(emailAddress: String) : UserEntity
+    fun findByEmail(emailAddress: String) : UserEntity?
 }

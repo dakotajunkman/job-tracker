@@ -36,8 +36,9 @@ class ApplicationController(
         val decoded = jwtDecoder.decode(token.substring(7))
         val claim = decoded.getClaimAsString("email")
         val user = userRepository.findByEmail(claim)
+            ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorModel(400, "User not found"))
 
-        val saved = applicationRepository.save(application.toApplicationEntity(companyObj, user, mutableListOf()))
+        val saved = applicationRepository.save(application.toApplicationEntity(companyObj, user!!, mutableListOf()))
         return ResponseEntity.status(HttpStatus.CREATED).body(saved)
     }
 

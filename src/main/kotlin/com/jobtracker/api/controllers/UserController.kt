@@ -32,13 +32,13 @@ class UserController(
         return ResponseEntity.status(HttpStatus.CREATED).body(saved)
     }
 
-    @GetMapping("/users/{userID}")
+    @GetMapping("/users/{userEmail}")
     fun getContact(
-        @PathVariable userID: String,
+        @PathVariable userEmail: String,
         @RequestHeader("Authorization") token: String):ResponseEntity<Any> {
 
-        val retrieved = userRepository.findByIdOrNull(UUID.fromString(userID))
-            ?: return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorModel(404, "User with ID does not exist"))
+        val retrieved = userRepository.findByEmail(userEmail)
+            ?: return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorModel(404, "User with email does not exist"))
 
         return ResponseEntity.status(HttpStatus.OK).body(retrieved)
     }
