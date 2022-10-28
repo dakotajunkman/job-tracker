@@ -1,8 +1,8 @@
 package com.jobtracker.api.controllers
 
-import com.jobtracker.api.controllers.models.CompanyModel
 import com.jobtracker.api.controllers.models.ErrorModel
-import com.jobtracker.api.repository.CompanyRepository
+import com.jobtracker.api.controllers.models.UserModel
+import com.jobtracker.api.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
@@ -13,32 +13,32 @@ import java.util.*
 
 @RestController
 @RequestMapping("/api")
-class CompanyController(
+class UserController(
     @Autowired
-    val companyRepository: CompanyRepository,
+    val userRepository: UserRepository,
     @Autowired
     val jwtDecoder: JwtDecoder
 ) {
-    @PostMapping("/companies")
-    fun createCompany(
-        @RequestBody company: CompanyModel,
+    @PostMapping("/users")
+    fun createUser(
+        @RequestBody user: UserModel,
         @RequestHeader("Authorization") token: String):ResponseEntity<Any> {
         /*
          * val decoded = jwtDecoder.decode(token.substring(7))
          * gets the decoded JWT token
          * we can use this to pull off the user's name if needed
          */
-        val saved = companyRepository.save(company.toCompanyEntity())
+        val saved = userRepository.save(user.toUserEntity())
         return ResponseEntity.status(HttpStatus.CREATED).body(saved)
     }
 
-    @GetMapping("/companies/{companyID}")
+    @GetMapping("/users/{userEmail}")
     fun getContact(
-        @PathVariable companyID: String,
+        @PathVariable userEmail: String,
         @RequestHeader("Authorization") token: String):ResponseEntity<Any> {
 
-        val retrieved = companyRepository.findByIdOrNull(UUID.fromString(companyID))
-            ?: return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorModel(404, "Company with ID does not exist"))
+        val retrieved = userRepository.findByEmail(userEmail)
+            ?: return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorModel(404, "User with email does not exist"))
 
         return ResponseEntity.status(HttpStatus.OK).body(retrieved)
     }

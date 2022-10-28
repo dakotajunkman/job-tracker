@@ -4,7 +4,7 @@ package com.jobtracker.api.repository.entities
 import DEFAULT_FIELD_LENGTH
 import DEFAULT_NOTES_LENGTH
 import ApplicationStatus
-import org.hibernate.annotations.Type
+import com.fasterxml.jackson.annotation.JsonIgnore
 import java.util.Date
 import java.util.UUID
 import javax.persistence.*
@@ -21,9 +21,12 @@ data class ApplicationEntity(
     val submitDate: Date,
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false) val status: ApplicationStatus,
-    @Column(name = "skills", length = DEFAULT_FIELD_LENGTH) var skills: String?,
+    @ElementCollection
+    @Column(name = "skills", length = DEFAULT_FIELD_LENGTH)
+    val skills: List<String>?,
     @Column(name = "notes", length = DEFAULT_NOTES_LENGTH) var notes: String?,
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     val user: UserEntity,
@@ -32,6 +35,7 @@ data class ApplicationEntity(
     @JoinColumn(name = "company_id", referencedColumnName = "id")
     val company: CompanyEntity,
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "application_contacts",
