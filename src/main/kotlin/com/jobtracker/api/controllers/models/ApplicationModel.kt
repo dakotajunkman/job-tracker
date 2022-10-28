@@ -5,11 +5,8 @@ import com.jobtracker.api.repository.entities.CompanyEntity
 import com.jobtracker.api.repository.entities.UserEntity
 import StatusConverter
 import com.jobtracker.api.business.Helpers
-import com.jobtracker.api.business.Helpers.Companion.tryConvertStringToDate
 import com.jobtracker.api.repository.entities.ContactEntity
-import java.time.LocalDate
 import java.util.UUID
-import java.util.Date
 
 class ApplicationModel(
     var companyID: String,
@@ -22,7 +19,7 @@ class ApplicationModel(
 ){
 
     fun toApplicationEntity(companyEntity: CompanyEntity, userEntity: UserEntity, contactEntities: MutableList<ContactEntity>)
-    = ApplicationEntity(applicationID, positionTitle, tryConvertStringToDate(submitDate), StatusConverter.tryConvertStatus(status),
+    = ApplicationEntity(applicationID, positionTitle, Helpers.tryConvertStringToDate(submitDate), StatusConverter.tryConvertStatus(status),
         skills, notes, userEntity, companyEntity, contactEntities)
 }
 

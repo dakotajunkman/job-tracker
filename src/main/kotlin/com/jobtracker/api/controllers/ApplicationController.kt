@@ -26,7 +26,7 @@ class ApplicationController(
     val converter: Converter
 ) {
     @PostMapping("/applications")
-    fun createContact(
+    fun createApplication(
         @RequestBody application: ApplicationModel,
         @RequestHeader("Authorization") token: String):ResponseEntity<Any> {
 
@@ -38,12 +38,12 @@ class ApplicationController(
         val user = userRepository.findByEmail(claim)
             ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorModel(400, "User not found"))
 
-        val saved = applicationRepository.save(application.toApplicationEntity(companyObj, user!!, mutableListOf()))
+        val saved = applicationRepository.save(application.toApplicationEntity(companyObj, user, mutableListOf()))
         return ResponseEntity.status(HttpStatus.CREATED).body(saved)
     }
 
     @GetMapping("/applications/{applicationID}")
-    fun getContact(
+    fun getApplication(
         @PathVariable applicationID: String,
         @RequestHeader("Authorization") token: String):ResponseEntity<Any> {
 

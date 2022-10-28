@@ -28,13 +28,13 @@ class JobtrackerApplication {
   /**
    * TEST CODE for REPO CLASSES Un-comment and pass the repo you'd like to test into the function
    * Call whichever repo class method you'd like for testing
-   */
+
    @Bean
   fun init(appRepo: ApplicationRepository, userRepository: UserRepository,
            contactRepository: ContactRepository, companyRepository: CompanyRepository
   ) = CommandLineRunner()
    { val user = appRepo.findAll().first() }
-
+    */
 }
 
 fun main(args: Array<String>) {
