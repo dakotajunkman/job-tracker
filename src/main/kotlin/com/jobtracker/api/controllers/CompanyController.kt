@@ -42,4 +42,13 @@ class CompanyController(
 
         return ResponseEntity.status(HttpStatus.OK).body(retrieved)
     }
+
+    @DeleteMapping("/companies/{companyId}")
+    fun deleteContact(
+        @PathVariable companyId: String,
+        @RequestHeader("Authorization") token: String
+    ): ResponseEntity<Any> {
+        companyRepository.deleteById(UUID.fromString(companyId))
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null)
+    }
 }
