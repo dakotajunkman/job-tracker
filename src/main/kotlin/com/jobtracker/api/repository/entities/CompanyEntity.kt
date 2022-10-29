@@ -18,10 +18,12 @@ data class CompanyEntity(
     val name: String,
 
     @JsonIgnore
-    @OneToMany
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "company_id")
-    val applications: MutableList<ApplicationEntity>
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "company")
+    val applications: MutableList<ApplicationEntity>,
+
+    @JsonIgnore
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, mappedBy = "company")
+    val contacts: MutableList<ContactEntity>
 ) {
     override fun toString() = "Company with id: $id, name: $name"
 }
