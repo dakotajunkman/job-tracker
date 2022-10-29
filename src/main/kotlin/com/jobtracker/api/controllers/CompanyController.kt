@@ -33,7 +33,7 @@ class CompanyController(
     }
 
     @GetMapping("/companies/{companyID}")
-    fun getContact(
+    fun getCompany(
         @PathVariable companyID: String,
         @RequestHeader("Authorization") token: String):ResponseEntity<Any> {
 
@@ -44,7 +44,7 @@ class CompanyController(
     }
 
     @DeleteMapping("/companies/{companyId}")
-    fun deleteContact(
+    fun deleteCompany(
         @PathVariable companyId: String,
         @RequestHeader("Authorization") token: String
     ): ResponseEntity<Any> {
