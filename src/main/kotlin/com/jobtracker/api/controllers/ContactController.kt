@@ -47,4 +47,12 @@ class ContactController(
         return ResponseEntity.status(HttpStatus.OK).body(retrieved)
     }
 
+    @DeleteMapping("/contacts/{contactId}")
+    fun deleteContact(
+        @PathVariable contactId: String,
+        @RequestHeader("Authorization") token: String
+    ): ResponseEntity<Any> {
+        contactRepository.deleteById(UUID.fromString(contactId))
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null)
+    }
 }

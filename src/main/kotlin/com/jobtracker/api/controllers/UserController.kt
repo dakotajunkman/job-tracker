@@ -33,7 +33,7 @@ class UserController(
     }
 
     @GetMapping("/users/{userEmail}")
-    fun getContact(
+    fun getUser(
         @PathVariable userEmail: String,
         @RequestHeader("Authorization") token: String):ResponseEntity<Any> {
 
@@ -41,5 +41,14 @@ class UserController(
             ?: return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorModel(404, "User with email does not exist"))
 
         return ResponseEntity.status(HttpStatus.OK).body(retrieved)
+    }
+
+    @DeleteMapping("/users/{userId}")
+    fun deleteUser(
+        @PathVariable userId: String,
+        @RequestHeader("Authorization") token: String
+    ): ResponseEntity<Any> {
+        userRepository.deleteById(UUID.fromString(userId))
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null)
     }
 }

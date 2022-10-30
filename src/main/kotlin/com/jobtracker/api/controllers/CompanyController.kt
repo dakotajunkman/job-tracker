@@ -33,7 +33,7 @@ class CompanyController(
     }
 
     @GetMapping("/companies/{companyID}")
-    fun getContact(
+    fun getCompany(
         @PathVariable companyID: String,
         @RequestHeader("Authorization") token: String):ResponseEntity<Any> {
 
@@ -41,5 +41,14 @@ class CompanyController(
             ?: return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorModel(404, "Company with ID does not exist"))
 
         return ResponseEntity.status(HttpStatus.OK).body(retrieved)
+    }
+
+    @DeleteMapping("/companies/{companyId}")
+    fun deleteCompany(
+        @PathVariable companyId: String,
+        @RequestHeader("Authorization") token: String
+    ): ResponseEntity<Any> {
+        companyRepository.deleteById(UUID.fromString(companyId))
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null)
     }
 }

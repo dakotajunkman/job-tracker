@@ -52,4 +52,14 @@ class ApplicationController(
 
         return ResponseEntity.status(HttpStatus.OK).body(retrieved)
     }
+
+    @DeleteMapping("/applications/{appId}")
+    fun deleteApplication(
+        @PathVariable appId: String,
+        @RequestHeader("Authorization") token: String
+    ): ResponseEntity<Any> {
+        // This method returns nothing but it probably doesn't matter whether it was successful or not
+        applicationRepository.deleteById(UUID.fromString(appId))
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null)
+    }
 }
