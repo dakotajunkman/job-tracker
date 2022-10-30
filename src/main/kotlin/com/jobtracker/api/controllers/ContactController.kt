@@ -1,6 +1,7 @@
 package com.jobtracker.api.controllers
 
 import com.jobtracker.api.business.Converter
+import com.jobtracker.api.business.Helpers
 import com.jobtracker.api.controllers.models.ContactModel
 import com.jobtracker.api.controllers.models.ErrorModel
 import com.jobtracker.api.repository.ContactRepository
@@ -27,12 +28,15 @@ class ContactController(
         @RequestBody contact: ContactModel,
         @RequestHeader("Authorization") token: String):ResponseEntity<Any> {
 
+        val user = converter.convertUser(UUID.fromString(contact.userId))
+            ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorModel(400, "Invalid user ID"))
+
         val companyObj = converter.convertCompany(UUID.fromString(contact.companyId))
             ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorModel(400, "Company ID not found"))
 
-        val applicationObjs = converter.convertApplicationList(contact.applications)
+        val applicationObjs = converter.convertApplicationList(Helpers.convertStringArrToUUID(contact.applications))
 
-        val saved = contactRepository.save(contact.toContactEntity(companyObj, applicationObjs))
+        val saved = contactRepository.save(contact.toContactEntity(companyObj, applicationObjs, user))
         return ResponseEntity.status(HttpStatus.CREATED).body(saved)
     }
 

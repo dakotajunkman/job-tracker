@@ -16,8 +16,11 @@ data class UserEntity(
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     val applications: MutableList<ApplicationEntity>,
 
-    @Column(name = "email_address", nullable = false, unique = true, length = DEFAULT_FIELD_LENGTH) val emailAddress: String
+    @Column(name = "email_address", nullable = false, unique = true, length = DEFAULT_FIELD_LENGTH)
+    val emailAddress: String,
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+    val contacts: MutableList<ContactEntity>
 ) {
   override fun toString() =
       "User type with id: $id, firstName: $firstName, lastName: $lastName, email: $emailAddress"
