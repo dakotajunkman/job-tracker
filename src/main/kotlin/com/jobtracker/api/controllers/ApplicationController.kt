@@ -46,8 +46,14 @@ class ApplicationController(
         @PathVariable applicationID: String,
         @RequestHeader("Authorization") token: String):ResponseEntity<Any> {
 
+        val userID = Helpers.getUserIDByJWT(token, jwtDecoder, userRepository)
+
         val retrieved = applicationRepository.findByIdOrNull(UUID.fromString(applicationID))
             ?: return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorModel(404, "Application with ID does not exist"))
+
+        if (retrieved.user.id != userID){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ErrorModel(403, "Application is forbidden"))
+        }
 
         return ResponseEntity.status(HttpStatus.OK).body(retrieved)
     }

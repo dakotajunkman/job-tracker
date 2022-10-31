@@ -49,8 +49,14 @@ class ContactController(
         @PathVariable contactID: String,
         @RequestHeader("Authorization") token: String):ResponseEntity<Any> {
 
+        val userID = Helpers.getUserIDByJWT(token, jwtDecoder, userRepository)
+
         val retrieved = contactRepository.findByIdOrNull(UUID.fromString(contactID))
             ?: return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorModel(404, "Contact with ID does not exist"))
+
+        if (retrieved.user.id != userID){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ErrorModel(403, "Contact is forbidden"))
+        }
 
         return ResponseEntity.status(HttpStatus.OK).body(retrieved)
     }
