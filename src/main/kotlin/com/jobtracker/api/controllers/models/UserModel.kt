@@ -10,13 +10,9 @@ data class UserModel(
   val emailAddress: String,
   var id: UUID = UUID.randomUUID()
   ) {
-
-  // Couldn't figure out how to init this in line in creating UserEntity. Feel free to move there if you can
-  val emptyMutableList : MutableList<ApplicationEntity> = arrayListOf()
-
   fun toUserEntity()
-  = UserEntity(id, firstName, lastName, emptyMutableList,emailAddress)
+  = UserEntity(id, firstName, lastName, mutableListOf(), emailAddress, mutableListOf())
 }
 
 // We might not need this - can't think of a use case
-data class MultipleUserModel(val contacts: MutableList<ContactModel>)
+data class MultipleUserModel(val contacts: MutableList<UserModel>)

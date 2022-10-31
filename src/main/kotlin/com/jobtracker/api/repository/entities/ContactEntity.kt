@@ -27,7 +27,12 @@ data class ContactEntity(
 
     @JsonIgnore
     @ManyToMany(mappedBy = "contacts", fetch = FetchType.EAGER)
-    val applications: MutableList<ApplicationEntity>
+    val applications: MutableList<ApplicationEntity>,
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    val user: UserEntity
 ) {
   override fun toString() =
       "Contact type with id: $id, fullName: $fullName, positionTitle: $positionTitle, emailAddress: $emailAddress, phoneNumber: $phoneNumber, comments: $comments"

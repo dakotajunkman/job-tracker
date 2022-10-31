@@ -27,8 +27,8 @@ class Converter(
 
     fun convertCompany(companyID: UUID) = companyRepository.findByIdOrNull(companyID)
     fun convertApplication(applicationID: UUID) = applicationRepository.findByIdOrNull(applicationID)
-    fun convertContact(contactID: UUID) = applicationRepository.findByIdOrNull(contactID)
-    fun convertUser(userID: UUID) = applicationRepository.findByIdOrNull(userID)
+    fun convertContact(contactID: UUID) = contactRepository.findByIdOrNull(contactID)
+    fun convertUser(userID: UUID) = userRepository.findByIdOrNull(userID)
 
     // ------ MultiConversions ------
 
