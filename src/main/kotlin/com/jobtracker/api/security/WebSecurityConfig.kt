@@ -28,7 +28,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
   @Bean
   fun jwtDecoder(): JwtDecoder {
     val jwtDecoder = JwtDecoders.fromIssuerLocation(issuer) as NimbusJwtDecoder
-    val withIssuer = JwtValidators.createDefaultWithIssuer("accounts.google.com")
+    val withIssuer = JwtValidators.createDefaultWithIssuer("https://accounts.google.com")
     val withAudience: OAuth2TokenValidator<Jwt> = DelegatingOAuth2TokenValidator(withIssuer)
     jwtDecoder.setJwtValidator(withAudience)
     return jwtDecoder
