@@ -43,6 +43,16 @@ class CompanyController(
         return ResponseEntity.status(HttpStatus.OK).body(retrieved)
     }
 
+    @GetMapping("/companies")
+    fun getAllCompanies(
+        @RequestHeader("Authorization") token: String):ResponseEntity<Any> {
+
+        val retrievedAll = companyRepository.findAll()
+
+        return ResponseEntity.status(HttpStatus.OK).body(retrievedAll)
+    }
+
+
     @DeleteMapping("/companies/{companyId}")
     fun deleteCompany(
         @PathVariable companyId: String,

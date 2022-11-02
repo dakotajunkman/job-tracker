@@ -1,6 +1,7 @@
 package com.jobtracker.api.controllers
 
 import com.jobtracker.api.business.Converter
+import com.jobtracker.api.business.Helpers
 import com.jobtracker.api.controllers.models.ApplicationModel
 import com.jobtracker.api.controllers.models.ErrorModel
 import com.jobtracker.api.repository.ApplicationRepository
@@ -33,10 +34,8 @@ class ApplicationController(
         val companyObj = converter.convertCompany(UUID.fromString(application.companyID))
             ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorModel(400, "Company ID not found"))
 
-        val decoded = jwtDecoder.decode(token.substring(7))
-        val claim = decoded.getClaimAsString("email")
-        val user = userRepository.findByEmail(claim)
-            ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorModel(400, "User not found"))
+        val user = Helpers.getUserByJWT(token, jwtDecoder, userRepository)
+            ?: return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorModel(404, "Company with ID does not exist"))
 
         val saved = applicationRepository.save(application.toApplicationEntity(companyObj, user, mutableListOf()))
         return ResponseEntity.status(HttpStatus.CREATED).body(saved)
@@ -47,10 +46,29 @@ class ApplicationController(
         @PathVariable applicationID: String,
         @RequestHeader("Authorization") token: String):ResponseEntity<Any> {
 
+        val userID = Helpers.getUserIDByJWT(token, jwtDecoder, userRepository)
+
         val retrieved = applicationRepository.findByIdOrNull(UUID.fromString(applicationID))
             ?: return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorModel(404, "Application with ID does not exist"))
 
+        if (retrieved.user.id != userID){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ErrorModel(403, "Application is forbidden"))
+        }
+
         return ResponseEntity.status(HttpStatus.OK).body(retrieved)
+    }
+
+    @GetMapping("/applications")
+    fun getAllContacts(
+        @RequestHeader("Authorization") token: String):ResponseEntity<Any> {
+
+        val userID = Helpers.getUserIDByJWT(token, jwtDecoder, userRepository)
+
+        val retrievedAll = applicationRepository.findAll().filter {
+            it.user.id == userID
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(retrievedAll)
     }
 
     @DeleteMapping("/applications/{appId}")
