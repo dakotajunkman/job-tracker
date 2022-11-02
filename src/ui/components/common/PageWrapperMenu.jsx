@@ -18,9 +18,14 @@ export default function PageWrapperMenu() {
         data-testid="NavigationMenu"
       />
       <MenuList>
-        <NextLink href={'/#'} passHref>
+        <NextLink href={'/'} passHref>
+          <Link _hover={{textDecoration: 'none'}} data-testid="ViewApplicationsLink">
+            <MenuItem icon={<Icon as={MdBusiness} w={6} h={6} />}>View Applications</MenuItem>
+          </Link>
+        </NextLink>
+        <NextLink href={'/companies'} passHref>
           <Link _hover={{textDecoration: 'none'}} data-testid="ViewCompaniesLink">
-            <MenuItem icon={<Icon as={MdBusiness} w={6} h={6} />}>View Companies</MenuItem>{' '}
+            <MenuItem icon={<Icon as={MdBusiness} w={6} h={6} />}>View Companies</MenuItem>
           </Link>
         </NextLink>
         <NextLink href={'/#'} passHref>

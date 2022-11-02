@@ -24,7 +24,7 @@ export default function NavigationSidebar() {
         Navigation
       </Heading>
       <NavigationLink icon={IoDocumentsSharp} label="View Applications" href="/" />
-      <NavigationLink icon={MdBusiness} label="View Companies" href="/#" />
+      <NavigationLink icon={MdBusiness} label="View Companies" href="/companies" />
       <NavigationLink icon={MdPeopleAlt} label="View Contacts" href="/#" />
       <NavigationLink icon={MdBarChart} label="View Analytics" href="/#" />
     </Flex>

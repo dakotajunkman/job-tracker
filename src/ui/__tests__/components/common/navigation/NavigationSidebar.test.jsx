@@ -1,6 +1,6 @@
 import React from 'react';
 import {render} from '@testing-library/react';
-import NavigationSidebar from '../../../components/dashboard/NavigationSidebar';
+import NavigationSidebar from '../../../../components/common/navigation/NavigationSidebar';
 import '@testing-library/jest-dom';
 import {ChakraProvider} from '@chakra-ui/react';
 import {mockMatchMedia} from '../../util/util';
