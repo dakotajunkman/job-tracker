@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, {shape, string} from 'prop-types';
 import useSWR from 'swr';
 import PageWrapper from '../common/PageWrapper';
 import NavigationSidebar from '../common/navigation/NavigationSidebar';
@@ -89,6 +89,10 @@ export default function CompaniesPage({session}) {
   );
 }
 
-CompaniesPage.propTypes = {};
+CompaniesPage.propTypes = {
+  session: shape({
+    jwt: string.isRequired,
+  }).isRequired,
+};
 
 CompaniesPage.defaultProps = {};

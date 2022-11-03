@@ -1,6 +1,6 @@
 import React from 'react';
 import {Table, Thead, Tbody, Tr, Th, Td, TableContainer} from '@chakra-ui/react';
-import PropTypes from 'prop-types';
+import PropTypes, {arrayOf, string, shape} from 'prop-types';
 
 export default function CompaniesTable({companies}) {
   return (
@@ -37,7 +37,14 @@ export default function CompaniesTable({companies}) {
   );
 }
 
-CompaniesTable.propTypes = {};
+CompaniesTable.propTypes = {
+  companies: arrayOf(
+    shape({
+      id: string.isRequired,
+      name: string.isRequired,
+    })
+  ),
+};
 
 CompaniesTable.defaultProps = {
   companies: [],

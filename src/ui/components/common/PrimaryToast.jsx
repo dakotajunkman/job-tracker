@@ -1,5 +1,6 @@
 import React from 'react';
 import {CloseButton, Flex, Heading, Icon, Text, useToast} from '@chakra-ui/react';
+import {any, string} from 'prop-types';
 
 export default function PrimaryToast({title, description, icon}) {
   const toast = useToast();
@@ -16,16 +17,20 @@ export default function PrimaryToast({title, description, icon}) {
       gap={2}
       boxShadow="dark-lg"
     >
-      <Icon as={icon} w={6} h={6} />
+      <Icon as={icon} w={6} h={6} data-testid="toast-icon" />
       <Flex direction="column">
         <Heading size="md">{title}</Heading>
         <Text>{description}</Text>
       </Flex>
-      <CloseButton onClick={toast.closeAll} />
+      <CloseButton onClick={toast.closeAll} data-testid="toast-close-button" />
     </Flex>
   );
 }
 
-PrimaryToast.propTypes = {};
+PrimaryToast.propTypes = {
+  title: string,
+  description: string,
+  icon: any,
+};
 
 PrimaryToast.defaultProps = {};

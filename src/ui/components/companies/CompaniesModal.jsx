@@ -40,7 +40,7 @@ export default function CompaniesModal({header, isOpen, onClose, companies, toke
               body: JSON.stringify(values),
             });
             setIsSaving(false);
-            console.log(response.status >= 200 && response.status < 300);
+
             if (response.status >= 200 && response.status < 300) {
               addCompany(await response.json());
               onClose();
@@ -85,9 +85,12 @@ CompaniesModal.propTypes = {
       name: string,
     })
   ),
+  token: string.isRequired,
+  addCompany: func,
 };
 
 CompaniesModal.defaultProps = {
   header: 'New Company',
   companies: [],
+  addCompany: () => {},
 };

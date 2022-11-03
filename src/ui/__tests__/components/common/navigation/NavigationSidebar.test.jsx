@@ -3,13 +3,13 @@ import {render} from '@testing-library/react';
 import NavigationSidebar from '../../../../components/common/navigation/NavigationSidebar';
 import '@testing-library/jest-dom';
 import {ChakraProvider} from '@chakra-ui/react';
-import {mockMatchMedia} from '../../util/util';
+import {mockMatchMedia} from '../../../util/util';
 
 mockMatchMedia();
 const DEFAULT_PROPS = {};
 const LINKS = [
   {label: 'View Applications', href: '/'},
-  {label: 'View Companies', href: '/#'},
+  {label: 'View Companies', href: '/companies'},
   {label: 'View Contacts', href: '/#'},
   {label: 'View Analytics', href: '/#'},
 ];
