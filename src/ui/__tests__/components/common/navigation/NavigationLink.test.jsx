@@ -1,9 +1,9 @@
 import React from 'react';
 import {render} from '@testing-library/react';
-import NavigationLink from '../../../components/dashboard/NavigationLink';
+import NavigationLink from '../../../../components/common/navigation/NavigationLink';
 import '@testing-library/jest-dom';
 import {ChakraProvider} from '@chakra-ui/react';
-import {mockMatchMedia} from '../../util/util';
+import {mockMatchMedia} from '../../../util/util';
 import {MdBusiness} from 'react-icons/md';
 
 mockMatchMedia();

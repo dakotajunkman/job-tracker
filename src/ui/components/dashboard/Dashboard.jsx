@@ -3,7 +3,7 @@ import {useSession} from 'next-auth/react';
 import {Flex, Heading, Icon, Text, useBreakpointValue, useDisclosure} from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import PageWrapper from '../common/PageWrapper';
-import NavigationSidebar from './NavigationSidebar';
+import NavigationSidebar from '../common/navigation/NavigationSidebar';
 import ApplicationSection from './ApplicationSection';
 import exampleJSON from '../../public/json/applicationsExample.json';
 import {MdPostAdd} from 'react-icons/md';

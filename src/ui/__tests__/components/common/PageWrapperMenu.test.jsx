@@ -28,11 +28,18 @@ describe('PageWrapperMenu', () => {
     expect(button).toBeInTheDocument();
   });
 
+  it('renders a link to View Applications', () => {
+    const component = setup();
+    const link = component.getByTestId('ViewApplicationsLink');
+    expect(link).toBeInTheDocument();
+    expect(link).toHaveAttribute('href', '/');
+  });
+
   it('renders a link to View Companies', () => {
     const component = setup();
     const link = component.getByTestId('ViewCompaniesLink');
     expect(link).toBeInTheDocument();
-    expect(link).toHaveAttribute('href', '/#');
+    expect(link).toHaveAttribute('href', '/companies');
   });
 
   it('renders a link to View Contacts', () => {
