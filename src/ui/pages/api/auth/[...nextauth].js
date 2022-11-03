@@ -18,8 +18,6 @@ const GOOGLE_AUTHORIZATION_URL =
  * returns the old token and an error property
  */
 async function refreshAccessToken(token) {
-  console.log('refreshing token...');
-  console.log('old token:', token);
   try {
     const url =
       'https://oauth2.googleapis.com/token?' +
@@ -42,13 +40,6 @@ async function refreshAccessToken(token) {
     if (!response.ok) {
       throw refreshedTokens;
     }
-
-    console.log('new token:', {
-      ...token,
-      accessToken: refreshedTokens.access_token,
-      accessTokenExpires: Date.now() + refreshedTokens.expires_at * 1000,
-      refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // Fall back to old refresh token
-    });
 
     return {
       ...token,
