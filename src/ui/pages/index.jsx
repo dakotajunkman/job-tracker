@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {useSession} from 'next-auth/react';
+import {useSession, signIn} from 'next-auth/react';
 import PropTypes from 'prop-types';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import Dashboard from '../components/dashboard/Dashboard';
