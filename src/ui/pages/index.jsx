@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {useSession} from 'next-auth/react';
+import {useSession, signIn} from 'next-auth/react';
 import PropTypes from 'prop-types';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import Dashboard from '../components/dashboard/Dashboard';
@@ -19,7 +19,7 @@ export default function Home() {
   /* Dashboard for Logged In Users */
   if (session) return <Dashboard />;
 
-  /* Landing Page for Logged Out Users */
+  /* Landing Page for Logged Out Users `*/
   return <LandingPage />;
 }
 
