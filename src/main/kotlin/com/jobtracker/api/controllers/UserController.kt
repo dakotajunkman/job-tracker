@@ -23,11 +23,11 @@ class UserController(
     fun createUser(
         @RequestBody user: UserModel,
         @RequestHeader("Authorization") token: String):ResponseEntity<Any> {
-        /*
-         * val decoded = jwtDecoder.decode(token.substring(7))
-         * gets the decoded JWT token
-         * we can use this to pull off the user's name if needed
-         */
+
+         val decoded = jwtDecoder.decode(token.substring(7))
+        if (userRepository.findByEmail(decoded.getClaimAsString("email")) != null)
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null)
+
         val saved = userRepository.save(user.toUserEntity())
         return ResponseEntity.status(HttpStatus.CREATED).body(saved)
     }
