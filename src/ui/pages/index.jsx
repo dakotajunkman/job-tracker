@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useSession} from 'next-auth/react';
 import PropTypes from 'prop-types';
 import LoadingSpinner from '../components/common/LoadingSpinner';
@@ -7,6 +7,12 @@ import LandingPage from '../components/landing_page/LandingPage';
 
 export default function Home() {
   const {data: session, status} = useSession();
+
+  useEffect(() => {
+    if (session?.error === 'RefreshAccessTokenError') {
+      signIn(); // Force sign in to hopefully resolve error
+    }
+  }, [session]);
 
   if (status === 'loading') return <LoadingSpinner />;
 

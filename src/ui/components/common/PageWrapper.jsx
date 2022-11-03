@@ -25,7 +25,7 @@ export default function PageWrapper({children, showBackground, showMenu}) {
       minH="100vh"
       justifyContent="space-between"
       bg="#efefef"
-      bgImg={showBackground && "url('./images/backgrounds/landing-tile.png')"}
+      bgImg={showBackground ? "url('./images/backgrounds/landing-tile.png')" : 'none'}
       gap={16}
       data-testid="PageWrapper"
     >
