@@ -19,7 +19,7 @@ export default function Home() {
   /* Dashboard for Logged In Users */
   if (session) return <Dashboard />;
 
-  /* Landing Page for Logged Out Users `*/
+  /* Landing Page for Logged Out Users */
   return <LandingPage />;
 }
 
