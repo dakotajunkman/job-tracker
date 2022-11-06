@@ -20,7 +20,7 @@ import PrimaryToast from '../common/PrimaryToast';
 import LoadingSpinner from '../common/LoadingSpinner';
 import useSWR from 'swr';
 
-const IN_PROGRESS_STATUSES = [
+const IN_PROGRESS_STATUSES = new Set([
   'ASSIGNED_OA',
   'COMPLETED_OA',
   'PHONE_SCREEN_SCHEDULED',
@@ -28,13 +28,13 @@ const IN_PROGRESS_STATUSES = [
   'INTERVIEW_SCHEDULED',
   'INTERVIEW_COMPLETE',
   'RECEIVED_OFFER',
-];
-const CLOSED_STATUSES = [
+]);
+const CLOSED_STATUSES = new Set([
   'ACCEPTED_OFFER',
   'REJECTED_OFFER',
   'REJECTED_BY_COMPANY',
   'POSITION_CANCELLED',
-];
+]);
 
 const fetcher = (url, token) =>
   fetch(url, {
@@ -81,10 +81,10 @@ export default function Dashboard() {
     if (!applications) return;
     setOpenApplications(applications.filter(application => application.status === 'APPLIED'));
     setInProgressApplications(
-      applications.filter(application => IN_PROGRESS_STATUSES.includes(application.status))
+      applications.filter(application => IN_PROGRESS_STATUSES.has(application.status))
     );
     setClosedApplications(
-      applications.filter(application => CLOSED_STATUSES.includes(application.status))
+      applications.filter(application => CLOSED_STATUSES.has(application.status))
     );
   }, [applications]);
 
