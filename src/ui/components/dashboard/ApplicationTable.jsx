@@ -1,6 +1,6 @@
 import React from 'react';
 import {Table, Thead, Tbody, Tr, Th, Td, TableContainer} from '@chakra-ui/react';
-import PropTypes from 'prop-types';
+import PropTypes, {arrayOf, shape, string} from 'prop-types';
 import StatusLabel from './StatusLabel';
 
 export default function ApplicationTable({applications}) {
@@ -28,14 +28,14 @@ export default function ApplicationTable({applications}) {
         </Thead>
         <Tbody>
           {applications.map(application => {
-            const {company_name, position_title, submit_date, status, application_id} = application;
+            const {company, positionTitle, submitDate, status, id} = application;
             return (
-              <Tr key={`tr-${application_id}`}>
-                <Td>{company_name}</Td>
-                <Td>{position_title}</Td>
-                <Td>{submit_date}</Td>
+              <Tr key={`tr-${id}`}>
+                <Td>{company.name}</Td>
+                <Td>{positionTitle}</Td>
+                <Td>{submitDate}</Td>
                 <Td>
-                  <StatusLabel status={status} id={application_id} />
+                  <StatusLabel status={status} id={id} />
                 </Td>
               </Tr>
             );
@@ -46,6 +46,23 @@ export default function ApplicationTable({applications}) {
   );
 }
 
-ApplicationTable.propTypes = {};
+ApplicationTable.propTypes = {
+  applications: arrayOf(
+    shape({
+      id: string.isRequired,
+      positionTitle: string.isRequired,
+      submitDate: string.isRequired,
+      status: string.isRequired,
+      skills: arrayOf(string),
+      notes: string,
+      company: shape({
+        id: string.isRequired,
+        name: string.isRequired,
+      }),
+    })
+  ),
+};
 
-ApplicationTable.defaultProps = {};
+ApplicationTable.defaultProps = {
+  applications: [],
+};

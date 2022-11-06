@@ -36,9 +36,12 @@ ApplicationSection.propTypes = {
   heading: string.isRequired,
   applicationData: arrayOf(
     shape({
-      company_name: string.isRequired,
-      position_title: string.isRequired,
-      submit_date: string.isRequired,
+      company: shape({
+        id: string.isRequired,
+        name: string.isRequired,
+      }),
+      positionTitle: string.isRequired,
+      submitDate: string.isRequired,
       status: string.isRequired,
     })
   ),

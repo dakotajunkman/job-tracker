@@ -4,12 +4,15 @@ import ApplicationModal from '../../../components/dashboard/ApplicationModal';
 import '@testing-library/jest-dom';
 import {ChakraProvider} from '@chakra-ui/react';
 import {mockMatchMedia} from '../../util/util';
+import {MOCK_SESSION_DATA} from '../../util/fixtures';
 
 mockMatchMedia();
 const DEFAULT_PROPS = {
   header: 'Open Applications',
   isOpen: true,
   onClose: jest.fn(),
+  token: MOCK_SESSION_DATA.jwt,
+  onSave: jest.fn(),
 };
 
 describe('ApplicationSection', () => {
