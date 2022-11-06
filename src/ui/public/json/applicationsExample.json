@@ -7,7 +7,7 @@
     },
     "positionTitle": "Software Engineer I",
     "submitDate": "2022-03-04",
-    "status": "applied",
+    "status": "APPLIED",
     "skills": ["JavaScript", "TypeScript", "Python"],
     "notes": "This is a great opportunity!"
   },
@@ -19,7 +19,7 @@
     },
     "positionTitle": "Software Engineer Intern",
     "submitDate": "2022-01-01",
-    "status": "applied",
+    "status": "APPLIED",
     "skills": ["JavaScript", "TypeScript", "Python"],
     "notes": "This is a great opportunity!"
   },
@@ -31,7 +31,7 @@
     },
     "positionTitle": "Software Engineer II",
     "submitDate": "2022-05-12",
-    "status": "rejected_offer",
+    "status": "REJECTED_OFFER",
     "skills": ["JavaScript", "TypeScript", "Python"],
     "notes": "This is a great opportunity!"
   },
@@ -43,7 +43,7 @@
     },
     "positionTitle": "Chief Lasagna Officer",
     "submitDate": "2020-12-30",
-    "status": "assigned_oa",
+    "status": "ASSIGNED_OA",
     "skills": ["Hating Mondays", "Eating Lasagna"],
     "notes": "I will be devestated if I don't get this job"
   },
@@ -55,7 +55,7 @@
     },
     "positionTitle": "Software Engineer",
     "submitDate": "2022-02-28",
-    "status": "completed_oa",
+    "status": "COMPLETED_OA",
     "skills": ["JavaScript", "TypeScript", "Python"],
     "notes": "This is a great opportunity!"
   },
@@ -67,7 +67,7 @@
     },
     "positionTitle": "Software Engineer II",
     "submitDate": "2022-06-20",
-    "status": "phone_screen_scheduled",
+    "status": "PHONE_SCREEN_SCHEDULED",
     "skills": ["JavaScript", "TypeScript", "Python"],
     "notes": "This is a great opportunity!"
   },
@@ -79,7 +79,7 @@
     },
     "positionTitle": "Software Engineer",
     "submitDate": "2022-03-16",
-    "status": "phone_screen_complete",
+    "status": "PHONE_SCREEN_COMPLETE",
     "skills": ["JavaScript", "TypeScript", "Python"],
     "notes": "This is a great opportunity!"
   },
@@ -91,7 +91,7 @@
     },
     "positionTitle": "Software Engineer I",
     "submitDate": "2022-08-10",
-    "status": "interview_scheduled",
+    "status": "INTERVIEW_SCHEDULED",
     "skills": ["JavaScript", "TypeScript", "Python"],
     "notes": "This is a great opportunity!"
   },
@@ -103,7 +103,7 @@
     },
     "positionTitle": "Software Engineer Intern",
     "submitDate": "2022-07-01",
-    "status": "interview_complete",
+    "status": "INTERVIEW_COMPLETE",
     "skills": ["JavaScript", "TypeScript", "Python"],
     "notes": "This is a great opportunity!"
   },
@@ -115,7 +115,7 @@
     },
     "positionTitle": "Software Engineer II",
     "submitDate": "2022-05-22",
-    "status": "received_offer",
+    "status": "RECEIVED_OFFER",
     "skills": ["JavaScript", "TypeScript", "Python"],
     "notes": "This is a great opportunity!"
   },
@@ -127,7 +127,7 @@
     },
     "positionTitle": "Programmer I",
     "submitDate": "2022-10-12",
-    "status": "accepted_offer",
+    "status": "ACCEPTED_OFFER",
     "skills": ["JavaScript", "TypeScript", "Python"],
     "notes": "This is a great opportunity!"
   },
@@ -139,7 +139,7 @@
     },
     "positionTitle": "Data Analyst",
     "submitDate": "2022-09-09",
-    "status": "rejected_offer",
+    "status": "REJECTED_OFFER",
     "skills": ["JavaScript", "TypeScript", "Python"],
     "notes": "This is a great opportunity!"
   },
@@ -151,7 +151,7 @@
     },
     "positionTitle": "Software Engineer I",
     "submitDate": "2022-06-30",
-    "status": "position_cancelled",
+    "status": "POSITION_CANCELLED",
     "skills": ["JavaScript", "TypeScript", "Python"],
     "notes": "This is a great opportunity!"
   },
@@ -163,7 +163,7 @@
     },
     "positionTitle": "Big Hoser",
     "submitDate": "2020-11-01",
-    "status": "received_offer",
+    "status": "RECEIVED_OFFER",
     "skills": null,
     "notes": null
   },
@@ -175,7 +175,7 @@
     },
     "positionTitle": "Software Engineer Intern",
     "submitDate": "2022-08-24",
-    "status": "rejected_by_company",
+    "status": "REJECTED_BY_COMPANY",
     "skills": ["JavaScript", "TypeScript", "Python"],
     "notes": "This is a great opportunity!"
   },
@@ -187,7 +187,7 @@
     },
     "positionTitle": "Software Development Engineer",
     "submitDate": "2022-04-16",
-    "status": "rejected_by_company",
+    "status": "REJECTED_BY_COMPANY",
     "skills": ["JavaScript", "TypeScript", "Python"],
     "notes": "This is a great opportunity!"
   }

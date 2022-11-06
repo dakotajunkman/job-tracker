@@ -47,8 +47,8 @@ describe('ApplicationTable', () => {
     const rows = component.getAllByRole('row');
     rows.shift(); // Remove Header row
     rows.forEach((row, index) => {
-      const {companyName, positionTitle, submitDate, status} = DEFAULT_PROPS.applications[index];
-      expect(within(row).getByText(companyName)).toBeInTheDocument();
+      const {company, positionTitle, submitDate, status} = DEFAULT_PROPS.applications[index];
+      expect(within(row).getByText(company.name)).toBeInTheDocument();
       expect(within(row).getByText(positionTitle)).toBeInTheDocument();
       expect(within(row).getByText(submitDate)).toBeInTheDocument();
       expect(within(row).getByText(APPLICATION_STATUS_MAP[status].text)).toBeInTheDocument();
