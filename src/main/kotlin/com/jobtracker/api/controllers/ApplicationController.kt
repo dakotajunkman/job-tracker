@@ -4,6 +4,7 @@ import com.jobtracker.api.business.Converter
 import com.jobtracker.api.business.Helpers
 import com.jobtracker.api.controllers.models.ApplicationModel
 import com.jobtracker.api.controllers.models.ErrorModel
+import com.jobtracker.api.controllers.models.MultipleApplicationModel
 import com.jobtracker.api.repository.ApplicationRepository
 import com.jobtracker.api.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -68,7 +69,7 @@ class ApplicationController(
             it.user.id == userID
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(retrievedAll)
+        return ResponseEntity.status(HttpStatus.OK).body(MultipleApplicationModel(retrievedAll))
     }
 
     @DeleteMapping("/applications/{appId}")
