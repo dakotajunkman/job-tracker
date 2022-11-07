@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.oauth2.jwt.JwtDecoder
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import com.jobtracker.api.business.Converter
 import com.jobtracker.api.business.Helpers
 import com.jobtracker.api.controllers.models.ErrorModel
 import com.jobtracker.api.controllers.models.MultipleUserSkillFrequencyModel
@@ -31,8 +30,6 @@ class UserSkillFrequencyController(
     val userSkillFrequencyRepository: UserSkillFrequencyRepository,
     @Autowired
     val jwtDecoder: JwtDecoder,
-    @Autowired
-    val converter: Converter,
     @Autowired
     val userRepository: UserRepository
 ) {
