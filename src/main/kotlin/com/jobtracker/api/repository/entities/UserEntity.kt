@@ -20,7 +20,10 @@ data class UserEntity(
     val emailAddress: String,
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
-    val contacts: MutableList<ContactEntity>
+    val contacts: MutableList<ContactEntity>,
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+    val skills: List<UserSkillFrequencyEntity>
 ) {
   override fun toString() =
       "User type with id: $id, firstName: $firstName, lastName: $lastName, email: $emailAddress"
