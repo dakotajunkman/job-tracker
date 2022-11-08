@@ -1,13 +1,7 @@
 package com.jobtracker.api.business
 
-import com.jobtracker.api.repository.ApplicationRepository
-import com.jobtracker.api.repository.CompanyRepository
-import com.jobtracker.api.repository.ContactRepository
-import com.jobtracker.api.repository.UserRepository
-import com.jobtracker.api.repository.entities.ApplicationEntity
-import com.jobtracker.api.repository.entities.CompanyEntity
-import com.jobtracker.api.repository.entities.ContactEntity
-import com.jobtracker.api.repository.entities.UserEntity
+import com.jobtracker.api.repository.*
+import com.jobtracker.api.repository.entities.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Component
@@ -22,7 +16,9 @@ class Converter(
     @Autowired
     val contactRepository: ContactRepository,
     @Autowired
-    val userRepository: UserRepository
+    val userRepository: UserRepository,
+    @Autowired
+    val userSkillFrequencyRepository: UserSkillFrequencyRepository
 ) {
 
     fun convertCompany(companyID: UUID) = companyRepository.findByIdOrNull(companyID)
@@ -41,5 +37,38 @@ class Converter(
     fun convertUserList(userIDs: MutableList<UUID>): MutableList<UserEntity> =
         userRepository.findAllById(userIDs)
 
+    // Other shit that needs a home
+    fun createOrUpdateSkills(skills: MutableList<String>, user: UserEntity) {
+        val skillMap = hashMapOf<String, UserSkillFrequencyEntity>()
 
+        // throw a hash map at it!
+        userSkillFrequencyRepository.findByUser(user.id).forEach {
+            skillMap[it.skillName] = it
+        }
+        val skillsToSave = mutableListOf<UserSkillFrequencyEntity>()
+
+        skills.forEach { skillName ->
+            val curEntity = skillMap.getOrDefault(skillName.lowercase(), null)
+
+            // update already existing skill to increment it
+            val entityToSave = if (curEntity != null) {
+                UserSkillFrequencyEntity(
+                    curEntity.id,
+                    curEntity.skillName,
+                    curEntity.frequency + 1,
+                    curEntity.user
+                )
+                // create a new one
+            } else {
+                UserSkillFrequencyEntity(
+                    UUID.randomUUID(),
+                    skillName.lowercase(),
+                    1,
+                    user
+                )
+            }
+            skillsToSave.add(entityToSave)
+        }
+        userSkillFrequencyRepository.saveAll(skillsToSave)
+    }
 }

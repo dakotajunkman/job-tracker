@@ -39,6 +39,10 @@ class ApplicationController(
             ?: return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorModel(404, "Company with ID does not exist"))
 
         val saved = applicationRepository.save(application.toApplicationEntity(companyObj, user, mutableListOf()))
+
+        if (application.skills.isNotEmpty())
+            converter.createOrUpdateSkills(application.skills, user)
+
         return ResponseEntity.status(HttpStatus.CREATED).body(saved)
     }
 
