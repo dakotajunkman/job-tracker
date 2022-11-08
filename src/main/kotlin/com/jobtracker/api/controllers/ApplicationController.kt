@@ -81,8 +81,17 @@ class ApplicationController(
         @PathVariable appId: String,
         @RequestHeader("Authorization") token: String
     ): ResponseEntity<Any> {
-        // This method returns nothing but it probably doesn't matter whether it was successful or not
-        applicationRepository.deleteById(UUID.fromString(appId))
+        val userId = Helpers.getUserIDByJWT(token, jwtDecoder, userRepository)
+        val app = applicationRepository.findByIdOrNull(UUID.fromString(appId))
+            ?: return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorModel(404, "Application does not exist"))
+
+        if (app.user.id != userId)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ErrorModel(403, "User cannot access this resource"))
+
+        if (!app.skills.isNullOrEmpty())
+            converter.deleteOrUpdateSkills(app.skills!!, app.user)
+
+        applicationRepository.deleteById(app.id)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null)
     }
 }

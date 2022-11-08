@@ -22,7 +22,7 @@ data class UserEntity(
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     val contacts: MutableList<ContactEntity>,
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     val skills: List<UserSkillFrequencyEntity>
 ) {
   override fun toString() =
