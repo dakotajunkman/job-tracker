@@ -31,7 +31,7 @@ data class ApplicationEntity(
     val user: UserEntity,
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "company_id", referencedColumnName = "id", nullable = false, updatable = false)
+    @JoinColumn(name = "company_id", referencedColumnName = "id", nullable = false, updatable = true)
     val company: CompanyEntity,
 
     @JsonIgnore
