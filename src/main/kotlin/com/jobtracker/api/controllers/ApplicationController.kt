@@ -115,6 +115,13 @@ class ApplicationController(
         val companyObj = converter.convertCompany(UUID.fromString(application.companyID))
             ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorModel(400, "Company ID not found"))
 
+        // handle the skillz
+        if (!retrieved.skills.isNullOrEmpty())
+            converter.deleteOrUpdateSkills(retrieved.skills!!, user)
+
+        // handle the other skillz
+        if (application.skills.isNotEmpty())
+            converter.createOrUpdateSkills(application.skills, user)
 
         val saved = applicationRepository.save(application.toUpdateApplicationEntity(companyObj, user, mutableListOf(), UUID.fromString(appId)))
         return ResponseEntity.status(HttpStatus.CREATED).body(saved)
