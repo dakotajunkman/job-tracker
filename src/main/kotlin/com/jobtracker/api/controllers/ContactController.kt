@@ -79,7 +79,42 @@ class ContactController(
         @PathVariable contactId: String,
         @RequestHeader("Authorization") token: String
     ): ResponseEntity<Any> {
+
+        val userID = Helpers.getUserIDByJWT(token, jwtDecoder, userRepository)
+
+        val retrieved = contactRepository.findByIdOrNull(UUID.fromString(contactId))
+            ?: return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorModel(404, "Contact with ID does not exist"))
+
+        if (retrieved.user.id != userID){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ErrorModel(403, "Contact is forbidden"))
+        }
+
         contactRepository.deleteById(UUID.fromString(contactId))
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null)
+    }
+
+    @PutMapping("/contacts/{contactId}")
+    fun editContact(
+        @PathVariable contactId: String,
+        @RequestBody contact: ContactModel,
+        @RequestHeader("Authorization") token: String):ResponseEntity<Any> {
+
+        val user = converter.convertUser(UUID.fromString(contact.userId))
+            ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorModel(404, "User with ID does not exist"))
+
+        val retrieved = contactRepository.findByIdOrNull(UUID.fromString(contactId))
+            ?: return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorModel(404, "Contact with ID does not exist"))
+
+        if (retrieved.user.id != user.id){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ErrorModel(403, "Contact is forbidden"))
+        }
+
+        val companyObj = converter.convertCompany(UUID.fromString(contact.companyId))
+            ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorModel(400, "Company ID not found"))
+
+        val applicationObjs = converter.convertApplicationList(Helpers.convertStringArrToUUID(contact.applications))
+
+        val saved = contactRepository.save(contact.toUpdateContactEntity(companyObj, applicationObjs, user, UUID.fromString(contactId)))
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved)
     }
 }
