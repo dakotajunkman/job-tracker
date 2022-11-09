@@ -80,4 +80,29 @@ class ApplicationController(
         applicationRepository.deleteById(UUID.fromString(appId))
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null)
     }
+
+    @PutMapping("/applications/{appId}")
+    fun editApplication(
+        @PathVariable appId: String,
+
+        @RequestBody application: ApplicationModel,
+        @RequestHeader("Authorization") token: String):ResponseEntity<Any> {
+
+        val user = Helpers.getUserByJWT(token, jwtDecoder, userRepository)
+            ?: return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorModel(404, "User with ID does not exist"))
+
+        val retrieved = applicationRepository.findByIdOrNull(UUID.fromString(appId))
+            ?: return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorModel(404, "Application with ID does not exist"))
+
+        if (retrieved.user.id != user.id){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ErrorModel(403, "Application is forbidden"))
+        }
+
+        val companyObj = converter.convertCompany(UUID.fromString(application.companyID))
+            ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorModel(400, "Company ID not found"))
+
+
+        val saved = applicationRepository.save(application.toUpdateApplicationEntity(companyObj, user, mutableListOf(), UUID.fromString(appId)))
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved)
+    }
 }
