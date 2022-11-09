@@ -8,11 +8,13 @@ import {MOCK_SESSION_DATA} from '../../util/fixtures';
 
 mockMatchMedia();
 const DEFAULT_PROPS = {
-  header: 'Open Applications',
+  type: 'New',
   isOpen: true,
   onClose: jest.fn(),
   token: MOCK_SESSION_DATA.jwt,
   onSave: jest.fn(),
+  onDelete: jest.fn(),
+  application: null,
 };
 
 describe('ApplicationSection', () => {

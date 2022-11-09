@@ -1,9 +1,9 @@
 import React from 'react';
 import {Table, Thead, Tbody, Tr, Th, Td, TableContainer} from '@chakra-ui/react';
-import PropTypes, {arrayOf, shape, string} from 'prop-types';
+import PropTypes, {arrayOf, func, shape, string} from 'prop-types';
 import StatusLabel from './StatusLabel';
 
-export default function ApplicationTable({applications}) {
+export default function ApplicationTable({applications, openModal}) {
   return (
     <TableContainer
       border="1px solid #ddd"
@@ -30,7 +30,12 @@ export default function ApplicationTable({applications}) {
           {applications.map(application => {
             const {company, positionTitle, submitDate, status, id} = application;
             return (
-              <Tr key={`tr-${id}`}>
+              <Tr
+                key={`tr-${id}`}
+                _hover={{cursor: 'pointer', color: '#396afc'}}
+                _active={{color: '#2948ff'}}
+                onClick={() => openModal(application)}
+              >
                 <Td>{company.name}</Td>
                 <Td>{positionTitle}</Td>
                 <Td>{submitDate}</Td>
@@ -61,6 +66,7 @@ ApplicationTable.propTypes = {
       }),
     })
   ),
+  openModal: func.isRequired,
 };
 
 ApplicationTable.defaultProps = {

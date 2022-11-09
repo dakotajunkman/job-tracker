@@ -13,6 +13,7 @@ const DEFAULT_PROPS = {
   heading: 'Open Applications',
   applicationData: openApplications,
   startOpened: true,
+  openModal: jest.fn(),
 };
 
 describe('ApplicationSection', () => {

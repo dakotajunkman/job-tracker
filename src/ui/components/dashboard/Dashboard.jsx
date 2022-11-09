@@ -50,6 +50,8 @@ export default function Dashboard() {
   const [openApplications, setOpenApplications] = useState([]);
   const [inProgressApplications, setInProgressApplications] = useState([]);
   const [closedApplications, setClosedApplications] = useState([]);
+  const [modalType, setModalType] = useState('New');
+  const [currentApplication, setCurrentApplication] = useState(null);
 
   const showSidebar = useBreakpointValue({
     base: false,
@@ -73,6 +75,34 @@ export default function Dashboard() {
         />
       ),
     });
+  };
+
+  const deleteApplication = application => {
+    const updatedApplications = applications.filter(app => app.id !== application.id);
+    setApplications(updatedApplications);
+    toast({
+      position: 'top',
+      duration: 3000,
+      render: () => (
+        <PrimaryToast
+          title="Application Deleted."
+          description={`The application has been deleted from your dashboard.`}
+          icon={MdCheckCircle}
+        />
+      ),
+    });
+  };
+
+  const openModalForNewApplication = () => {
+    setModalType('New');
+    setCurrentApplication(null);
+    onOpen();
+  };
+
+  const openModalForEditApplication = application => {
+    setModalType('Edit');
+    setCurrentApplication(application);
+    onOpen();
   };
 
   // Capture the data from SWR in our useState variable
@@ -104,7 +134,15 @@ export default function Dashboard() {
           maxW="100%"
           overflowX="hidden"
         >
-          <ApplicationModal isOpen={isOpen} onClose={onClose} token={jwt} onSave={addApplication} />
+          <ApplicationModal
+            type={modalType}
+            isOpen={isOpen}
+            onClose={onClose}
+            token={jwt}
+            onSave={addApplication}
+            onDelete={deleteApplication}
+            application={currentApplication}
+          />
           <Flex direction="column">
             <Flex wrap="wrap" justifyContent="space-between" gap={8}>
               <Flex direction="column">
@@ -115,7 +153,10 @@ export default function Dashboard() {
                   {closedApplications ? closedApplications.length : '0'} Closed
                 </Text>
               </Flex>
-              <PrimaryButton leftIcon={<Icon as={MdPostAdd} w={6} h={6} />} onClick={onOpen}>
+              <PrimaryButton
+                leftIcon={<Icon as={MdPostAdd} w={6} h={6} />}
+                onClick={openModalForNewApplication}
+              >
                 Add Application
               </PrimaryButton>
             </Flex>
@@ -124,12 +165,21 @@ export default function Dashboard() {
             <LoadingSpinner />
           ) : (
             <>
-              <ApplicationSection heading="In-Progress" applicationData={inProgressApplications} />
-              <ApplicationSection heading="Open" applicationData={openApplications} />
+              <ApplicationSection
+                heading="In-Progress"
+                applicationData={inProgressApplications}
+                openModal={openModalForEditApplication}
+              />
+              <ApplicationSection
+                heading="Open"
+                applicationData={openApplications}
+                openModal={openModalForEditApplication}
+              />
               <ApplicationSection
                 heading="Closed"
                 applicationData={closedApplications}
                 startOpened={false}
+                openModal={openModalForEditApplication}
               />
             </>
           )}

@@ -8,11 +8,13 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
+  useDisclosure,
 } from '@chakra-ui/react';
-import PropTypes, {bool, func, string} from 'prop-types';
+import PropTypes, {arrayOf, bool, func, shape, string} from 'prop-types';
 import PrimaryButton from '../common/buttons/PrimaryButton';
 import SecondaryButton from '../common/buttons/SecondaryButton';
-import {MdOutlineSave} from 'react-icons/md';
+import DangerButton from '../common/buttons/DangerButton';
+import {MdDeleteOutline, MdOutlineSave} from 'react-icons/md';
 import {Form, Formik} from 'formik';
 import * as Yup from 'yup';
 import {APPLICATION_STATUS_MAP} from './StatusLabel';
@@ -21,8 +23,13 @@ import TextAreaInput from '../common/forms/TextAreaInput';
 import DateInput from '../common/forms/DateInput';
 import SelectInput from '../common/forms/SelectInput';
 import useSWR from 'swr';
+import DeleteAlert from '../common/DeleteAlert';
 
 const VALID_STATUSES = Object.keys(APPLICATION_STATUS_MAP).filter(key => key !== 'error');
+const COMMON_HEADERS = token => ({
+  Authorization: `Bearer ${token}`,
+  'Content-Type': 'application/json',
+});
 
 export const statusOptions = VALID_STATUSES.map(key => {
   return (
@@ -34,7 +41,7 @@ export const statusOptions = VALID_STATUSES.map(key => {
 
 const fetcher = (url, token) =>
   fetch(url, {
-    headers: {Authorization: `Bearer ${token}`, 'Content-Type': 'application/json'},
+    headers: COMMON_HEADERS(token),
   }).then(res => res.json());
 
 // returns users date in format 'YYYY-MM-DD'
@@ -46,16 +53,31 @@ const getTodaysDate = () => {
 
 // formats a string of skills into an array of strings
 // IE: "skill 1, skill 2, skill 3" -> ["skill 1", "skill 2", "skill 3"]
-const formatSkills = skillsString => {
+const skillsToList = skillsString => {
   const skills = skillsString.split(',');
   return skills.filter(i => i).map(skill => skill.trim());
 };
 
-export default function ApplicationModal({header, isOpen, onClose, token, onSave}) {
+const skillsToString = skillsList => {
+  if (!skillsList || skillsList.length === 0) return '';
+  return skillsList.reduce((prev, curr) => `${prev}, ${curr}`);
+};
+
+export default function ApplicationModal({
+  type,
+  isOpen,
+  onClose,
+  token,
+  onSave,
+  onDelete,
+  application,
+}) {
   const {data: companiesData, error: companiesError} = useSWR(['/api/companies', token], fetcher);
   const [companies, setCompanies] = useState([]);
   const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [companyOptions, setCompanyOptions] = useState([]);
+  const {isOpen: deleteIsOpen, onOpen: deleteOnOpen, onClose: deleteOnClose} = useDisclosure();
 
   // Capture the data from SWR in our useState variable
   useEffect(() => {
@@ -63,26 +85,63 @@ export default function ApplicationModal({header, isOpen, onClose, token, onSave
     setCompanies(companiesData);
     setCompanyOptions(
       companiesData.map(company => (
-        <option value={company.id} key={company.name}>
+        <option value={company.id} key={company.id}>
           {company.name}
         </option>
       ))
     );
   }, [companiesData]);
 
+  const deleteApplication = async () => {
+    setIsDeleting(true);
+    await fetch(`/api/applications/${application.id}`, {
+      method: 'DELETE',
+      headers: COMMON_HEADERS(token),
+    });
+    onDelete(application);
+    setIsDeleting(false);
+    onClose();
+  };
+
+  const TYPE_PROPS_MAP = {
+    New: {
+      header: 'New Application',
+      formInitialValues: {
+        companyID: companies?.length > 0 ? companies[0].id : '',
+        positionTitle: '',
+        submitDate: getTodaysDate(),
+        status: Object.keys(APPLICATION_STATUS_MAP)[0],
+        skills: '',
+        notes: '',
+      },
+      request: {
+        method: 'POST',
+        url: 'api/applications',
+      },
+    },
+    Edit: {
+      header: 'Edit Application',
+      formInitialValues: {
+        companyID: application?.company.id,
+        positionTitle: application?.positionTitle,
+        submitDate: application?.submitDate,
+        status: application?.status,
+        skills: skillsToString(application?.skills),
+        notes: application?.notes,
+      },
+      request: {
+        method: 'PUT',
+        url: `api/applications/${application?.id}`,
+      },
+    },
+  };
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false}>
       <ModalOverlay />
       <ModalContent>
         <Formik
-          initialValues={{
-            companyID: companies?.length > 0 ? companies[0].id : '',
-            positionTitle: '',
-            submitDate: getTodaysDate(),
-            status: Object.keys(APPLICATION_STATUS_MAP)[0],
-            skills: '',
-            notes: '',
-          }}
+          initialValues={TYPE_PROPS_MAP[type].formInitialValues}
           validationSchema={Yup.object({
             companyID: Yup.string()
               .max(255, 'Must be 255 characters or less')
@@ -99,11 +158,12 @@ export default function ApplicationModal({header, isOpen, onClose, token, onSave
             notes: Yup.string(),
           })}
           onSubmit={async (values, actions) => {
+            const {url, method} = TYPE_PROPS_MAP[type].request;
             setIsSaving(true);
-            const response = await fetch('api/applications', {
-              method: 'POST',
-              headers: {Authorization: `Bearer ${token}`, 'Content-Type': 'application/json'},
-              body: JSON.stringify({...values, skills: formatSkills(values.skills)}),
+            const response = await fetch(url, {
+              method: method,
+              headers: COMMON_HEADERS(token),
+              body: JSON.stringify({...values, skills: skillsToList(values.skills)}),
             });
             setIsSaving(false);
 
@@ -115,7 +175,7 @@ export default function ApplicationModal({header, isOpen, onClose, token, onSave
         >
           {props => (
             <Form>
-              <ModalHeader>{header}</ModalHeader>
+              <ModalHeader>{TYPE_PROPS_MAP[type].header}</ModalHeader>
               <ModalCloseButton />
 
               <ModalBody pb={6}>
@@ -137,8 +197,18 @@ export default function ApplicationModal({header, isOpen, onClose, token, onSave
                 <TextAreaInput name="notes" label="Notes" resize="vertical" />
               </ModalBody>
 
-              <ModalFooter display="flex" gap={4}>
+              <ModalFooter display="flex" gap={2}>
                 <SecondaryButton onClick={onClose}>Cancel</SecondaryButton>
+                {type === 'Edit' && (
+                  <DangerButton
+                    leftIcon={<Icon as={MdDeleteOutline} w={6} h={6} />}
+                    onClick={deleteOnOpen}
+                    loadingText="Deleting"
+                    isLoading={isDeleting}
+                  >
+                    Delete
+                  </DangerButton>
+                )}
                 <PrimaryButton
                   leftIcon={<Icon as={MdOutlineSave} w={6} h={6} />}
                   type="submit"
@@ -147,6 +217,12 @@ export default function ApplicationModal({header, isOpen, onClose, token, onSave
                 >
                   Save
                 </PrimaryButton>
+                <DeleteAlert
+                  isOpen={deleteIsOpen}
+                  onClose={deleteOnClose}
+                  onDelete={deleteApplication}
+                  entityName={'Application'}
+                />
               </ModalFooter>
             </Form>
           )}
@@ -157,13 +233,23 @@ export default function ApplicationModal({header, isOpen, onClose, token, onSave
 }
 
 ApplicationModal.propTypes = {
-  header: string,
   isOpen: bool.isRequired,
   onClose: func.isRequired,
   token: string.isRequired,
   onSave: func.isRequired,
+  onDelete: func.isRequired,
+  application: shape({
+    id: string.isRequired,
+    positionTitle: string.isRequired,
+    submitDate: string.isRequired,
+    status: string.isRequired,
+    skills: arrayOf(string),
+    notes: string,
+    company: shape({
+      id: string.isRequired,
+      name: string.isRequired,
+    }),
+  }),
 };
 
-ApplicationModal.defaultProps = {
-  header: 'New Application',
-};
+ApplicationModal.defaultProps = {};
