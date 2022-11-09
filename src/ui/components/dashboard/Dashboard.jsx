@@ -61,36 +61,37 @@ export default function Dashboard() {
   const {isOpen, onOpen, onClose} = useDisclosure();
 
   const toast = useToast();
-
-  const addApplication = application => {
-    setApplications([...applicationData, application]);
+  const renderToast = (title, description) =>
     toast({
       position: 'top',
       duration: 3000,
-      render: () => (
-        <PrimaryToast
-          title="Application Added Successfully."
-          description={`The application has been added to your dashboard.`}
-          icon={MdCheckCircle}
-        />
-      ),
+      render: () => <PrimaryToast title={title} description={description} icon={MdCheckCircle} />,
     });
+
+  const addApplication = application => {
+    setApplications([...applicationData, application]);
+    renderToast(
+      'Application Added Successfully.',
+      'The application has been added to your dashboard.'
+    );
+  };
+
+  const editApplication = application => {
+    const updatedApplications = applications.map(app => {
+      if (app.id === application.id) app = application;
+      return app;
+    });
+    setApplications(updatedApplications);
+    renderToast(
+      'Application Updated Successfully.',
+      'The application has been updated on your dashboard.'
+    );
   };
 
   const deleteApplication = application => {
     const updatedApplications = applications.filter(app => app.id !== application.id);
     setApplications(updatedApplications);
-    toast({
-      position: 'top',
-      duration: 3000,
-      render: () => (
-        <PrimaryToast
-          title="Application Deleted."
-          description={`The application has been deleted from your dashboard.`}
-          icon={MdCheckCircle}
-        />
-      ),
-    });
+    renderToast('Application Deleted.', 'The application has been deleted from your dashboard.');
   };
 
   const openModalForNewApplication = () => {
@@ -139,7 +140,7 @@ export default function Dashboard() {
             isOpen={isOpen}
             onClose={onClose}
             token={jwt}
-            onSave={addApplication}
+            onSave={modalType === 'New' ? addApplication : editApplication}
             onDelete={deleteApplication}
             application={currentApplication}
           />
