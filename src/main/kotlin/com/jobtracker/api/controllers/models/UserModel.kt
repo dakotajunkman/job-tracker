@@ -11,7 +11,7 @@ data class UserModel(
   var id: UUID = UUID.randomUUID()
   ) {
   fun toUserEntity()
-  = UserEntity(id, firstName, lastName, mutableListOf(), emailAddress, mutableListOf())
+  = UserEntity(id, firstName, lastName, mutableListOf(), emailAddress, mutableListOf(), listOf())
 }
 
 // We might not need this - can't think of a use case

@@ -4,6 +4,7 @@ import com.jobtracker.api.business.Converter
 import com.jobtracker.api.business.Helpers
 import com.jobtracker.api.controllers.models.ContactModel
 import com.jobtracker.api.controllers.models.ErrorModel
+import com.jobtracker.api.controllers.models.MultipleContactModel
 import com.jobtracker.api.repository.ContactRepository
 import com.jobtracker.api.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -71,7 +72,7 @@ class ContactController(
             it.user.id == userID
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(retrievedAll)
+        return ResponseEntity.status(HttpStatus.OK).body(MultipleContactModel(retrievedAll))
     }
 
     @DeleteMapping("/contacts/{contactId}")

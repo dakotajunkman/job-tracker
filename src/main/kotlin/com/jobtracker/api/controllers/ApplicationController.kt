@@ -4,6 +4,7 @@ import com.jobtracker.api.business.Converter
 import com.jobtracker.api.business.Helpers
 import com.jobtracker.api.controllers.models.ApplicationModel
 import com.jobtracker.api.controllers.models.ErrorModel
+import com.jobtracker.api.controllers.models.MultipleApplicationModel
 import com.jobtracker.api.repository.ApplicationRepository
 import com.jobtracker.api.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -38,6 +39,10 @@ class ApplicationController(
             ?: return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorModel(404, "Company with ID does not exist"))
 
         val saved = applicationRepository.save(application.toApplicationEntity(companyObj, user, mutableListOf()))
+
+        if (application.skills.isNotEmpty())
+            converter.createOrUpdateSkills(application.skills, user)
+
         return ResponseEntity.status(HttpStatus.CREATED).body(saved)
     }
 
@@ -68,7 +73,7 @@ class ApplicationController(
             it.user.id == userID
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(retrievedAll)
+        return ResponseEntity.status(HttpStatus.OK).body(MultipleApplicationModel(retrievedAll))
     }
 
     @DeleteMapping("/applications/{appId}")
@@ -76,8 +81,17 @@ class ApplicationController(
         @PathVariable appId: String,
         @RequestHeader("Authorization") token: String
     ): ResponseEntity<Any> {
-        // This method returns nothing but it probably doesn't matter whether it was successful or not
-        applicationRepository.deleteById(UUID.fromString(appId))
+        val userId = Helpers.getUserIDByJWT(token, jwtDecoder, userRepository)
+        val app = applicationRepository.findByIdOrNull(UUID.fromString(appId))
+            ?: return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorModel(404, "Application does not exist"))
+
+        if (app.user.id != userId)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ErrorModel(403, "User cannot access this resource"))
+
+        if (!app.skills.isNullOrEmpty())
+            converter.deleteOrUpdateSkills(app.skills!!, app.user)
+
+        applicationRepository.deleteById(app.id)
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null)
     }
 
@@ -101,6 +115,13 @@ class ApplicationController(
         val companyObj = converter.convertCompany(UUID.fromString(application.companyID))
             ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorModel(400, "Company ID not found"))
 
+        // handle the skillz
+        if (!retrieved.skills.isNullOrEmpty())
+            converter.deleteOrUpdateSkills(retrieved.skills!!, user)
+
+        // handle the other skillz
+        if (application.skills.isNotEmpty())
+            converter.createOrUpdateSkills(application.skills, user)
 
         val saved = applicationRepository.save(application.toUpdateApplicationEntity(companyObj, user, mutableListOf(), UUID.fromString(appId)))
         return ResponseEntity.status(HttpStatus.CREATED).body(saved)

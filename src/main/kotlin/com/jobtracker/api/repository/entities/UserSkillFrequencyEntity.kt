@@ -3,6 +3,7 @@ package com.jobtracker.api.repository.entities
 import java.util.UUID
 import javax.persistence.*
 import DEFAULT_FIELD_LENGTH
+import com.fasterxml.jackson.annotation.JsonIgnore
 
 @Entity
 @Table(name = "user_skill_frequencies")
@@ -13,6 +14,7 @@ data class UserSkillFrequencyEntity(
     @Column(name = "skill_name", nullable = false, length = DEFAULT_FIELD_LENGTH) val skillName: String,
     @Column(name = "frequency", nullable = false) val frequency: Int,
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     val user: UserEntity

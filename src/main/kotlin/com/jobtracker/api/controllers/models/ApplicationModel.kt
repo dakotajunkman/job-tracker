@@ -26,4 +26,4 @@ class ApplicationModel(
         skills, notes, userEntity, companyEntity, contactEntities)
 }
 
-data class MultipleApplicationModel(val applications: MutableList<ApplicationModel>)
+data class MultipleApplicationModel(val applications: List<ApplicationEntity>)

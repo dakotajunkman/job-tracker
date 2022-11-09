@@ -25,4 +25,4 @@ data class ContactModel(
             = ContactEntity(existingId, companyEntity, fullName, positionTitle, emailAddress, phoneNumber, notes, applicationEntities, user)
 }
 
-data class MultipleContactModel(val contacts: MutableList<ContactModel>)
+data class MultipleContactModel(val contacts: List<ContactEntity>)
