@@ -89,7 +89,7 @@ class ApplicationController(
         @RequestHeader("Authorization") token: String):ResponseEntity<Any> {
 
         val user = Helpers.getUserByJWT(token, jwtDecoder, userRepository)
-            ?: return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorModel(404, "Company with ID does not exist"))
+            ?: return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorModel(404, "User with ID does not exist"))
 
         val retrieved = applicationRepository.findByIdOrNull(UUID.fromString(appId))
             ?: return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorModel(404, "Application with ID does not exist"))

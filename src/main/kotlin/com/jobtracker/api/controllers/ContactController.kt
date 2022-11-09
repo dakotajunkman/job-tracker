@@ -100,7 +100,7 @@ class ContactController(
         @RequestHeader("Authorization") token: String):ResponseEntity<Any> {
 
         val user = converter.convertUser(UUID.fromString(contact.userId))
-            ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorModel(400, "Invalid user ID"))
+            ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorModel(404, "User with ID does not exist"))
 
         val retrieved = contactRepository.findByIdOrNull(UUID.fromString(contactId))
             ?: return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorModel(404, "Contact with ID does not exist"))
