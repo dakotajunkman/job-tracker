@@ -3,62 +3,62 @@ import {Tag} from '@chakra-ui/react';
 import PropTypes, {string} from 'prop-types';
 
 export const APPLICATION_STATUS_MAP = {
-  applied: {
+  APPLIED: {
     text: 'Applied',
     fontColor: '#fff',
     backgroundColor: '#396afc',
   },
-  assigned_oa: {
+  ASSIGNED_OA: {
     text: 'Assigned OA',
     fontColor: '#fff',
     backgroundColor: '#396afc',
   },
-  completed_oa: {
+  COMPLETED_OA: {
     text: 'Completed OA',
     fontColor: '#fff',
     backgroundColor: '#34bbe6',
   },
-  phone_screen_scheduled: {
+  PHONE_SCREEN_SCHEDULED: {
     text: 'Phone Screen Scheduled',
     fontColor: '#000',
     backgroundColor: '#49da9a',
   },
-  phone_screen_complete: {
+  PHONE_SCREEN_COMPLETE: {
     text: 'Phone Screen Complete',
     fontColor: '#000',
     backgroundColor: '#a3e048',
   },
-  interview_scheduled: {
+  INTERVIEW_SCHEDULED: {
     text: 'Interview Scheduled',
     fontColor: '#000',
     backgroundColor: '#f7d038',
   },
-  interview_complete: {
+  INTERVIEW_COMPLETE: {
     text: 'Interview Complete',
     fontColor: '#fff',
     backgroundColor: '#eb7532',
   },
-  received_offer: {
+  RECEIVED_OFFER: {
     text: 'Received Offer',
     fontColor: '#fff',
     backgroundColor: '#d93d54',
   },
-  accepted_offer: {
+  ACCEPTED_OFFER: {
     text: 'Accepted Offer',
     fontColor: '#000',
     backgroundColor: '#a3e048',
   },
-  rejected_offer: {
+  REJECTED_OFFER: {
     text: 'Rejected Offer',
     fontColor: '#fff',
     backgroundColor: '#d93d54',
   },
-  rejected_by_company: {
+  REJECTED_BY_COMPANY: {
     text: 'Rejected By Company',
     fontColor: '#fff',
     backgroundColor: '#396afc',
   },
-  position_cancelled: {
+  POSITION_CANCELLED: {
     text: 'Position Cancelled',
     fontColor: '#000',
     backgroundColor: '#f7d038',

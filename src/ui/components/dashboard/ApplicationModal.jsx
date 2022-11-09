@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Icon,
   Modal,
@@ -20,22 +20,7 @@ import TextInput from '../common/forms/TextInput';
 import TextAreaInput from '../common/forms/TextAreaInput';
 import DateInput from '../common/forms/DateInput';
 import SelectInput from '../common/forms/SelectInput';
-
-// These will be deleted once we can pull the data from the database
-const companyOptions = [
-  <option value="[UUID1]" key="Adobe">
-    Adobe
-  </option>,
-  <option value="[UUID2]" key="Capital One">
-    Capital One
-  </option>,
-  <option value="[UUID3]" key="Chase Bank">
-    Chase Bank
-  </option>,
-  <option value="[UUID4]" key="Chipotle">
-    Chipotle
-  </option>,
-];
+import useSWR from 'swr';
 
 const VALID_STATUSES = Object.keys(APPLICATION_STATUS_MAP).filter(key => key !== 'error');
 
@@ -46,6 +31,11 @@ export const statusOptions = VALID_STATUSES.map(key => {
     </option>
   );
 });
+
+const fetcher = (url, token) =>
+  fetch(url, {
+    headers: {Authorization: `Bearer ${token}`, 'Content-Type': 'application/json'},
+  }).then(res => res.json());
 
 // returns users date in format 'YYYY-MM-DD'
 const getTodaysDate = () => {
@@ -61,28 +51,46 @@ const formatSkills = skillsString => {
   return skills.filter(i => i).map(skill => skill.trim());
 };
 
-export default function ApplicationModel({header, isOpen, onClose}) {
+export default function ApplicationModal({header, isOpen, onClose, token, onSave}) {
+  const {data: companiesData, error: companiesError} = useSWR(['/api/companies', token], fetcher);
+  const [companies, setCompanies] = useState([]);
+  const [isSaving, setIsSaving] = useState(false);
+  const [companyOptions, setCompanyOptions] = useState([]);
+
+  // Capture the data from SWR in our useState variable
+  useEffect(() => {
+    if (!companiesData) return;
+    setCompanies(companiesData);
+    setCompanyOptions(
+      companiesData.map(company => (
+        <option value={company.id} key={company.name}>
+          {company.name}
+        </option>
+      ))
+    );
+  }, [companiesData]);
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
         <Formik
           initialValues={{
-            company_id: '[UUID1]', // Pass first company UUID here
-            position_title: '',
-            submit_date: getTodaysDate(),
+            companyID: companies?.length > 0 ? companies[0].id : '',
+            positionTitle: '',
+            submitDate: getTodaysDate(),
             status: Object.keys(APPLICATION_STATUS_MAP)[0],
             skills: '',
             notes: '',
           }}
           validationSchema={Yup.object({
-            company_id: Yup.string()
+            companyID: Yup.string()
               .max(255, 'Must be 255 characters or less')
               .required('Company Name is required.'),
-            position_title: Yup.string()
+            positionTitle: Yup.string()
               .max(255, 'Must be 255 characters or less')
               .required('Position Title is required.'),
-            submit_date: Yup.date().required('Submit Date is required.'),
+            submitDate: Yup.date().required('Submit Date is required.'),
             status: Yup.string().oneOf(
               VALID_STATUSES,
               'You must choose one of the specified statuses.'
@@ -90,11 +98,19 @@ export default function ApplicationModel({header, isOpen, onClose}) {
             skills: Yup.string(),
             notes: Yup.string(),
           })}
-          onSubmit={(values, actions) => {
-            setTimeout(() => {
-              alert(JSON.stringify({...values, skills: formatSkills(values.skills)}, null, 2));
-              actions.setSubmitting(false);
-            }, 200);
+          onSubmit={async (values, actions) => {
+            setIsSaving(true);
+            const response = await fetch('api/applications', {
+              method: 'POST',
+              headers: {Authorization: `Bearer ${token}`, 'Content-Type': 'application/json'},
+              body: JSON.stringify({...values, skills: formatSkills(values.skills)}),
+            });
+            setIsSaving(false);
+
+            if (response.status >= 200 && response.status < 300) {
+              onSave(await response.json());
+              onClose();
+            }
           }}
         >
           {props => (
@@ -104,13 +120,13 @@ export default function ApplicationModel({header, isOpen, onClose}) {
 
               <ModalBody pb={6}>
                 <SelectInput
-                  name="company_id"
+                  name="companyID"
                   label="Company"
                   isRequired={true}
                   options={companyOptions}
                 />
-                <TextInput name="position_title" label="Position Title" isRequired={true} />
-                <DateInput name="submit_date" label="Submit Date" isRequired={true} />
+                <TextInput name="positionTitle" label="Position Title" isRequired={true} />
+                <DateInput name="submitDate" label="Submit Date" isRequired={true} />
                 <SelectInput
                   name="status"
                   label="Status"
@@ -123,7 +139,12 @@ export default function ApplicationModel({header, isOpen, onClose}) {
 
               <ModalFooter display="flex" gap={4}>
                 <SecondaryButton onClick={onClose}>Cancel</SecondaryButton>
-                <PrimaryButton leftIcon={<Icon as={MdOutlineSave} w={6} h={6} />} type="submit">
+                <PrimaryButton
+                  leftIcon={<Icon as={MdOutlineSave} w={6} h={6} />}
+                  type="submit"
+                  isLoading={isSaving}
+                  loadingText="Saving"
+                >
                   Save
                 </PrimaryButton>
               </ModalFooter>
@@ -135,12 +156,14 @@ export default function ApplicationModel({header, isOpen, onClose}) {
   );
 }
 
-ApplicationModel.propTypes = {
+ApplicationModal.propTypes = {
   header: string,
   isOpen: bool.isRequired,
   onClose: func.isRequired,
+  token: string.isRequired,
+  onSave: func.isRequired,
 };
 
-ApplicationModel.defaultProps = {
+ApplicationModal.defaultProps = {
   header: 'New Application',
 };

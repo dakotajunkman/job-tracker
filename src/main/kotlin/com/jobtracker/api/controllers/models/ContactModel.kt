@@ -20,6 +20,9 @@ data class ContactModel(
 
     fun toContactEntity(companyEntity: CompanyEntity, applicationEntities: MutableList<ApplicationEntity>, user: UserEntity)
         = ContactEntity(contactId, companyEntity, fullName, positionTitle, emailAddress, phoneNumber, notes, applicationEntities, user)
+
+    fun toUpdateContactEntity(companyEntity: CompanyEntity, applicationEntities: MutableList<ApplicationEntity>, user: UserEntity, existingId: UUID)
+            = ContactEntity(existingId, companyEntity, fullName, positionTitle, emailAddress, phoneNumber, notes, applicationEntities, user)
 }
 
 data class MultipleContactModel(val contacts: List<ContactEntity>)

@@ -62,4 +62,13 @@ class CompanyController(
         companyRepository.deleteById(UUID.fromString(companyId))
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null)
     }
+
+    @PutMapping("/companies/{companyId}")
+    fun updateCompany(
+        @PathVariable companyId: String,
+        @RequestBody company: CompanyModel,
+        @RequestHeader("Authorization") token: String):ResponseEntity<Any> {
+        val saved = companyRepository.save(company.toUpdateCompanyEntity(UUID.fromString(companyId)))
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved)
+    }
 }

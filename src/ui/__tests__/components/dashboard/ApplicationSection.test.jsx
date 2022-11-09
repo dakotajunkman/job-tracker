@@ -8,7 +8,7 @@ import applicationJson from '../../../public/json/applicationsExample.json';
 
 mockMatchMedia();
 mockScrollTo();
-const openApplications = applicationJson.applications.filter(app => app.status === 'applied');
+const openApplications = applicationJson.filter(app => app.status === 'APPLIED');
 const DEFAULT_PROPS = {
   heading: 'Open Applications',
   applicationData: openApplications,
