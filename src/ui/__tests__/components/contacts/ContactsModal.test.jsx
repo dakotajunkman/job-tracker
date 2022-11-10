@@ -1,6 +1,6 @@
 import React from 'react';
 import {render} from '@testing-library/react';
-import ApplicationModal from '../../../components/dashboard/ApplicationModal';
+import ContactsModal from '../../../components/contacts/contactsModal';
 import '@testing-library/jest-dom';
 import {ChakraProvider} from '@chakra-ui/react';
 import {mockMatchMedia} from '../../util/util';
@@ -14,14 +14,14 @@ const DEFAULT_PROPS = {
   token: MOCK_SESSION_DATA.jwt,
   onSave: jest.fn(),
   onDelete: jest.fn(),
-  application: null,
+  contact: null,
 };
 
-describe('ApplicationModal', () => {
+describe('ContactsModal', () => {
   const setup = (props = DEFAULT_PROPS) => {
     return render(
       <ChakraProvider resetCSS>
-        <ApplicationModal {...props} />
+        <ContactsModal {...props} />
       </ChakraProvider>
     );
   };
@@ -47,7 +47,14 @@ describe('ApplicationModal', () => {
   });
 
   it('renders form text', () => {
-    const FORM_TEXT = ['Company', 'Position Title', 'Submit Date', 'Status', 'Skills', 'Notes'];
+    const FORM_TEXT = [
+      'Company',
+      'Contact Name',
+      'Position Title',
+      'Email Address',
+      'Phone Number',
+      'Notes',
+    ];
     const component = setup();
     FORM_TEXT.forEach(text => {
       const formText = component.getByText(text);

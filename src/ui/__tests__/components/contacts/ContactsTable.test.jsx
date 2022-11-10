@@ -1,24 +1,22 @@
 import React from 'react';
 import {render, within} from '@testing-library/react';
-import ApplicationTable from '../../../components/dashboard/ApplicationTable';
+import ContactsTable from '../../../components/contacts/ContactsTable';
 import '@testing-library/jest-dom';
 import {ChakraProvider} from '@chakra-ui/react';
 import {mockMatchMedia} from '../../util/util';
-import applicationJson from '../../../public/json/applicationsExample.json';
-import {APPLICATION_STATUS_MAP} from '../../../components/dashboard/StatusLabel';
+import contactsJson from '../../../public/json/contactsExample.json';
 
 mockMatchMedia();
-const openApplications = applicationJson.filter(app => app.status === 'APPLIED');
 const DEFAULT_PROPS = {
-  applications: openApplications,
+  contacts: contactsJson,
   openModal: jest.fn(),
 };
 
-describe('ApplicationTable', () => {
+describe('ContactsTable', () => {
   const setup = (props = DEFAULT_PROPS) => {
     return render(
       <ChakraProvider resetCSS>
-        <ApplicationTable {...props} />
+        <ContactsTable {...props} />
       </ChakraProvider>
     );
   };
@@ -30,29 +28,28 @@ describe('ApplicationTable', () => {
 
   it('renders the table column headers', () => {
     const component = setup();
-    const columnNames = ['Company', 'Position', 'Date Submitted', 'Status'];
+    const columnNames = ['Company', 'Contact Name', 'Position'];
     columnNames.forEach(name => {
       const columnHeader = component.getByRole('columnheader', {name: name});
       expect(columnHeader).toBeInTheDocument();
     });
   });
 
-  it('renders a row for each application', () => {
+  it('renders a row for each contact', () => {
     const component = setup();
     const rows = component.getAllByRole('row');
-    expect(rows).toHaveLength(DEFAULT_PROPS.applications.length + 1); // plus header row
+    expect(rows).toHaveLength(DEFAULT_PROPS.contacts.length + 1); // plus header row
   });
 
-  it('renders content in each row corresponding to the application', () => {
+  it('renders content in each row corresponding to the contact', () => {
     const component = setup();
     const rows = component.getAllByRole('row');
     rows.shift(); // Remove Header row
     rows.forEach((row, index) => {
-      const {company, positionTitle, submitDate, status} = DEFAULT_PROPS.applications[index];
+      const {company, positionTitle, fullName} = DEFAULT_PROPS.contacts[index];
       expect(within(row).getByText(company.name)).toBeInTheDocument();
+      expect(within(row).getByText(fullName)).toBeInTheDocument();
       expect(within(row).getByText(positionTitle)).toBeInTheDocument();
-      expect(within(row).getByText(submitDate)).toBeInTheDocument();
-      expect(within(row).getByText(APPLICATION_STATUS_MAP[status].text)).toBeInTheDocument();
     });
   });
 });
