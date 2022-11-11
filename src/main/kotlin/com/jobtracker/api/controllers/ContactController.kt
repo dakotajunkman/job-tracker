@@ -7,6 +7,7 @@ import com.jobtracker.api.controllers.models.ErrorModel
 import com.jobtracker.api.controllers.models.MultipleContactModel
 import com.jobtracker.api.repository.ContactRepository
 import com.jobtracker.api.repository.UserRepository
+import com.jobtracker.api.repository.entities.ApplicationEntity
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
@@ -39,7 +40,11 @@ class ContactController(
         val companyObj = converter.convertCompany(UUID.fromString(contact.companyId))
             ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorModel(400, "Company ID not found"))
 
-        val applicationObjs = converter.convertApplicationList(Helpers.convertStringArrToUUID(contact.applications))
+        var appList = mutableListOf<UUID>()
+        if (contact.applications != null)
+            appList = Helpers.convertStringArrToUUID(contact.applications)
+
+        val applicationObjs = converter.convertApplicationList(appList)
 
         val saved = contactRepository.save(contact.toContactEntity(companyObj, applicationObjs, user))
         return ResponseEntity.status(HttpStatus.CREATED).body(saved)
@@ -113,7 +118,11 @@ class ContactController(
         val companyObj = converter.convertCompany(UUID.fromString(contact.companyId))
             ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorModel(400, "Company ID not found"))
 
-        val applicationObjs = converter.convertApplicationList(Helpers.convertStringArrToUUID(contact.applications))
+        var appList = mutableListOf<UUID>()
+        if (contact.applications != null)
+            appList = Helpers.convertStringArrToUUID(contact.applications)
+
+        val applicationObjs = converter.convertApplicationList(appList)
 
         val saved = contactRepository.save(contact.toUpdateContactEntity(companyObj, applicationObjs, user, UUID.fromString(contactId)))
         return ResponseEntity.status(HttpStatus.CREATED).body(saved)

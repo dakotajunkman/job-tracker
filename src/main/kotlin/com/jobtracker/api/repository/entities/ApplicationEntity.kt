@@ -34,7 +34,6 @@ data class ApplicationEntity(
     @JoinColumn(name = "company_id", referencedColumnName = "id", nullable = false, updatable = false)
     val company: CompanyEntity,
 
-    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     @JoinTable(
         name = "application_contacts",
