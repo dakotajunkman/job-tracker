@@ -1,6 +1,6 @@
 import React from 'react';
 import {render} from '@testing-library/react';
-import ContactsModal from '../../../components/contacts/contactsModal';
+import ContactsModal from '../../../components/contacts/ContactsModal';
 import '@testing-library/jest-dom';
 import {ChakraProvider} from '@chakra-ui/react';
 import {mockMatchMedia} from '../../util/util';
