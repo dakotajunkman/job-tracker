@@ -57,6 +57,8 @@ const skillsToString = skillsList => {
   return skillsList.reduce((prev, curr) => `${prev}, ${curr}`);
 };
 
+const removeBlankContacts = contacts => contacts.filter(contact => contact);
+
 export default function ApplicationModal({
   type,
   isOpen,
@@ -66,6 +68,7 @@ export default function ApplicationModal({
   onDelete,
   application,
   companies,
+  contacts,
 }) {
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -74,6 +77,12 @@ export default function ApplicationModal({
   const companyOptions = companies.map(company => (
     <option value={company.id} key={company.id}>
       {company.name}
+    </option>
+  ));
+  const blankContact = {id: '', fullName: ''};
+  const contactOptions = [blankContact, ...contacts].map(contact => (
+    <option value={contact.id} key={contact.id}>
+      {contact.fullName}
     </option>
   ));
 
@@ -98,6 +107,7 @@ export default function ApplicationModal({
         status: Object.keys(APPLICATION_STATUS_MAP)[0],
         skills: '',
         notes: '',
+        contacts: '',
       },
       request: {
         method: 'POST',
@@ -113,6 +123,7 @@ export default function ApplicationModal({
         status: application?.status,
         skills: skillsToString(application?.skills),
         notes: application?.notes,
+        contacts: application?.contacts.length > 0 ? application?.contacts[0].id : '',
       },
       request: {
         method: 'PUT',
@@ -148,7 +159,11 @@ export default function ApplicationModal({
             const response = await fetch(url, {
               method: method,
               headers: COMMON_HEADERS(token),
-              body: JSON.stringify({...values, skills: skillsToList(values.skills)}),
+              body: JSON.stringify({
+                ...values,
+                skills: skillsToList(values.skills),
+                contacts: removeBlankContacts([values.contacts]),
+              }),
             });
             setIsSaving(false);
 
@@ -180,6 +195,12 @@ export default function ApplicationModal({
                 />
                 <TextAreaInput name="skills" label="Skills" resize="vertical" />
                 <TextAreaInput name="notes" label="Notes" resize="vertical" />
+                <SelectInput
+                  name="contacts"
+                  label="Contact"
+                  isRequired={false}
+                  options={contactOptions}
+                />
               </ModalBody>
 
               <ModalFooter display="flex" gap={2}>
@@ -239,6 +260,12 @@ ApplicationModal.propTypes = {
     shape({
       id: string.isRequired,
       name: string.isRequired,
+    })
+  ).isRequired,
+  contacts: arrayOf(
+    shape({
+      id: string.isRequired,
+      fullName: string.isRequired,
     })
   ).isRequired,
 };

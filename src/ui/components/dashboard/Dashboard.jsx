@@ -49,9 +49,11 @@ export default function Dashboard() {
     fetcher
   );
   const {data: companiesData, error: companiesError} = useSWR(['/api/companies', jwt], fetcher);
+  const {data: contactsData, error: contactsError} = useSWR(['/api/contacts', jwt], fetcher);
 
   const [applications, setApplications] = useState([]);
   const [companies, setCompanies] = useState([]);
+  const [contacts, setContacts] = useState([]);
   const [openApplications, setOpenApplications] = useState([]);
   const [inProgressApplications, setInProgressApplications] = useState([]);
   const [closedApplications, setClosedApplications] = useState([]);
@@ -74,7 +76,7 @@ export default function Dashboard() {
     });
 
   const addApplication = application => {
-    setApplications([...applicationData, application]);
+    setApplications([...applications, application]);
     renderToast(
       'Application Added Successfully.',
       'The application has been added to your dashboard.'
@@ -130,6 +132,10 @@ export default function Dashboard() {
     if (!companiesData) return;
     setCompanies(companiesData.companies);
   }, [companiesData]);
+  useEffect(() => {
+    if (!contactsData) return;
+    setContacts(contactsData.contacts);
+  }, [contactsData]);
 
   return (
     <PageWrapper>
@@ -156,6 +162,7 @@ export default function Dashboard() {
             onDelete={deleteApplication}
             application={currentApplication}
             companies={companies}
+            contacts={contacts}
           />
           <Flex direction="column">
             <Flex wrap="wrap" justifyContent="space-between" gap={8}>
