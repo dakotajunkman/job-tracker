@@ -8,7 +8,7 @@ import contactsJson from '../../../public/json/contactsExample.json';
 
 mockMatchMedia();
 const DEFAULT_PROPS = {
-  contacts: contactsJson,
+  contacts: contactsJson.contacts,
   openModal: jest.fn(),
 };
 

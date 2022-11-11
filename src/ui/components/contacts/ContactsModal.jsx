@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   Icon,
   Modal,
@@ -20,38 +20,32 @@ import * as Yup from 'yup';
 import TextInput from '../common/forms/TextInput';
 import TextAreaInput from '../common/forms/TextAreaInput';
 import SelectInput from '../common/forms/SelectInput';
-import useSWR from 'swr';
 import DeleteAlert from '../common/DeleteAlert';
 
 const COMMON_HEADERS = token => ({
   Authorization: `Bearer ${token}`,
   'Content-Type': 'application/json',
 });
-const fetcher = (url, token) =>
-  fetch(url, {
-    headers: COMMON_HEADERS(token),
-  }).then(res => res.json());
 
-export default function ContactsModal({type, isOpen, onClose, token, onSave, onDelete, contact}) {
-  const {data: companiesData, error: companiesError} = useSWR(['/api/companies', token], fetcher);
-  const [companies, setCompanies] = useState([]);
+export default function ContactsModal({
+  type,
+  isOpen,
+  onClose,
+  token,
+  onSave,
+  onDelete,
+  contact,
+  companies,
+}) {
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [companyOptions, setCompanyOptions] = useState([]);
   const {isOpen: deleteIsOpen, onOpen: deleteOnOpen, onClose: deleteOnClose} = useDisclosure();
 
-  // Capture the data from SWR in our useState variable
-  useEffect(() => {
-    if (!companiesData) return;
-    setCompanies(companiesData);
-    setCompanyOptions(
-      companiesData.map(company => (
-        <option value={company.id} key={company.id}>
-          {company.name}
-        </option>
-      ))
-    );
-  }, [companiesData]);
+  const companyOptions = companies.map(company => (
+    <option value={company.id} key={company.id}>
+      {company.name}
+    </option>
+  ));
 
   const deleteContact = async () => {
     setIsDeleting(true);
@@ -123,11 +117,7 @@ export default function ContactsModal({type, isOpen, onClose, token, onSave, onD
             const response = await fetch(url, {
               method: method,
               headers: COMMON_HEADERS(token),
-              body: JSON.stringify({
-                ...values,
-                userId: '8a097402-bab7-4018-89bd-de6a11161342',
-                applications: [],
-              }),
+              body: JSON.stringify(values),
             });
             setIsSaving(false);
 
@@ -209,6 +199,15 @@ ContactsModal.propTypes = {
     phoneNumber: string,
     notes: string,
   }),
+  companies: arrayOf(
+    shape({
+      id: string.isRequired,
+      name: string.isRequired,
+    })
+  ).isRequired,
 };
 
-ContactsModal.defaultProps = {};
+ContactsModal.defaultProps = {
+  contact: null,
+  companies: [],
+};

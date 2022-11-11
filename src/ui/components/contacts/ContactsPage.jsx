@@ -26,8 +26,10 @@ const fetcher = (url, token) =>
 
 export default function ContactsPage({session}) {
   const {jwt} = session;
-  const {data, error} = useSWR(['/api/contacts', jwt], fetcher);
+  const {data: contactsData, error: contactsError} = useSWR(['/api/contacts', jwt], fetcher);
+  const {data: companiesData, error: companiesError} = useSWR(['/api/companies', jwt], fetcher);
   const [contacts, setContacts] = useState([]);
+  const [companies, setCompanies] = useState([]);
   const [modalType, setModalType] = useState('New');
   const [currentContact, setCurrentContact] = useState(null);
 
@@ -81,7 +83,11 @@ export default function ContactsPage({session}) {
   };
 
   // Capture the data from SWR in our useState variable
-  useEffect(() => setContacts(data), [data]);
+  useEffect(() => setContacts(contactsData?.contacts), [contactsData]);
+  useEffect(() => {
+    if (!companiesData) return;
+    setCompanies(companiesData.companies);
+  }, [companiesData]);
 
   return (
     <PageWrapper>
@@ -107,6 +113,7 @@ export default function ContactsPage({session}) {
             onSave={modalType === 'New' ? addContact : editContact}
             onDelete={deleteContact}
             contact={currentContact}
+            companies={companies}
           />
           <Flex direction="column">
             <Flex wrap="wrap" justifyContent="space-between" gap={8}>
@@ -121,7 +128,7 @@ export default function ContactsPage({session}) {
                 Add Contact
               </PrimaryButton>
             </Flex>
-            {!data || error ? (
+            {!contactsData || contactsError ? (
               <LoadingSpinner />
             ) : (
               <ContactsTable contacts={contacts} openModal={openModalForEditContact} />

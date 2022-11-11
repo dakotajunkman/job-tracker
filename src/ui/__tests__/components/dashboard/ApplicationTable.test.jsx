@@ -8,7 +8,7 @@ import applicationJson from '../../../public/json/applicationsExample.json';
 import {APPLICATION_STATUS_MAP} from '../../../components/dashboard/StatusLabel';
 
 mockMatchMedia();
-const openApplications = applicationJson.filter(app => app.status === 'APPLIED');
+const openApplications = applicationJson.applications.filter(app => app.status === 'APPLIED');
 const DEFAULT_PROPS = {
   applications: openApplications,
   openModal: jest.fn(),

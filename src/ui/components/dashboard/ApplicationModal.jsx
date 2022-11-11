@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   Icon,
   Modal,
@@ -22,7 +22,6 @@ import TextInput from '../common/forms/TextInput';
 import TextAreaInput from '../common/forms/TextAreaInput';
 import DateInput from '../common/forms/DateInput';
 import SelectInput from '../common/forms/SelectInput';
-import useSWR from 'swr';
 import DeleteAlert from '../common/DeleteAlert';
 
 const VALID_STATUSES = Object.keys(APPLICATION_STATUS_MAP).filter(key => key !== 'error');
@@ -38,11 +37,6 @@ export const statusOptions = VALID_STATUSES.map(key => {
     </option>
   );
 });
-
-const fetcher = (url, token) =>
-  fetch(url, {
-    headers: COMMON_HEADERS(token),
-  }).then(res => res.json());
 
 // returns users date in format 'YYYY-MM-DD'
 const getTodaysDate = () => {
@@ -71,26 +65,17 @@ export default function ApplicationModal({
   onSave,
   onDelete,
   application,
+  companies,
 }) {
-  const {data: companiesData, error: companiesError} = useSWR(['/api/companies', token], fetcher);
-  const [companies, setCompanies] = useState([]);
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [companyOptions, setCompanyOptions] = useState([]);
   const {isOpen: deleteIsOpen, onOpen: deleteOnOpen, onClose: deleteOnClose} = useDisclosure();
 
-  // Capture the data from SWR in our useState variable
-  useEffect(() => {
-    if (!companiesData) return;
-    setCompanies(companiesData);
-    setCompanyOptions(
-      companiesData.map(company => (
-        <option value={company.id} key={company.id}>
-          {company.name}
-        </option>
-      ))
-    );
-  }, [companiesData]);
+  const companyOptions = companies.map(company => (
+    <option value={company.id} key={company.id}>
+      {company.name}
+    </option>
+  ));
 
   const deleteApplication = async () => {
     setIsDeleting(true);
@@ -250,6 +235,15 @@ ApplicationModal.propTypes = {
       name: string.isRequired,
     }),
   }),
+  companies: arrayOf(
+    shape({
+      id: string.isRequired,
+      name: string.isRequired,
+    })
+  ).isRequired,
 };
 
-ApplicationModal.defaultProps = {};
+ApplicationModal.defaultProps = {
+  application: null,
+  companies: [],
+};

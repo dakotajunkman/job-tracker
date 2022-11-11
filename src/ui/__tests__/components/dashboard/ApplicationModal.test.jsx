@@ -5,6 +5,7 @@ import '@testing-library/jest-dom';
 import {ChakraProvider} from '@chakra-ui/react';
 import {mockMatchMedia} from '../../util/util';
 import {MOCK_SESSION_DATA} from '../../util/fixtures';
+import companiesJson from '../../../public/json/companiesExample.json';
 
 mockMatchMedia();
 const DEFAULT_PROPS = {
@@ -15,6 +16,7 @@ const DEFAULT_PROPS = {
   onSave: jest.fn(),
   onDelete: jest.fn(),
   application: null,
+  companies: companiesJson.companies,
 };
 
 describe('ApplicationModal', () => {

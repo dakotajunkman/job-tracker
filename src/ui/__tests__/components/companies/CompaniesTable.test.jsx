@@ -6,7 +6,7 @@ import {ChakraProvider} from '@chakra-ui/react';
 import companiesJson from '../../../public/json/companiesExample.json';
 
 const DEFAULT_PROPS = {
-  companies: companiesJson,
+  companies: companiesJson.companies,
 };
 
 describe('ApplicationTable', () => {

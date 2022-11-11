@@ -1,47 +1,49 @@
-[
-  {
-    "id": "303540f0-555d-4864-b19b-b1b431ea4943",
-    "company": {"id": "059fbdfd-b29a-4521-a2e7-520dc9a860e9", "name": "Adobe"},
-    "fullName": "Abigail Armstrong",
-    "positionTitle": "CEO",
-    "emailAddress": "aarmstrong@adobe.com",
-    "phoneNumber": "202-555-1234",
-    "comments": "Prefers to apples over oranges."
-  },
-  {
-    "id": "177d3add-2479-4d0b-8b0d-6593d48e9162",
-    "company": {"id": "3e0d966d-cba9-4729-8ee0-45f1447ef6d8", "name": "Crowdstrike"},
-    "fullName": "Bubba Brownstone",
-    "positionTitle": "Senior Recruiter",
-    "emailAddress": "bubba.brownstone@crowdstrike.com",
-    "phoneNumber": "503-555-9854",
-    "comments": "Is more of a cat person"
-  },
-  {
-    "id": "b103f4c1-f724-482c-b811-dc2f8ff9b069",
-    "company": {"id": "b95b7e5b-d527-4a11-8db8-c2d5926e604b", "name": "Intuit"},
-    "fullName": "Chuck Canterbury",
-    "positionTitle": "Product Manager",
-    "emailAddress": "canterbury.chuck@intuit.com",
-    "phoneNumber": "971-555-2486",
-    "comments": "Favorite movie is Holes"
-  },
-  {
-    "id": "222fb45e-b28d-44bb-b26a-d7d7772afffa",
-    "company": {"id": "ca39a7f1-aa63-4c86-8a04-ca02e607b7e4", "name": "Microsoft"},
-    "fullName": "Doug Donaldson",
-    "positionTitle": "Junior Software Engineer",
-    "emailAddress": "ddonaldson@microsoft.com",
-    "phoneNumber": "303-555-8521",
-    "comments": "Can leetcode blindfolded"
-  },
-  {
-    "id": "6c22eb6b-55f9-4de7-9d72-d2005287bd5d",
-    "company": {"id": "dd839985-6305-41b9-8258-1613dde4887a", "name": "Okta"},
-    "fullName": "Emily Einstein",
-    "positionTitle": "VP of Operations",
-    "emailAddress": "emily.einstein@okta.com",
-    "phoneNumber": "(406) 555-9875",
-    "comments": "Was an olympic athlete in a past life."
-  }
-]
+{
+  "contacts": [
+    {
+      "id": "303540f0-555d-4864-b19b-b1b431ea4943",
+      "company": {"id": "059fbdfd-b29a-4521-a2e7-520dc9a860e9", "name": "Adobe"},
+      "fullName": "Abigail Armstrong",
+      "positionTitle": "CEO",
+      "emailAddress": "aarmstrong@adobe.com",
+      "phoneNumber": "202-555-1234",
+      "comments": "Prefers to apples over oranges."
+    },
+    {
+      "id": "177d3add-2479-4d0b-8b0d-6593d48e9162",
+      "company": {"id": "3e0d966d-cba9-4729-8ee0-45f1447ef6d8", "name": "Crowdstrike"},
+      "fullName": "Bubba Brownstone",
+      "positionTitle": "Senior Recruiter",
+      "emailAddress": "bubba.brownstone@crowdstrike.com",
+      "phoneNumber": "503-555-9854",
+      "comments": "Is more of a cat person"
+    },
+    {
+      "id": "b103f4c1-f724-482c-b811-dc2f8ff9b069",
+      "company": {"id": "b95b7e5b-d527-4a11-8db8-c2d5926e604b", "name": "Intuit"},
+      "fullName": "Chuck Canterbury",
+      "positionTitle": "Product Manager",
+      "emailAddress": "canterbury.chuck@intuit.com",
+      "phoneNumber": "971-555-2486",
+      "comments": "Favorite movie is Holes"
+    },
+    {
+      "id": "222fb45e-b28d-44bb-b26a-d7d7772afffa",
+      "company": {"id": "ca39a7f1-aa63-4c86-8a04-ca02e607b7e4", "name": "Microsoft"},
+      "fullName": "Doug Donaldson",
+      "positionTitle": "Junior Software Engineer",
+      "emailAddress": "ddonaldson@microsoft.com",
+      "phoneNumber": "303-555-8521",
+      "comments": "Can leetcode blindfolded"
+    },
+    {
+      "id": "6c22eb6b-55f9-4de7-9d72-d2005287bd5d",
+      "company": {"id": "dd839985-6305-41b9-8258-1613dde4887a", "name": "Okta"},
+      "fullName": "Emily Einstein",
+      "positionTitle": "VP of Operations",
+      "emailAddress": "emily.einstein@okta.com",
+      "phoneNumber": "(406) 555-9875",
+      "comments": "Was an olympic athlete in a past life."
+    }
+  ]
+}

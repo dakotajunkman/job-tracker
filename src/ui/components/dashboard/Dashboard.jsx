@@ -44,9 +44,14 @@ const fetcher = (url, token) =>
 export default function Dashboard() {
   const {data: session} = useSession();
   const {jwt} = session;
-  const {data: applicationData, error} = useSWR(['/api/applications', jwt], fetcher);
+  const {data: applicationData, error: applicationError} = useSWR(
+    ['/api/applications', jwt],
+    fetcher
+  );
+  const {data: companiesData, error: companiesError} = useSWR(['/api/companies', jwt], fetcher);
 
   const [applications, setApplications] = useState([]);
+  const [companies, setCompanies] = useState([]);
   const [openApplications, setOpenApplications] = useState([]);
   const [inProgressApplications, setInProgressApplications] = useState([]);
   const [closedApplications, setClosedApplications] = useState([]);
@@ -107,7 +112,10 @@ export default function Dashboard() {
   };
 
   // Capture the data from SWR in our useState variable
-  useEffect(() => setApplications(applicationData), [applicationData]);
+  useEffect(() => {
+    if (!applicationData) return;
+    setApplications(applicationData.applications);
+  }, [applicationData]);
   useEffect(() => {
     if (!applications) return;
     setOpenApplications(applications.filter(application => application.status === 'APPLIED'));
@@ -118,6 +126,10 @@ export default function Dashboard() {
       applications.filter(application => CLOSED_STATUSES.has(application.status))
     );
   }, [applications]);
+  useEffect(() => {
+    if (!companiesData) return;
+    setCompanies(companiesData.companies);
+  }, [companiesData]);
 
   return (
     <PageWrapper>
@@ -143,6 +155,7 @@ export default function Dashboard() {
             onSave={modalType === 'New' ? addApplication : editApplication}
             onDelete={deleteApplication}
             application={currentApplication}
+            companies={companies}
           />
           <Flex direction="column">
             <Flex wrap="wrap" justifyContent="space-between" gap={8}>
@@ -162,7 +175,7 @@ export default function Dashboard() {
               </PrimaryButton>
             </Flex>
           </Flex>
-          {!applicationData || error ? (
+          {!applicationData || applicationError ? (
             <LoadingSpinner />
           ) : (
             <>

@@ -53,7 +53,7 @@ export default function CompaniesPage({session}) {
   };
 
   // Capture the data from SWR in our useState variable
-  useEffect(() => setCompanies(data), [data]);
+  useEffect(() => setCompanies(data?.companies), [data]);
 
   return (
     <PageWrapper>
