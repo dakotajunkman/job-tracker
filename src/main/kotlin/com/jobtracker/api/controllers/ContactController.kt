@@ -4,8 +4,10 @@ import com.jobtracker.api.business.Converter
 import com.jobtracker.api.business.Helpers
 import com.jobtracker.api.controllers.models.ContactModel
 import com.jobtracker.api.controllers.models.ErrorModel
+import com.jobtracker.api.controllers.models.MultipleContactModel
 import com.jobtracker.api.repository.ContactRepository
 import com.jobtracker.api.repository.UserRepository
+import com.jobtracker.api.repository.entities.ApplicationEntity
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
@@ -32,13 +34,20 @@ class ContactController(
         @RequestBody contact: ContactModel,
         @RequestHeader("Authorization") token: String):ResponseEntity<Any> {
 
-        val user = converter.convertUser(UUID.fromString(contact.userId))
+        val userId = Helpers.getUserIDByJWT(token, jwtDecoder, userRepository)
+            ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorModel(400, "Invalid user ID"))
+
+        val user = converter.convertUser(userId)
             ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorModel(400, "Invalid user ID"))
 
         val companyObj = converter.convertCompany(UUID.fromString(contact.companyId))
             ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorModel(400, "Company ID not found"))
 
-        val applicationObjs = converter.convertApplicationList(Helpers.convertStringArrToUUID(contact.applications))
+        var appList = mutableListOf<UUID>()
+        if (contact.applications != null)
+            appList = Helpers.convertStringArrToUUID(contact.applications)
+
+        val applicationObjs = converter.convertApplicationList(appList)
 
         val saved = contactRepository.save(contact.toContactEntity(companyObj, applicationObjs, user))
         return ResponseEntity.status(HttpStatus.CREATED).body(saved)
@@ -71,7 +80,7 @@ class ContactController(
             it.user.id == userID
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(retrievedAll)
+        return ResponseEntity.status(HttpStatus.OK).body(MultipleContactModel(retrievedAll))
     }
 
     @DeleteMapping("/contacts/{contactId}")
@@ -99,8 +108,11 @@ class ContactController(
         @RequestBody contact: ContactModel,
         @RequestHeader("Authorization") token: String):ResponseEntity<Any> {
 
-        val user = converter.convertUser(UUID.fromString(contact.userId))
-            ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorModel(404, "User with ID does not exist"))
+        val userId = Helpers.getUserIDByJWT(token, jwtDecoder, userRepository)
+            ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorModel(400, "Invalid user ID"))
+
+        val user = converter.convertUser(userId)
+            ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorModel(400, "Invalid user ID"))
 
         val retrieved = contactRepository.findByIdOrNull(UUID.fromString(contactId))
             ?: return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorModel(404, "Contact with ID does not exist"))
@@ -112,7 +124,11 @@ class ContactController(
         val companyObj = converter.convertCompany(UUID.fromString(contact.companyId))
             ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorModel(400, "Company ID not found"))
 
-        val applicationObjs = converter.convertApplicationList(Helpers.convertStringArrToUUID(contact.applications))
+        var appList = mutableListOf<UUID>()
+        if (contact.applications != null)
+            appList = Helpers.convertStringArrToUUID(contact.applications)
+
+        val applicationObjs = converter.convertApplicationList(appList)
 
         val saved = contactRepository.save(contact.toUpdateContactEntity(companyObj, applicationObjs, user, UUID.fromString(contactId)))
         return ResponseEntity.status(HttpStatus.CREATED).body(saved)

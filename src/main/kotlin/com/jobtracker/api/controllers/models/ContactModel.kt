@@ -13,8 +13,7 @@ data class ContactModel(
     val emailAddress: String,
     val phoneNumber: String?,
     val notes: String?,
-    val applications: MutableList<String>,
-    val userId: String,
+    val applications: MutableList<String>?,
     var contactId: UUID = UUID.randomUUID()
 ) {
 
@@ -25,4 +24,4 @@ data class ContactModel(
             = ContactEntity(existingId, companyEntity, fullName, positionTitle, emailAddress, phoneNumber, notes, applicationEntities, user)
 }
 
-data class MultipleContactModel(val contacts: MutableList<ContactModel>)
+data class MultipleContactModel(val contacts: List<ContactEntity>)
