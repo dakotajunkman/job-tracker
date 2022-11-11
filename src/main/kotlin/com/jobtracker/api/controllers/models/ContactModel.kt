@@ -14,7 +14,6 @@ data class ContactModel(
     val phoneNumber: String?,
     val notes: String?,
     val applications: MutableList<String>?,
-    val userId: String,
     var contactId: UUID = UUID.randomUUID()
 ) {
 
