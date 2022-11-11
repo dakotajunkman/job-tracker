@@ -14,6 +14,7 @@ class ApplicationModel(
     val submitDate: String,
     val status: String,
     val skills: MutableList<String>,
+    val contacts: MutableList<String>,
     val notes: String?,
     var applicationID: UUID = UUID.randomUUID()
 ){

@@ -38,7 +38,9 @@ class ApplicationController(
         val user = Helpers.getUserByJWT(token, jwtDecoder, userRepository)
             ?: return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorModel(404, "Company with ID does not exist"))
 
-        val saved = applicationRepository.save(application.toApplicationEntity(companyObj, user, mutableListOf()))
+        val contactObjs = converter.convertContactList(Helpers.convertStringArrToUUID(application.contacts))
+
+        val saved = applicationRepository.save(application.toApplicationEntity(companyObj, user, contactObjs))
 
         if (application.skills.isNotEmpty())
             converter.createOrUpdateSkills(application.skills, user)
@@ -115,6 +117,8 @@ class ApplicationController(
         val companyObj = converter.convertCompany(UUID.fromString(application.companyID))
             ?: return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorModel(400, "Company ID not found"))
 
+        val contactObjs = converter.convertContactList(Helpers.convertStringArrToUUID(application.contacts))
+
         // handle the skillz
         if (!retrieved.skills.isNullOrEmpty())
             converter.deleteOrUpdateSkills(retrieved.skills!!, user)
@@ -123,7 +127,7 @@ class ApplicationController(
         if (application.skills.isNotEmpty())
             converter.createOrUpdateSkills(application.skills, user)
 
-        val saved = applicationRepository.save(application.toUpdateApplicationEntity(companyObj, user, mutableListOf(), UUID.fromString(appId)))
+        val saved = applicationRepository.save(application.toUpdateApplicationEntity(companyObj, user, contactObjs, UUID.fromString(appId)))
         return ResponseEntity.status(HttpStatus.CREATED).body(saved)
     }
 }
