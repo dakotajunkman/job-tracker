@@ -23,7 +23,7 @@ data class ContactEntity(
     @Column(name = "position_title", nullable = false, length = DEFAULT_FIELD_LENGTH) val positionTitle: String,
     @Column(name = "email_address", nullable = false, length = DEFAULT_FIELD_LENGTH) val emailAddress: String,
     @Column(name = "phone_number", nullable = true, length = DEFAULT_FIELD_LENGTH) val phoneNumber: String?,
-    @Column(name = "comments", nullable = true, length = DEFAULT_NOTES_LENGTH) val comments: String?,
+    @Column(name = "notes", nullable = true, length = DEFAULT_NOTES_LENGTH) val notes: String?,
 
     @JsonIgnore
     @ManyToMany(mappedBy = "contacts", fetch = FetchType.EAGER)
@@ -35,5 +35,5 @@ data class ContactEntity(
     val user: UserEntity
 ) {
   override fun toString() =
-      "Contact type with id: $id, fullName: $fullName, positionTitle: $positionTitle, emailAddress: $emailAddress, phoneNumber: $phoneNumber, comments: $comments"
+      "Contact type with id: $id, fullName: $fullName, positionTitle: $positionTitle, emailAddress: $emailAddress, phoneNumber: $phoneNumber, comments: $notes"
 }
