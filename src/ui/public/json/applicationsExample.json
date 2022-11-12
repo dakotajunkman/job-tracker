@@ -1,194 +1,196 @@
-[
-  {
-    "id": "b4810cb9-f8e6-4fdd-b8f3-909b1b87ce6a",
-    "company": {
-      "id": "ade2e5ef-cbeb-45b8-8472-46141ee3b8f4",
-      "name": "Starbucks"
+{
+  "applications": [
+    {
+      "id": "b4810cb9-f8e6-4fdd-b8f3-909b1b87ce6a",
+      "company": {
+        "id": "ade2e5ef-cbeb-45b8-8472-46141ee3b8f4",
+        "name": "Starbucks"
+      },
+      "positionTitle": "Software Engineer I",
+      "submitDate": "2022-03-04",
+      "status": "APPLIED",
+      "skills": ["JavaScript", "TypeScript", "Python"],
+      "notes": "This is a great opportunity!"
     },
-    "positionTitle": "Software Engineer I",
-    "submitDate": "2022-03-04",
-    "status": "APPLIED",
-    "skills": ["JavaScript", "TypeScript", "Python"],
-    "notes": "This is a great opportunity!"
-  },
-  {
-    "id": "381e98a6-e753-44b4-aa23-259632f76c72",
-    "company": {
-      "id": "608b50a5-bfdb-4116-a626-e80163a37be1",
-      "name": "Target"
+    {
+      "id": "381e98a6-e753-44b4-aa23-259632f76c72",
+      "company": {
+        "id": "608b50a5-bfdb-4116-a626-e80163a37be1",
+        "name": "Target"
+      },
+      "positionTitle": "Software Engineer Intern",
+      "submitDate": "2022-01-01",
+      "status": "APPLIED",
+      "skills": ["JavaScript", "TypeScript", "Python"],
+      "notes": "This is a great opportunity!"
     },
-    "positionTitle": "Software Engineer Intern",
-    "submitDate": "2022-01-01",
-    "status": "APPLIED",
-    "skills": ["JavaScript", "TypeScript", "Python"],
-    "notes": "This is a great opportunity!"
-  },
-  {
-    "id": "d7bff507-40b1-4eb8-b476-e7703472fdce",
-    "company": {
-      "id": "5453fb48-48f7-48a7-b0cd-8e17289d0b1b",
-      "name": "Chase Bank"
+    {
+      "id": "d7bff507-40b1-4eb8-b476-e7703472fdce",
+      "company": {
+        "id": "5453fb48-48f7-48a7-b0cd-8e17289d0b1b",
+        "name": "Chase Bank"
+      },
+      "positionTitle": "Software Engineer II",
+      "submitDate": "2022-05-12",
+      "status": "REJECTED_OFFER",
+      "skills": ["JavaScript", "TypeScript", "Python"],
+      "notes": "This is a great opportunity!"
     },
-    "positionTitle": "Software Engineer II",
-    "submitDate": "2022-05-12",
-    "status": "REJECTED_OFFER",
-    "skills": ["JavaScript", "TypeScript", "Python"],
-    "notes": "This is a great opportunity!"
-  },
-  {
-    "id": "4edbe534-7e30-4370-a95e-fc5b3b452756",
-    "company": {
-      "id": "10aa0042-7f24-4289-904f-7978bd4ec5df",
-      "name": "House Of Lasagna"
+    {
+      "id": "4edbe534-7e30-4370-a95e-fc5b3b452756",
+      "company": {
+        "id": "10aa0042-7f24-4289-904f-7978bd4ec5df",
+        "name": "House Of Lasagna"
+      },
+      "positionTitle": "Chief Lasagna Officer",
+      "submitDate": "2020-12-30",
+      "status": "ASSIGNED_OA",
+      "skills": ["Hating Mondays", "Eating Lasagna"],
+      "notes": "I will be devestated if I don't get this job"
     },
-    "positionTitle": "Chief Lasagna Officer",
-    "submitDate": "2020-12-30",
-    "status": "ASSIGNED_OA",
-    "skills": ["Hating Mondays", "Eating Lasagna"],
-    "notes": "I will be devestated if I don't get this job"
-  },
-  {
-    "id": "688d4c64-5ea8-49ab-b333-eb9bb90532f6",
-    "company": {
-      "id": "b68732f9-d502-4fcd-bda7-03713cbfb400",
-      "name": "Google"
+    {
+      "id": "688d4c64-5ea8-49ab-b333-eb9bb90532f6",
+      "company": {
+        "id": "b68732f9-d502-4fcd-bda7-03713cbfb400",
+        "name": "Google"
+      },
+      "positionTitle": "Software Engineer",
+      "submitDate": "2022-02-28",
+      "status": "COMPLETED_OA",
+      "skills": ["JavaScript", "TypeScript", "Python"],
+      "notes": "This is a great opportunity!"
     },
-    "positionTitle": "Software Engineer",
-    "submitDate": "2022-02-28",
-    "status": "COMPLETED_OA",
-    "skills": ["JavaScript", "TypeScript", "Python"],
-    "notes": "This is a great opportunity!"
-  },
-  {
-    "id": "7d52c8b0-e08f-48d6-acf0-f3ec2d669666",
-    "company": {
-      "id": "8e318f0f-6ff6-4a72-a937-22b305025219",
-      "name": "Slack"
+    {
+      "id": "7d52c8b0-e08f-48d6-acf0-f3ec2d669666",
+      "company": {
+        "id": "8e318f0f-6ff6-4a72-a937-22b305025219",
+        "name": "Slack"
+      },
+      "positionTitle": "Software Engineer II",
+      "submitDate": "2022-06-20",
+      "status": "PHONE_SCREEN_SCHEDULED",
+      "skills": ["JavaScript", "TypeScript", "Python"],
+      "notes": "This is a great opportunity!"
     },
-    "positionTitle": "Software Engineer II",
-    "submitDate": "2022-06-20",
-    "status": "PHONE_SCREEN_SCHEDULED",
-    "skills": ["JavaScript", "TypeScript", "Python"],
-    "notes": "This is a great opportunity!"
-  },
-  {
-    "id": "d29deddb-ffd8-4d0c-bad9-755c21c7b141",
-    "company": {
-      "id": "cd68e854-ea25-46f7-9abc-6f8beada2809",
-      "name": "Netflix"
+    {
+      "id": "d29deddb-ffd8-4d0c-bad9-755c21c7b141",
+      "company": {
+        "id": "cd68e854-ea25-46f7-9abc-6f8beada2809",
+        "name": "Netflix"
+      },
+      "positionTitle": "Software Engineer",
+      "submitDate": "2022-03-16",
+      "status": "PHONE_SCREEN_COMPLETE",
+      "skills": ["JavaScript", "TypeScript", "Python"],
+      "notes": "This is a great opportunity!"
     },
-    "positionTitle": "Software Engineer",
-    "submitDate": "2022-03-16",
-    "status": "PHONE_SCREEN_COMPLETE",
-    "skills": ["JavaScript", "TypeScript", "Python"],
-    "notes": "This is a great opportunity!"
-  },
-  {
-    "id": "61626eeb-73a5-4b07-bd3a-3490d2887f93",
-    "company": {
-      "id": "ca37523e-adc8-4371-99c3-3c38383d3b93",
-      "name": "Instructure"
+    {
+      "id": "61626eeb-73a5-4b07-bd3a-3490d2887f93",
+      "company": {
+        "id": "ca37523e-adc8-4371-99c3-3c38383d3b93",
+        "name": "Instructure"
+      },
+      "positionTitle": "Software Engineer I",
+      "submitDate": "2022-08-10",
+      "status": "INTERVIEW_SCHEDULED",
+      "skills": ["JavaScript", "TypeScript", "Python"],
+      "notes": "This is a great opportunity!"
     },
-    "positionTitle": "Software Engineer I",
-    "submitDate": "2022-08-10",
-    "status": "INTERVIEW_SCHEDULED",
-    "skills": ["JavaScript", "TypeScript", "Python"],
-    "notes": "This is a great opportunity!"
-  },
-  {
-    "id": "3c351b9c-ffa5-4536-9387-9a429308298a",
-    "company": {
-      "id": "410de515-371f-4f09-9a04-b7f8f94b5d0c",
-      "name": "NASA"
+    {
+      "id": "3c351b9c-ffa5-4536-9387-9a429308298a",
+      "company": {
+        "id": "410de515-371f-4f09-9a04-b7f8f94b5d0c",
+        "name": "NASA"
+      },
+      "positionTitle": "Software Engineer Intern",
+      "submitDate": "2022-07-01",
+      "status": "INTERVIEW_COMPLETE",
+      "skills": ["JavaScript", "TypeScript", "Python"],
+      "notes": "This is a great opportunity!"
     },
-    "positionTitle": "Software Engineer Intern",
-    "submitDate": "2022-07-01",
-    "status": "INTERVIEW_COMPLETE",
-    "skills": ["JavaScript", "TypeScript", "Python"],
-    "notes": "This is a great opportunity!"
-  },
-  {
-    "id": "f40b561e-9768-456e-ba24-707c24df80e1",
-    "company": {
-      "id": "151ff864-8a1d-475a-8ecc-4125dbadd1a8",
-      "name": "Capital One"
+    {
+      "id": "f40b561e-9768-456e-ba24-707c24df80e1",
+      "company": {
+        "id": "151ff864-8a1d-475a-8ecc-4125dbadd1a8",
+        "name": "Capital One"
+      },
+      "positionTitle": "Software Engineer II",
+      "submitDate": "2022-05-22",
+      "status": "RECEIVED_OFFER",
+      "skills": ["JavaScript", "TypeScript", "Python"],
+      "notes": "This is a great opportunity!"
     },
-    "positionTitle": "Software Engineer II",
-    "submitDate": "2022-05-22",
-    "status": "RECEIVED_OFFER",
-    "skills": ["JavaScript", "TypeScript", "Python"],
-    "notes": "This is a great opportunity!"
-  },
-  {
-    "id": "c6cc20b9-af1b-4bdf-bf24-a96a25035cfb",
-    "company": {
-      "id": "a0fac495-8a57-46d1-ba23-15a68046f77d",
-      "name": "Nintendo"
+    {
+      "id": "c6cc20b9-af1b-4bdf-bf24-a96a25035cfb",
+      "company": {
+        "id": "a0fac495-8a57-46d1-ba23-15a68046f77d",
+        "name": "Nintendo"
+      },
+      "positionTitle": "Programmer I",
+      "submitDate": "2022-10-12",
+      "status": "ACCEPTED_OFFER",
+      "skills": ["JavaScript", "TypeScript", "Python"],
+      "notes": "This is a great opportunity!"
     },
-    "positionTitle": "Programmer I",
-    "submitDate": "2022-10-12",
-    "status": "ACCEPTED_OFFER",
-    "skills": ["JavaScript", "TypeScript", "Python"],
-    "notes": "This is a great opportunity!"
-  },
-  {
-    "id": "e3bf4fb1-31b1-49bd-8f01-5ead454caa6d",
-    "company": {
-      "id": "cf43bae0-da43-4ab7-9241-340cd19f0684",
-      "name": "Chipotle"
+    {
+      "id": "e3bf4fb1-31b1-49bd-8f01-5ead454caa6d",
+      "company": {
+        "id": "cf43bae0-da43-4ab7-9241-340cd19f0684",
+        "name": "Chipotle"
+      },
+      "positionTitle": "Data Analyst",
+      "submitDate": "2022-09-09",
+      "status": "REJECTED_OFFER",
+      "skills": ["JavaScript", "TypeScript", "Python"],
+      "notes": "This is a great opportunity!"
     },
-    "positionTitle": "Data Analyst",
-    "submitDate": "2022-09-09",
-    "status": "REJECTED_OFFER",
-    "skills": ["JavaScript", "TypeScript", "Python"],
-    "notes": "This is a great opportunity!"
-  },
-  {
-    "id": "49b4289a-6e16-46a6-bb2a-447f627f346f",
-    "company": {
-      "id": "b567dbce-d0af-491d-871c-8df33ba5d786",
-      "name": "Square"
+    {
+      "id": "49b4289a-6e16-46a6-bb2a-447f627f346f",
+      "company": {
+        "id": "b567dbce-d0af-491d-871c-8df33ba5d786",
+        "name": "Square"
+      },
+      "positionTitle": "Software Engineer I",
+      "submitDate": "2022-06-30",
+      "status": "POSITION_CANCELLED",
+      "skills": ["JavaScript", "TypeScript", "Python"],
+      "notes": "This is a great opportunity!"
     },
-    "positionTitle": "Software Engineer I",
-    "submitDate": "2022-06-30",
-    "status": "POSITION_CANCELLED",
-    "skills": ["JavaScript", "TypeScript", "Python"],
-    "notes": "This is a great opportunity!"
-  },
-  {
-    "id": "750f0a1d-be9c-4293-bf87-f90c37ce7503",
-    "company": {
-      "id": "bf806850-657c-40b7-967c-055ec02d8425",
-      "name": "House Of Lasagna"
+    {
+      "id": "750f0a1d-be9c-4293-bf87-f90c37ce7503",
+      "company": {
+        "id": "bf806850-657c-40b7-967c-055ec02d8425",
+        "name": "House Of Lasagna"
+      },
+      "positionTitle": "Big Hoser",
+      "submitDate": "2020-11-01",
+      "status": "RECEIVED_OFFER",
+      "skills": null,
+      "notes": null
     },
-    "positionTitle": "Big Hoser",
-    "submitDate": "2020-11-01",
-    "status": "RECEIVED_OFFER",
-    "skills": null,
-    "notes": null
-  },
-  {
-    "id": "377310bd-9f1a-4784-9a41-01cade6c8024",
-    "company": {
-      "id": "b5b47ff6-2948-4752-baf5-1423d64a8cfb",
-      "name": "Adobe"
+    {
+      "id": "377310bd-9f1a-4784-9a41-01cade6c8024",
+      "company": {
+        "id": "b5b47ff6-2948-4752-baf5-1423d64a8cfb",
+        "name": "Adobe"
+      },
+      "positionTitle": "Software Engineer Intern",
+      "submitDate": "2022-08-24",
+      "status": "REJECTED_BY_COMPANY",
+      "skills": ["JavaScript", "TypeScript", "Python"],
+      "notes": "This is a great opportunity!"
     },
-    "positionTitle": "Software Engineer Intern",
-    "submitDate": "2022-08-24",
-    "status": "REJECTED_BY_COMPANY",
-    "skills": ["JavaScript", "TypeScript", "Python"],
-    "notes": "This is a great opportunity!"
-  },
-  {
-    "id": "30ea146b-fac8-4076-a57d-13bcfa5c268b",
-    "company": {
-      "id": "ed62fc6b-4379-440f-a159-87404140f17a",
-      "name": "Yahoo!"
-    },
-    "positionTitle": "Software Development Engineer",
-    "submitDate": "2022-04-16",
-    "status": "REJECTED_BY_COMPANY",
-    "skills": ["JavaScript", "TypeScript", "Python"],
-    "notes": "This is a great opportunity!"
-  }
-]
+    {
+      "id": "30ea146b-fac8-4076-a57d-13bcfa5c268b",
+      "company": {
+        "id": "ed62fc6b-4379-440f-a159-87404140f17a",
+        "name": "Yahoo!"
+      },
+      "positionTitle": "Software Development Engineer",
+      "submitDate": "2022-04-16",
+      "status": "REJECTED_BY_COMPANY",
+      "skills": ["JavaScript", "TypeScript", "Python"],
+      "notes": "This is a great opportunity!"
+    }
+  ]
+}

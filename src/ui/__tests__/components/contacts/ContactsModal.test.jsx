@@ -1,27 +1,29 @@
 import React from 'react';
 import {render} from '@testing-library/react';
-import CompaniesModal from '../../../components/companies/CompaniesModal';
+import ContactsModal from '../../../components/contacts/ContactsModal';
 import '@testing-library/jest-dom';
 import {ChakraProvider} from '@chakra-ui/react';
 import {mockMatchMedia} from '../../util/util';
-import companiesJson from '../../../public/json/companiesExample.json';
 import {MOCK_SESSION_DATA} from '../../util/fixtures';
+import companiesJson from '../../../public/json/companiesExample.json';
 
 mockMatchMedia();
 const DEFAULT_PROPS = {
-  header: 'Open Applications',
+  type: 'New',
   isOpen: true,
   onClose: jest.fn(),
-  companies: companiesJson.companies,
   token: MOCK_SESSION_DATA.jwt,
-  addCompany: jest.fn(),
+  onSave: jest.fn(),
+  onDelete: jest.fn(),
+  contact: null,
+  companies: companiesJson.companies,
 };
 
-describe('CompaniesModal', () => {
+describe('ContactsModal', () => {
   const setup = (props = DEFAULT_PROPS) => {
     return render(
       <ChakraProvider resetCSS>
-        <CompaniesModal {...props} />
+        <ContactsModal {...props} />
       </ChakraProvider>
     );
   };
@@ -33,7 +35,7 @@ describe('CompaniesModal', () => {
 
   it('renders a dialog', () => {
     const component = setup();
-    const dialog = component.getByRole('dialog', {name: DEFAULT_PROPS.header});
+    const dialog = component.getByRole('dialog');
     expect(dialog).toBeInTheDocument();
   });
 
@@ -47,7 +49,14 @@ describe('CompaniesModal', () => {
   });
 
   it('renders form text', () => {
-    const FORM_TEXT = ['Company Name'];
+    const FORM_TEXT = [
+      'Company',
+      'Contact Name',
+      'Position Title',
+      'Email Address',
+      'Phone Number',
+      'Notes',
+    ];
     const component = setup();
     FORM_TEXT.forEach(text => {
       const formText = component.getByText(text);

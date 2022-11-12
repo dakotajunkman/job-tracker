@@ -44,12 +44,21 @@ const fetcher = (url, token) =>
 export default function Dashboard() {
   const {data: session} = useSession();
   const {jwt} = session;
-  const {data: applicationData, error} = useSWR(['/api/applications', jwt], fetcher);
+  const {data: applicationData, error: applicationError} = useSWR(
+    ['/api/applications', jwt],
+    fetcher
+  );
+  const {data: companiesData, error: companiesError} = useSWR(['/api/companies', jwt], fetcher);
+  const {data: contactsData, error: contactsError} = useSWR(['/api/contacts', jwt], fetcher);
 
   const [applications, setApplications] = useState([]);
+  const [companies, setCompanies] = useState([]);
+  const [contacts, setContacts] = useState([]);
   const [openApplications, setOpenApplications] = useState([]);
   const [inProgressApplications, setInProgressApplications] = useState([]);
   const [closedApplications, setClosedApplications] = useState([]);
+  const [modalType, setModalType] = useState('New');
+  const [currentApplication, setCurrentApplication] = useState(null);
 
   const showSidebar = useBreakpointValue({
     base: false,
@@ -59,24 +68,56 @@ export default function Dashboard() {
   const {isOpen, onOpen, onClose} = useDisclosure();
 
   const toast = useToast();
-
-  const addApplication = application => {
-    setApplications([...applicationData, application]);
+  const renderToast = (title, description) =>
     toast({
       position: 'top',
       duration: 3000,
-      render: () => (
-        <PrimaryToast
-          title="Application Added Successfully."
-          description={`The application has been added to your dashboard.`}
-          icon={MdCheckCircle}
-        />
-      ),
+      render: () => <PrimaryToast title={title} description={description} icon={MdCheckCircle} />,
     });
+
+  const addApplication = application => {
+    setApplications([...applications, application]);
+    renderToast(
+      'Application Added Successfully.',
+      'The application has been added to your dashboard.'
+    );
+  };
+
+  const editApplication = application => {
+    const updatedApplications = applications.map(app => {
+      if (app.id === application.id) app = application;
+      return app;
+    });
+    setApplications(updatedApplications);
+    renderToast(
+      'Application Updated Successfully.',
+      'The application has been updated on your dashboard.'
+    );
+  };
+
+  const deleteApplication = application => {
+    const updatedApplications = applications.filter(app => app.id !== application.id);
+    setApplications(updatedApplications);
+    renderToast('Application Deleted.', 'The application has been deleted from your dashboard.');
+  };
+
+  const openModalForNewApplication = () => {
+    setModalType('New');
+    setCurrentApplication(null);
+    onOpen();
+  };
+
+  const openModalForEditApplication = application => {
+    setModalType('Edit');
+    setCurrentApplication(application);
+    onOpen();
   };
 
   // Capture the data from SWR in our useState variable
-  useEffect(() => setApplications(applicationData), [applicationData]);
+  useEffect(() => {
+    if (!applicationData) return;
+    setApplications(applicationData.applications);
+  }, [applicationData]);
   useEffect(() => {
     if (!applications) return;
     setOpenApplications(applications.filter(application => application.status === 'APPLIED'));
@@ -87,6 +128,14 @@ export default function Dashboard() {
       applications.filter(application => CLOSED_STATUSES.has(application.status))
     );
   }, [applications]);
+  useEffect(() => {
+    if (!companiesData) return;
+    setCompanies(companiesData.companies);
+  }, [companiesData]);
+  useEffect(() => {
+    if (!contactsData) return;
+    setContacts(contactsData.contacts);
+  }, [contactsData]);
 
   return (
     <PageWrapper>
@@ -104,7 +153,17 @@ export default function Dashboard() {
           maxW="100%"
           overflowX="hidden"
         >
-          <ApplicationModal isOpen={isOpen} onClose={onClose} token={jwt} onSave={addApplication} />
+          <ApplicationModal
+            type={modalType}
+            isOpen={isOpen}
+            onClose={onClose}
+            token={jwt}
+            onSave={modalType === 'New' ? addApplication : editApplication}
+            onDelete={deleteApplication}
+            application={currentApplication}
+            companies={companies}
+            contacts={contacts}
+          />
           <Flex direction="column">
             <Flex wrap="wrap" justifyContent="space-between" gap={8}>
               <Flex direction="column">
@@ -115,21 +174,33 @@ export default function Dashboard() {
                   {closedApplications ? closedApplications.length : '0'} Closed
                 </Text>
               </Flex>
-              <PrimaryButton leftIcon={<Icon as={MdPostAdd} w={6} h={6} />} onClick={onOpen}>
+              <PrimaryButton
+                leftIcon={<Icon as={MdPostAdd} w={6} h={6} />}
+                onClick={openModalForNewApplication}
+              >
                 Add Application
               </PrimaryButton>
             </Flex>
           </Flex>
-          {!applicationData || error ? (
+          {!applicationData || applicationError ? (
             <LoadingSpinner />
           ) : (
             <>
-              <ApplicationSection heading="In-Progress" applicationData={inProgressApplications} />
-              <ApplicationSection heading="Open" applicationData={openApplications} />
+              <ApplicationSection
+                heading="In-Progress"
+                applicationData={inProgressApplications}
+                openModal={openModalForEditApplication}
+              />
+              <ApplicationSection
+                heading="Open"
+                applicationData={openApplications}
+                openModal={openModalForEditApplication}
+              />
               <ApplicationSection
                 heading="Closed"
                 applicationData={closedApplications}
                 startOpened={false}
+                openModal={openModalForEditApplication}
               />
             </>
           )}
