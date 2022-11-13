@@ -31,7 +31,7 @@ class UserSkillFrequencyController(
         val userId = Helpers.getUserIDByJWT(token, jwtDecoder, userRepository)
             ?: return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(ErrorModel(404, "User not found"))
-        val skills = userSkillFrequencyRepository.findByUser(userId).sortedBy { it.frequency }
+        val skills = userSkillFrequencyRepository.findByUser(userId).sortedByDescending { it.frequency }
 
         return ResponseEntity.status(HttpStatus.OK).body(MultipleUserSkillFrequencyModel(skills))
     }
