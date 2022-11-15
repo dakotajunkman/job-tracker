@@ -1,8 +1,8 @@
 import React from 'react';
 import {Table, Thead, Tbody, Tr, Th, Td, TableContainer} from '@chakra-ui/react';
-import PropTypes, {arrayOf, func, shape, string} from 'prop-types';
+import PropTypes, {arrayOf, func, number, shape, string} from 'prop-types';
 
-export default function ContactsTable({contacts, openModal}) {
+export default function SkillsTable({skills}) {
   return (
     <TableContainer
       border="1px solid #ddd"
@@ -15,28 +15,25 @@ export default function ContactsTable({contacts, openModal}) {
         variant="striped"
         style={{tableLayout: 'fixed'}}
         minW="600px"
-        data-testid="ContactsTable"
+        data-testid="SkillsTable"
       >
         <Thead>
           <Tr>
-            <Th>Company</Th>
-            <Th>Contact Name</Th>
-            <Th>Position</Th>
+            <Th>Ranking</Th>
+            <Th>Skill Name</Th>
+            <Th>Frequency</Th>
           </Tr>
         </Thead>
         <Tbody>
-          {contacts.map(contact => {
-            const {company, positionTitle, fullName, id} = contact;
+          {skills.map((skill, index) => {
+            const {skillName, frequency, id} = skill;
             return (
               <Tr
                 key={`tr-${id}`}
-                _hover={{cursor: 'pointer', color: '#396afc'}}
-                _active={{color: '#2948ff'}}
-                onClick={() => openModal(contact)}
               >
-                <Td>{company.name}</Td>
-                <Td>{fullName}</Td>
-                <Td>{positionTitle}</Td>
+                <Td>{index + 1}</Td>
+                <Td>{skillName}</Td>
+                <Td>{frequency}</Td>
               </Tr>
             );
           })}
@@ -46,21 +43,16 @@ export default function ContactsTable({contacts, openModal}) {
   );
 }
 
-ContactsTable.propTypes = {
-  contacts: arrayOf(
+SkillsTable.propTypes = {
+  skills: arrayOf(
     shape({
       id: string.isRequired,
-      positionTitle: string,
-      fullName: string.isRequired,
-      company: shape({
-        id: string.isRequired,
-        name: string.isRequired,
-      }),
+      skillName: string.isRequired,
+      frequency: number.isRequired
     })
   ),
-  openModal: func.isRequired,
 };
 
-ContactsTable.defaultProps = {
-  contacts: [],
+SkillsTable.defaultProps = {
+  skills: [],
 };

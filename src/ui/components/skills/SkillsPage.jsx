@@ -3,8 +3,6 @@ import PropTypes, {shape, string} from 'prop-types';
 import useSWR from 'swr';
 import PageWrapper from '../common/PageWrapper';
 import NavigationSidebar from '../common/navigation/NavigationSidebar';
-import {MdPersonAddAlt1} from 'react-icons/md';
-import PrimaryButton from '../common/buttons/PrimaryButton';
 import {
   Flex,
   Heading,
@@ -12,19 +10,19 @@ import {
   Text,
   useBreakpointValue,
 } from '@chakra-ui/react';
-import ContactsTable from '../contacts/ContactsTable';
-import ContactsModal from '../contacts/ContactsModal';
+import SkillsTable from '../skills/SkillsTable';
 import LoadingSpinner from '../common/LoadingSpinner';
+import skillsData from '../../public/json/skillsExample.json'
 
 const fetcher = (url, token) =>
   fetch(url, {
     headers: {Authorization: `Bearer ${token}`, 'Content-Type': 'application/json'},
   }).then(res => res.json());
 
-export default function ContactsPage({session}) {
+export default function SkillsPage({session}) {
   const {jwt} = session;
-  const {data: skillsData, error: skillsError} = useSWR(['/api/skills', jwt], fetcher);
-  const [skills, setSkills] = useState([]);
+  // const {data: skillsData, error: skillsError} = useSWR(['/api/skills', jwt], fetcher);
+  const [skills, setSkills] = useState(skillsData.skills);
 
   const showSidebar = useBreakpointValue({
     base: false,
@@ -32,7 +30,7 @@ export default function ContactsPage({session}) {
   });
 
   // Capture the data from SWR in our useState variable
-  useEffect(() => setSkills(skillsData?.skills || []), [skillsData]);
+  // useEffect(() => setSkills(skillsData?.skills || []), [skillsData]);
 
   return (
     <PageWrapper>
@@ -51,14 +49,12 @@ export default function ContactsPage({session}) {
           overflowX="hidden"
         >
           <Flex direction="column">
-            <Flex wrap="wrap" justifyContent="space-between" gap={8}>
               <Heading size="lg">Skills</Heading>
               <Text color="#888">Showing {skills ? skills.length : '0'} skills</Text>
-            </Flex>
-            {!contactsData || contactsError ? (
+            {!skillsData ? (
               <LoadingSpinner />
             ) : (
-              <ContactsTable contacts={contacts} openModal={openModalForEditContact} />
+              <SkillsTable skills={skills} />
             )}
           </Flex>
         </Flex>
@@ -67,10 +63,10 @@ export default function ContactsPage({session}) {
   );
 }
 
-ContactsPage.propTypes = {
+SkillsPage.propTypes = {
   session: shape({
     jwt: string.isRequired,
   }).isRequired,
 };
 
-ContactsPage.defaultProps = {};
+SkillsPage.defaultProps = {};

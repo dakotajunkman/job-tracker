@@ -3,7 +3,7 @@ import {useSession} from 'next-auth/react';
 import PropTypes from 'prop-types';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import {useRouter} from 'next/router';
-import ContactsPage from '../components/contacts/ContactsPage';
+import SkillsPage from '../components/skills/SkillsPage';
 
 export default function Companies() {
   const {data: session, status} = useSession();
@@ -18,7 +18,7 @@ export default function Companies() {
     return <LoadingSpinner />;
   }
 
-  return <ContactsPage session={session} />;
+  return <SkillsPage session={session} />;
 }
 
 Companies.propTypes = {};
