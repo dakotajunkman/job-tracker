@@ -33,7 +33,7 @@ export default function PageWrapperMenu() {
             <MenuItem icon={<Icon as={MdPeopleAlt} w={6} h={6} />}>View Contacts</MenuItem>
           </Link>
         </NextLink>
-        <NextLink href={'/#'} passHref>
+        <NextLink href={'/skills'} passHref>
           <Link _hover={{textDecoration: 'none'}} data-testid="ViewAnalyticsLink">
             <MenuItem icon={<Icon as={MdBarChart} w={6} h={6} />}>View Analytics</MenuItem>
           </Link>

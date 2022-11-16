@@ -1,0 +1,19 @@
+{
+    "skills": [
+        {
+            "id": "33f908f5-b6ab-49c5-a951-ae938c642a8f",
+            "skillName": "hold breath for 30 seconds w/o passing out",
+            "frequency": 3
+        },
+        {
+            "id": "3a9c3f48-125a-45b1-95bf-068945a31ac0",
+            "skillName": "leetcode easies",
+            "frequency": 3
+        },
+        {
+            "id": "c1ecf5e6-10d7-4ca6-9e27-14eb45c6567f",
+            "skillName": "lasagna",
+            "frequency": 1
+        }
+    ]
+}
