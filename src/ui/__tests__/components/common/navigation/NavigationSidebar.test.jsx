@@ -11,7 +11,7 @@ const LINKS = [
   {label: 'View Applications', href: '/'},
   {label: 'View Companies', href: '/companies'},
   {label: 'View Contacts', href: '/contacts'},
-  {label: 'View Analytics', href: '/#'},
+  {label: 'View Analytics', href: '/skills'},
 ];
 
 describe('NavigationSidebar', () => {

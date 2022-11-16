@@ -53,6 +53,6 @@ describe('PageWrapperMenu', () => {
     const component = setup();
     const link = component.getByTestId('ViewAnalyticsLink');
     expect(link).toBeInTheDocument();
-    expect(link).toHaveAttribute('href', '/#');
+    expect(link).toHaveAttribute('href', '/skills');
   });
 });

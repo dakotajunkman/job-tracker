@@ -12,7 +12,6 @@ import {
 } from '@chakra-ui/react';
 import SkillsTable from '../skills/SkillsTable';
 import LoadingSpinner from '../common/LoadingSpinner';
-import skillsData from '../../public/json/skillsExample.json'
 
 const fetcher = (url, token) =>
   fetch(url, {
@@ -21,8 +20,8 @@ const fetcher = (url, token) =>
 
 export default function SkillsPage({session}) {
   const {jwt} = session;
-  // const {data: skillsData, error: skillsError} = useSWR(['/api/skills', jwt], fetcher);
-  const [skills, setSkills] = useState(skillsData.skills);
+  const {data: skillsData, error: skillsError} = useSWR(['/api/skills', jwt], fetcher);
+  const [skills, setSkills] = useState([]);
 
   const showSidebar = useBreakpointValue({
     base: false,
@@ -30,7 +29,7 @@ export default function SkillsPage({session}) {
   });
 
   // Capture the data from SWR in our useState variable
-  // useEffect(() => setSkills(skillsData?.skills || []), [skillsData]);
+  useEffect(() => setSkills(skillsData?.skills || []), [skillsData]);
 
   return (
     <PageWrapper>
@@ -51,7 +50,7 @@ export default function SkillsPage({session}) {
           <Flex direction="column">
               <Heading size="lg">Skills</Heading>
               <Text color="#888">Showing {skills ? skills.length : '0'} skills</Text>
-            {!skillsData ? (
+            {(!skillsData || skillsError) ?(
               <LoadingSpinner />
             ) : (
               <SkillsTable skills={skills} />
