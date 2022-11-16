@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Icon,
   Modal,
@@ -9,13 +9,14 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  Link,
 } from '@chakra-ui/react';
-import PropTypes, {arrayOf, bool, func, shape, string} from 'prop-types';
+import PropTypes, {arrayOf, bool, func, object, shape, string} from 'prop-types';
 import PrimaryButton from '../common/buttons/PrimaryButton';
 import SecondaryButton from '../common/buttons/SecondaryButton';
 import DangerButton from '../common/buttons/DangerButton';
 import {MdDeleteOutline, MdOutlineSave} from 'react-icons/md';
-import {Form, Formik} from 'formik';
+import {Form, Formik, FieldArray} from 'formik';
 import * as Yup from 'yup';
 import {APPLICATION_STATUS_MAP} from './StatusLabel';
 import TextInput from '../common/forms/TextInput';
@@ -72,6 +73,7 @@ export default function ApplicationModal({
 }) {
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [contactDropdowns, setContactDropdowns] = useState([]);
   const {isOpen: deleteIsOpen, onOpen: deleteOnOpen, onClose: deleteOnClose} = useDisclosure();
 
   const companyOptions = companies.map(company => (
@@ -96,6 +98,31 @@ export default function ApplicationModal({
     setIsDeleting(false);
     onClose();
   };
+
+  const createContactDropdown = key => (
+    <SelectInput
+      name={'contacts' + key}
+      label={`Contact ${key + 1}`}
+      key={key}
+      isRequired={false}
+      options={contactOptions}
+    />
+  );
+
+  const addContactDropdown = () => {
+    const key = contactDropdowns.length;
+    const newdropDowns = [...contactDropdowns, createContactDropdown(key)];
+    setContactDropdowns(newdropDowns);
+  };
+
+  useEffect(() => {
+    const loadedContacts = [];
+    application &&
+      application.contacts.forEach((contact, index) => {
+        loadedContacts.push(createContactDropdown(index));
+      });
+    setContactDropdowns(loadedContacts);
+  }, [isOpen]);
 
   const TYPE_PROPS_MAP = {
     New: {
@@ -195,11 +222,24 @@ export default function ApplicationModal({
                 />
                 <TextAreaInput name="skills" label="Skills" resize="vertical" />
                 <TextAreaInput name="notes" label="Notes" resize="vertical" />
-                <SelectInput
+                <FieldArray
                   name="contacts"
-                  label="Contact"
-                  isRequired={false}
-                  options={contactOptions}
+                  render={arrayHelpers => (
+                    <>
+                      {application.contacts.map((contact, index) => (
+                        <SelectInput
+                          name={`contacts.${index}`}
+                          label={`Contact ${index + 1}`}
+                          key={index}
+                          isRequired={false}
+                          options={contactOptions}
+                        />
+                      ))}
+                      <Link onClick={() => arrayHelpers.push('')}>
+                        Add another contact to this application.
+                      </Link>
+                    </>
+                  )}
                 />
               </ModalBody>
 
@@ -255,6 +295,16 @@ ApplicationModal.propTypes = {
       id: string.isRequired,
       name: string.isRequired,
     }),
+    contacts: arrayOf(
+      shape({
+        id: string.isRequired,
+        company: shape({
+          id: string.isRequired,
+          name: string.isRequired,
+        }),
+        fullName: string.isRequired,
+      })
+    ).isRequired,
   }),
   companies: arrayOf(
     shape({
