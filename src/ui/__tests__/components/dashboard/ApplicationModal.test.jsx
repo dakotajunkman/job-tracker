@@ -4,15 +4,24 @@ import ApplicationModal from '../../../components/dashboard/ApplicationModal';
 import '@testing-library/jest-dom';
 import {ChakraProvider} from '@chakra-ui/react';
 import {mockMatchMedia} from '../../util/util';
+import {MOCK_SESSION_DATA} from '../../util/fixtures';
+import companiesJson from '../../../public/json/companiesExample.json';
+import contactsJson from '../../../public/json/contactsExample.json';
 
 mockMatchMedia();
 const DEFAULT_PROPS = {
-  header: 'Open Applications',
+  type: 'New',
   isOpen: true,
   onClose: jest.fn(),
+  token: MOCK_SESSION_DATA.jwt,
+  onSave: jest.fn(),
+  onDelete: jest.fn(),
+  application: null,
+  companies: companiesJson.companies,
+  contacts: contactsJson.contacts,
 };
 
-describe('ApplicationSection', () => {
+describe('ApplicationModal', () => {
   const setup = (props = DEFAULT_PROPS) => {
     return render(
       <ChakraProvider resetCSS>
@@ -28,7 +37,7 @@ describe('ApplicationSection', () => {
 
   it('renders a dialog', () => {
     const component = setup();
-    const dialog = component.getByRole('dialog', {name: DEFAULT_PROPS.header});
+    const dialog = component.getByRole('dialog');
     expect(dialog).toBeInTheDocument();
   });
 

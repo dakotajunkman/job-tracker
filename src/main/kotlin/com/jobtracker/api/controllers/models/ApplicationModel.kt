@@ -14,6 +14,7 @@ class ApplicationModel(
     val submitDate: String,
     val status: String,
     val skills: MutableList<String>,
+    val contacts: MutableList<String>,
     val notes: String?,
     var applicationID: UUID = UUID.randomUUID()
 ){
@@ -21,6 +22,9 @@ class ApplicationModel(
     fun toApplicationEntity(companyEntity: CompanyEntity, userEntity: UserEntity, contactEntities: MutableList<ContactEntity>)
     = ApplicationEntity(applicationID, positionTitle, Helpers.tryConvertStringToDate(submitDate), StatusConverter.tryConvertStatus(status),
         skills, notes, userEntity, companyEntity, contactEntities)
+    fun toUpdateApplicationEntity(companyEntity: CompanyEntity, userEntity: UserEntity, contactEntities: MutableList<ContactEntity>, existingId: UUID)
+            = ApplicationEntity(existingId, positionTitle, Helpers.tryConvertStringToDate(submitDate), StatusConverter.tryConvertStatus(status),
+        skills, notes, userEntity, companyEntity, contactEntities)
 }
 
-data class MultipleApplicationModel(val applications: MutableList<ApplicationModel>)
+data class MultipleApplicationModel(val applications: List<ApplicationEntity>)

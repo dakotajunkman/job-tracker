@@ -5,7 +5,7 @@ import DEFAULT_FIELD_LENGTH
 import DEFAULT_NOTES_LENGTH
 import ApplicationStatus
 import com.fasterxml.jackson.annotation.JsonIgnore
-import java.util.Date
+import java.time.LocalDate
 import java.util.UUID
 import javax.persistence.*
 
@@ -16,9 +16,8 @@ data class ApplicationEntity(
     @Column(name = "id", nullable = false)
     val id: UUID,
     @Column(name = "position_title", nullable = false, length = DEFAULT_FIELD_LENGTH) val positionTitle: String,
-    @Temporal(TemporalType.DATE)
     @Column(name = "submit_date", nullable = false)
-    val submitDate: Date,
+    val submitDate: LocalDate,
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false) val status: ApplicationStatus,
     @ElementCollection
@@ -30,12 +29,11 @@ data class ApplicationEntity(
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, updatable = false)
     val user: UserEntity,
-    
+
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "company_id", referencedColumnName = "id", nullable = false, updatable = false)
+    @JoinColumn(name = "company_id", referencedColumnName = "id", nullable = false, updatable = true)
     val company: CompanyEntity,
 
-    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     @JoinTable(
         name = "application_contacts",

@@ -2,9 +2,9 @@ import React, {useEffect} from 'react';
 import {Collapse, Flex, Heading, Icon, useDisclosure} from '@chakra-ui/react';
 import ApplicationTable from './ApplicationTable';
 import {MdKeyboardArrowDown, MdKeyboardArrowRight} from 'react-icons/md';
-import PropTypes, {arrayOf, shape, string} from 'prop-types';
+import PropTypes, {arrayOf, bool, func, shape, string} from 'prop-types';
 
-export default function ApplicationSection({heading, applicationData, startOpened}) {
+export default function ApplicationSection({heading, applicationData, startOpened, openModal}) {
   const {isOpen, onToggle} = useDisclosure();
   useEffect(() => {
     startOpened && onToggle();
@@ -26,7 +26,7 @@ export default function ApplicationSection({heading, applicationData, startOpene
         </Heading>
       </Flex>
       <Collapse in={isOpen} animateOpacity>
-        <ApplicationTable applications={applicationData} />
+        <ApplicationTable applications={applicationData} openModal={openModal} />
       </Collapse>
     </Flex>
   );
@@ -36,12 +36,17 @@ ApplicationSection.propTypes = {
   heading: string.isRequired,
   applicationData: arrayOf(
     shape({
-      company_name: string.isRequired,
-      position_title: string.isRequired,
-      submit_date: string.isRequired,
+      company: shape({
+        id: string.isRequired,
+        name: string.isRequired,
+      }),
+      positionTitle: string.isRequired,
+      submitDate: string.isRequired,
       status: string.isRequired,
     })
   ),
+  startOpened: bool,
+  openModal: func.isRequired,
 };
 
 ApplicationSection.defaultProps = {

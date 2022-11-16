@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes, {any, object} from 'prop-types';
 import {Button} from '@chakra-ui/react';
 
-export default function SecondaryButton({children, ...props}) {
+export default function SecondaryButton({children, innerRef, ...props}) {
   return (
     <Button
       variant="outline"
@@ -11,6 +11,7 @@ export default function SecondaryButton({children, ...props}) {
       _active={{color: '#2948ff'}}
       shadow="base"
       {...props}
+      ref={innerRef}
     >
       {children}
     </Button>

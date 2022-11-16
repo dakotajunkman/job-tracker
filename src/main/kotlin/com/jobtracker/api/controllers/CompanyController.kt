@@ -2,6 +2,7 @@ package com.jobtracker.api.controllers
 
 import com.jobtracker.api.controllers.models.CompanyModel
 import com.jobtracker.api.controllers.models.ErrorModel
+import com.jobtracker.api.controllers.models.MultipleCompanyModel
 import com.jobtracker.api.repository.CompanyRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
@@ -49,7 +50,7 @@ class CompanyController(
 
         val retrievedAll = companyRepository.findAll()
 
-        return ResponseEntity.status(HttpStatus.OK).body(retrievedAll)
+        return ResponseEntity.status(HttpStatus.OK).body(MultipleCompanyModel(retrievedAll))
     }
 
 
@@ -60,5 +61,14 @@ class CompanyController(
     ): ResponseEntity<Any> {
         companyRepository.deleteById(UUID.fromString(companyId))
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null)
+    }
+
+    @PutMapping("/companies/{companyId}")
+    fun updateCompany(
+        @PathVariable companyId: String,
+        @RequestBody company: CompanyModel,
+        @RequestHeader("Authorization") token: String):ResponseEntity<Any> {
+        val saved = companyRepository.save(company.toUpdateCompanyEntity(UUID.fromString(companyId)))
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved)
     }
 }

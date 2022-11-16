@@ -17,58 +17,25 @@ import DangerButton from '../common/buttons/DangerButton';
 import {MdDeleteOutline, MdOutlineSave} from 'react-icons/md';
 import {Form, Formik} from 'formik';
 import * as Yup from 'yup';
-import {APPLICATION_STATUS_MAP} from './StatusLabel';
 import TextInput from '../common/forms/TextInput';
 import TextAreaInput from '../common/forms/TextAreaInput';
-import DateInput from '../common/forms/DateInput';
 import SelectInput from '../common/forms/SelectInput';
 import DeleteAlert from '../common/DeleteAlert';
 
-const VALID_STATUSES = Object.keys(APPLICATION_STATUS_MAP).filter(key => key !== 'error');
 const COMMON_HEADERS = token => ({
   Authorization: `Bearer ${token}`,
   'Content-Type': 'application/json',
 });
 
-export const statusOptions = VALID_STATUSES.map(key => {
-  return (
-    <option value={key} key={key}>
-      {APPLICATION_STATUS_MAP[key].text}
-    </option>
-  );
-});
-
-// returns users date in format 'YYYY-MM-DD'
-const getTodaysDate = () => {
-  const timezoneOffsetMinutes = new Date().getTimezoneOffset();
-  const userDate = new Date(new Date().getTime() - timezoneOffsetMinutes * 60 * 1000);
-  return userDate.toISOString().split('T')[0];
-};
-
-// formats a string of skills into an array of strings
-// IE: "skill 1, skill 2, skill 3" -> ["skill 1", "skill 2", "skill 3"]
-const skillsToList = skillsString => {
-  const skills = skillsString.split(',');
-  return skills.filter(i => i).map(skill => skill.trim());
-};
-
-const skillsToString = skillsList => {
-  if (!skillsList || skillsList.length === 0) return '';
-  return skillsList.reduce((prev, curr) => `${prev}, ${curr}`);
-};
-
-const removeBlankContacts = contacts => contacts.filter(contact => contact);
-
-export default function ApplicationModal({
+export default function ContactsModal({
   type,
   isOpen,
   onClose,
   token,
   onSave,
   onDelete,
-  application,
+  contact,
   companies,
-  contacts,
 }) {
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -79,55 +46,47 @@ export default function ApplicationModal({
       {company.name}
     </option>
   ));
-  const blankContact = {id: '', fullName: ''};
-  const contactOptions = [blankContact, ...contacts].map(contact => (
-    <option value={contact.id} key={contact.id}>
-      {contact.fullName}
-    </option>
-  ));
 
-  const deleteApplication = async () => {
+  const deleteContact = async () => {
     setIsDeleting(true);
-    await fetch(`/api/applications/${application.id}`, {
+    await fetch(`/api/contacts/${contact.id}`, {
       method: 'DELETE',
       headers: COMMON_HEADERS(token),
     });
-    onDelete(application);
+    onDelete(contact);
     setIsDeleting(false);
     onClose();
   };
 
   const TYPE_PROPS_MAP = {
     New: {
-      header: 'New Application',
+      header: 'New Contact',
       formInitialValues: {
-        companyID: companies?.length > 0 ? companies[0].id : '',
+        companyId: companies?.length > 0 ? companies[0].id : '',
+        fullName: '',
         positionTitle: '',
-        submitDate: getTodaysDate(),
-        status: Object.keys(APPLICATION_STATUS_MAP)[0],
-        skills: '',
+        emailAddress: '',
+        phoneNumber: '',
         notes: '',
-        contacts: '',
       },
       request: {
         method: 'POST',
-        url: 'api/applications',
+        url: 'api/contacts',
       },
     },
     Edit: {
-      header: 'Edit Application',
+      header: 'Edit Contact',
       formInitialValues: {
-        companyID: application?.company.id,
-        positionTitle: application?.positionTitle,
-        submitDate: application?.submitDate,
-        status: application?.status,
-        skills: skillsToString(application?.skills),
-        notes: application?.notes,
-        contacts: application?.contacts.length > 0 ? application?.contacts[0].id : '',
+        companyId: contact?.company.id,
+        fullName: contact?.fullName,
+        positionTitle: contact?.positionTitle || '',
+        emailAddress: contact?.emailAddress || '',
+        phoneNumber: contact?.phoneNumber || '',
+        notes: contact?.notes || '',
       },
       request: {
         method: 'PUT',
-        url: `api/applications/${application?.id}`,
+        url: `api/contacts/${contact?.id}`,
       },
     },
   };
@@ -139,19 +98,18 @@ export default function ApplicationModal({
         <Formik
           initialValues={TYPE_PROPS_MAP[type].formInitialValues}
           validationSchema={Yup.object({
-            companyID: Yup.string()
+            companyId: Yup.string()
               .max(255, 'Must be 255 characters or less')
               .required('Company Name is required.'),
-            positionTitle: Yup.string()
+            fullName: Yup.string()
               .max(255, 'Must be 255 characters or less')
-              .required('Position Title is required.'),
-            submitDate: Yup.date().required('Submit Date is required.'),
-            status: Yup.string().oneOf(
-              VALID_STATUSES,
-              'You must choose one of the specified statuses.'
-            ),
-            skills: Yup.string(),
-            notes: Yup.string(),
+              .required('Full Name is required.'),
+            positionTitle: Yup.string().max(255, 'Must be 255 characters or less'),
+            emailAddress: Yup.string()
+              .email('Please enter a valid email address')
+              .max(255, 'Must be 255 characters or less'),
+            phoneNumber: Yup.string().max(255, 'Must be 255 characters or less'),
+            notes: Yup.string().max(8191, 'Must be 8191 characters or less'),
           })}
           onSubmit={async (values, actions) => {
             const {url, method} = TYPE_PROPS_MAP[type].request;
@@ -159,11 +117,7 @@ export default function ApplicationModal({
             const response = await fetch(url, {
               method: method,
               headers: COMMON_HEADERS(token),
-              body: JSON.stringify({
-                ...values,
-                skills: skillsToList(values.skills),
-                contacts: removeBlankContacts([values.contacts]),
-              }),
+              body: JSON.stringify(values),
             });
             setIsSaving(false);
 
@@ -180,27 +134,16 @@ export default function ApplicationModal({
 
               <ModalBody pb={6}>
                 <SelectInput
-                  name="companyID"
+                  name="companyId"
                   label="Company"
                   isRequired={true}
                   options={companyOptions}
                 />
-                <TextInput name="positionTitle" label="Position Title" isRequired={true} />
-                <DateInput name="submitDate" label="Submit Date" isRequired={true} />
-                <SelectInput
-                  name="status"
-                  label="Status"
-                  isRequired={true}
-                  options={statusOptions}
-                />
-                <TextAreaInput name="skills" label="Skills" resize="vertical" />
+                <TextInput name="fullName" label="Contact Name" isRequired={true} />
+                <TextInput name="positionTitle" label="Position Title" isRequired={false} />
+                <TextInput name="emailAddress" label="Email Address" isRequired={false} />
+                <TextInput name="phoneNumber" label="Phone Number" isRequired={false} />
                 <TextAreaInput name="notes" label="Notes" resize="vertical" />
-                <SelectInput
-                  name="contacts"
-                  label="Contact"
-                  isRequired={false}
-                  options={contactOptions}
-                />
               </ModalBody>
 
               <ModalFooter display="flex" gap={2}>
@@ -226,8 +169,8 @@ export default function ApplicationModal({
                 <DeleteAlert
                   isOpen={deleteIsOpen}
                   onClose={deleteOnClose}
-                  onDelete={deleteApplication}
-                  entityName={'Application'}
+                  onDelete={deleteContact}
+                  entityName={'Contact'}
                 />
               </ModalFooter>
             </Form>
@@ -238,23 +181,23 @@ export default function ApplicationModal({
   );
 }
 
-ApplicationModal.propTypes = {
+ContactsModal.propTypes = {
   isOpen: bool.isRequired,
   onClose: func.isRequired,
   token: string.isRequired,
   onSave: func.isRequired,
   onDelete: func.isRequired,
-  application: shape({
+  contact: shape({
     id: string.isRequired,
-    positionTitle: string.isRequired,
-    submitDate: string.isRequired,
-    status: string.isRequired,
-    skills: arrayOf(string),
-    notes: string,
     company: shape({
       id: string.isRequired,
       name: string.isRequired,
     }),
+    fullName: string.isRequired,
+    positionTitle: string,
+    emailAddress: string,
+    phoneNumber: string,
+    notes: string,
   }),
   companies: arrayOf(
     shape({
@@ -262,15 +205,9 @@ ApplicationModal.propTypes = {
       name: string.isRequired,
     })
   ).isRequired,
-  contacts: arrayOf(
-    shape({
-      id: string.isRequired,
-      fullName: string.isRequired,
-    })
-  ).isRequired,
 };
 
-ApplicationModal.defaultProps = {
-  application: null,
+ContactsModal.defaultProps = {
+  contact: null,
   companies: [],
 };

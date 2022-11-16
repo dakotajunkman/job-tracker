@@ -1,9 +1,8 @@
 import React from 'react';
 import {Table, Thead, Tbody, Tr, Th, Td, TableContainer} from '@chakra-ui/react';
 import PropTypes, {arrayOf, func, shape, string} from 'prop-types';
-import StatusLabel from './StatusLabel';
 
-export default function ApplicationTable({applications, openModal}) {
+export default function ContactsTable({contacts, openModal}) {
   return (
     <TableContainer
       border="1px solid #ddd"
@@ -16,32 +15,28 @@ export default function ApplicationTable({applications, openModal}) {
         variant="striped"
         style={{tableLayout: 'fixed'}}
         minW="600px"
-        data-testid="ApplicationTable"
+        data-testid="ContactsTable"
       >
         <Thead>
           <Tr>
             <Th>Company</Th>
+            <Th>Contact Name</Th>
             <Th>Position</Th>
-            <Th>Date Submitted</Th>
-            <Th>Status</Th>
           </Tr>
         </Thead>
         <Tbody>
-          {applications.map(application => {
-            const {company, positionTitle, submitDate, status, id} = application;
+          {contacts.map(contact => {
+            const {company, positionTitle, fullName, id} = contact;
             return (
               <Tr
                 key={`tr-${id}`}
                 _hover={{cursor: 'pointer', color: '#396afc'}}
                 _active={{color: '#2948ff'}}
-                onClick={() => openModal(application)}
+                onClick={() => openModal(contact)}
               >
                 <Td>{company.name}</Td>
+                <Td>{fullName}</Td>
                 <Td>{positionTitle}</Td>
-                <Td>{submitDate}</Td>
-                <Td>
-                  <StatusLabel status={status} id={id} />
-                </Td>
               </Tr>
             );
           })}
@@ -51,15 +46,12 @@ export default function ApplicationTable({applications, openModal}) {
   );
 }
 
-ApplicationTable.propTypes = {
-  applications: arrayOf(
+ContactsTable.propTypes = {
+  contacts: arrayOf(
     shape({
       id: string.isRequired,
-      positionTitle: string.isRequired,
-      submitDate: string.isRequired,
-      status: string.isRequired,
-      skills: arrayOf(string),
-      notes: string,
+      positionTitle: string,
+      fullName: string.isRequired,
       company: shape({
         id: string.isRequired,
         name: string.isRequired,
@@ -69,6 +61,6 @@ ApplicationTable.propTypes = {
   openModal: func.isRequired,
 };
 
-ApplicationTable.defaultProps = {
-  applications: [],
+ContactsTable.defaultProps = {
+  contacts: [],
 };

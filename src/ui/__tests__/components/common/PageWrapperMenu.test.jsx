@@ -46,7 +46,7 @@ describe('PageWrapperMenu', () => {
     const component = setup();
     const link = component.getByTestId('ViewContactsLink');
     expect(link).toBeInTheDocument();
-    expect(link).toHaveAttribute('href', '/#');
+    expect(link).toHaveAttribute('href', '/contacts');
   });
 
   it('renders a link to View Analytics', () => {

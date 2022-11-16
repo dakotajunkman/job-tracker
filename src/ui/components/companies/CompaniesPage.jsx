@@ -5,11 +5,18 @@ import PageWrapper from '../common/PageWrapper';
 import NavigationSidebar from '../common/navigation/NavigationSidebar';
 import {MdAddBusiness, MdCheckCircle} from 'react-icons/md';
 import PrimaryButton from '../common/buttons/PrimaryButton';
-import {Flex, Heading, Icon, Text, useBreakpointValue, useDisclosure} from '@chakra-ui/react';
+import {
+  Flex,
+  Heading,
+  Icon,
+  Text,
+  useBreakpointValue,
+  useDisclosure,
+  useToast,
+} from '@chakra-ui/react';
 import CompaniesTable from '../companies/CompaniesTable';
 import CompaniesModal from './CompaniesModal';
 import LoadingSpinner from '../common/LoadingSpinner';
-import {useToast} from '@chakra-ui/react';
 import PrimaryToast from '../common/PrimaryToast';
 
 const fetcher = (url, token) =>
@@ -46,7 +53,7 @@ export default function CompaniesPage({session}) {
   };
 
   // Capture the data from SWR in our useState variable
-  useEffect(() => setCompanies(data), [data]);
+  useEffect(() => setCompanies(data?.companies), [data]);
 
   return (
     <PageWrapper>

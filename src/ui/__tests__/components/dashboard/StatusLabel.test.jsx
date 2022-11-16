@@ -8,7 +8,7 @@ import {APPLICATION_STATUS_MAP} from '../../../components/dashboard/StatusLabel'
 
 mockMatchMedia();
 const DEFAULT_PROPS = {
-  status: 'applied',
+  status: 'APPLIED',
   id: 'c1465a83-b2a2-4059-b1b7-922ad5aa7213',
 };
 

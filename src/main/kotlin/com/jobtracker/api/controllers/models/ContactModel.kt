@@ -13,13 +13,15 @@ data class ContactModel(
     val emailAddress: String,
     val phoneNumber: String?,
     val notes: String?,
-    val applications: MutableList<String>,
-    val userId: String,
+    val applications: MutableList<String>?,
     var contactId: UUID = UUID.randomUUID()
 ) {
 
     fun toContactEntity(companyEntity: CompanyEntity, applicationEntities: MutableList<ApplicationEntity>, user: UserEntity)
         = ContactEntity(contactId, companyEntity, fullName, positionTitle, emailAddress, phoneNumber, notes, applicationEntities, user)
+
+    fun toUpdateContactEntity(companyEntity: CompanyEntity, applicationEntities: MutableList<ApplicationEntity>, user: UserEntity, existingId: UUID)
+            = ContactEntity(existingId, companyEntity, fullName, positionTitle, emailAddress, phoneNumber, notes, applicationEntities, user)
 }
 
-data class MultipleContactModel(val contacts: MutableList<ContactModel>)
+data class MultipleContactModel(val contacts: List<ContactEntity>)
