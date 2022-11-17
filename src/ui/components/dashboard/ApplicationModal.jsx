@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   Icon,
   Modal,
@@ -11,7 +11,7 @@ import {
   useDisclosure,
   Link,
 } from '@chakra-ui/react';
-import PropTypes, {arrayOf, bool, func, object, shape, string} from 'prop-types';
+import PropTypes, {arrayOf, bool, func, shape, string} from 'prop-types';
 import PrimaryButton from '../common/buttons/PrimaryButton';
 import SecondaryButton from '../common/buttons/SecondaryButton';
 import DangerButton from '../common/buttons/DangerButton';
@@ -58,7 +58,10 @@ const skillsToString = skillsList => {
   return skillsList.reduce((prev, curr) => `${prev}, ${curr}`);
 };
 
-const removeBlankContacts = contacts => contacts.filter(contact => contact);
+const formatContacts = contacts => {
+  const noBlankContacts = contacts.filter(contact => contact);
+  return Array.from(new Set(noBlankContacts)); // Remove potential duplicates
+};
 
 export default function ApplicationModal({
   type,
@@ -73,7 +76,6 @@ export default function ApplicationModal({
 }) {
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [contactDropdowns, setContactDropdowns] = useState([]);
   const {isOpen: deleteIsOpen, onOpen: deleteOnOpen, onClose: deleteOnClose} = useDisclosure();
 
   const companyOptions = companies.map(company => (
@@ -99,31 +101,6 @@ export default function ApplicationModal({
     onClose();
   };
 
-  const createContactDropdown = key => (
-    <SelectInput
-      name={'contacts' + key}
-      label={`Contact ${key + 1}`}
-      key={key}
-      isRequired={false}
-      options={contactOptions}
-    />
-  );
-
-  const addContactDropdown = () => {
-    const key = contactDropdowns.length;
-    const newdropDowns = [...contactDropdowns, createContactDropdown(key)];
-    setContactDropdowns(newdropDowns);
-  };
-
-  useEffect(() => {
-    const loadedContacts = [];
-    application &&
-      application.contacts.forEach((contact, index) => {
-        loadedContacts.push(createContactDropdown(index));
-      });
-    setContactDropdowns(loadedContacts);
-  }, [isOpen]);
-
   const TYPE_PROPS_MAP = {
     New: {
       header: 'New Application',
@@ -134,7 +111,7 @@ export default function ApplicationModal({
         status: Object.keys(APPLICATION_STATUS_MAP)[0],
         skills: '',
         notes: '',
-        contacts: '',
+        contacts: [''],
       },
       request: {
         method: 'POST',
@@ -150,7 +127,8 @@ export default function ApplicationModal({
         status: application?.status,
         skills: skillsToString(application?.skills),
         notes: application?.notes,
-        contacts: application?.contacts.length > 0 ? application?.contacts[0].id : '',
+        contacts:
+          application?.contacts.length > 0 ? application.contacts.map(contact => contact.id) : [''],
       },
       request: {
         method: 'PUT',
@@ -189,7 +167,7 @@ export default function ApplicationModal({
               body: JSON.stringify({
                 ...values,
                 skills: skillsToList(values.skills),
-                contacts: removeBlankContacts([values.contacts]),
+                contacts: formatContacts(values.contacts),
               }),
             });
             setIsSaving(false);
@@ -226,7 +204,7 @@ export default function ApplicationModal({
                   name="contacts"
                   render={arrayHelpers => (
                     <>
-                      {application.contacts.map((contact, index) => (
+                      {props.values.contacts.map((contact, index) => (
                         <SelectInput
                           name={`contacts.${index}`}
                           label={`Contact ${index + 1}`}
@@ -235,7 +213,12 @@ export default function ApplicationModal({
                           options={contactOptions}
                         />
                       ))}
-                      <Link onClick={() => arrayHelpers.push('')}>
+                      <Link
+                        fontWeight="600"
+                        _hover={{color: '#396afc'}}
+                        _active={{color: '#2948ff'}}
+                        onClick={() => arrayHelpers.push('')}
+                      >
                         Add another contact to this application.
                       </Link>
                     </>
@@ -323,4 +306,5 @@ ApplicationModal.propTypes = {
 ApplicationModal.defaultProps = {
   application: null,
   companies: [],
+  contacts: [],
 };
