@@ -9,13 +9,14 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  Link,
 } from '@chakra-ui/react';
 import PropTypes, {arrayOf, bool, func, shape, string} from 'prop-types';
 import PrimaryButton from '../common/buttons/PrimaryButton';
 import SecondaryButton from '../common/buttons/SecondaryButton';
 import DangerButton from '../common/buttons/DangerButton';
 import {MdDeleteOutline, MdOutlineSave} from 'react-icons/md';
-import {Form, Formik} from 'formik';
+import {Form, Formik, FieldArray} from 'formik';
 import * as Yup from 'yup';
 import {APPLICATION_STATUS_MAP} from './StatusLabel';
 import TextInput from '../common/forms/TextInput';
@@ -57,7 +58,10 @@ const skillsToString = skillsList => {
   return skillsList.reduce((prev, curr) => `${prev}, ${curr}`);
 };
 
-const removeBlankContacts = contacts => contacts.filter(contact => contact);
+const formatContacts = contacts => {
+  const noBlankContacts = contacts.filter(contact => contact);
+  return Array.from(new Set(noBlankContacts)); // Remove potential duplicates
+};
 
 export default function ApplicationModal({
   type,
@@ -107,7 +111,7 @@ export default function ApplicationModal({
         status: Object.keys(APPLICATION_STATUS_MAP)[0],
         skills: '',
         notes: '',
-        contacts: '',
+        contacts: [''],
       },
       request: {
         method: 'POST',
@@ -123,7 +127,8 @@ export default function ApplicationModal({
         status: application?.status,
         skills: skillsToString(application?.skills),
         notes: application?.notes,
-        contacts: application?.contacts.length > 0 ? application?.contacts[0].id : '',
+        contacts:
+          application?.contacts.length > 0 ? application.contacts.map(contact => contact.id) : [''],
       },
       request: {
         method: 'PUT',
@@ -162,7 +167,7 @@ export default function ApplicationModal({
               body: JSON.stringify({
                 ...values,
                 skills: skillsToList(values.skills),
-                contacts: removeBlankContacts([values.contacts]),
+                contacts: formatContacts(values.contacts),
               }),
             });
             setIsSaving(false);
@@ -195,11 +200,29 @@ export default function ApplicationModal({
                 />
                 <TextAreaInput name="skills" label="Skills" resize="vertical" />
                 <TextAreaInput name="notes" label="Notes" resize="vertical" />
-                <SelectInput
+                <FieldArray
                   name="contacts"
-                  label="Contact"
-                  isRequired={false}
-                  options={contactOptions}
+                  render={arrayHelpers => (
+                    <>
+                      {props.values.contacts.map((contact, index) => (
+                        <SelectInput
+                          name={`contacts.${index}`}
+                          label={`Contact ${index + 1}`}
+                          key={index}
+                          isRequired={false}
+                          options={contactOptions}
+                        />
+                      ))}
+                      <Link
+                        fontWeight="600"
+                        _hover={{color: '#396afc'}}
+                        _active={{color: '#2948ff'}}
+                        onClick={() => arrayHelpers.push('')}
+                      >
+                        Add another contact to this application.
+                      </Link>
+                    </>
+                  )}
                 />
               </ModalBody>
 
@@ -255,6 +278,16 @@ ApplicationModal.propTypes = {
       id: string.isRequired,
       name: string.isRequired,
     }),
+    contacts: arrayOf(
+      shape({
+        id: string.isRequired,
+        company: shape({
+          id: string.isRequired,
+          name: string.isRequired,
+        }),
+        fullName: string.isRequired,
+      })
+    ).isRequired,
   }),
   companies: arrayOf(
     shape({
@@ -273,4 +306,5 @@ ApplicationModal.propTypes = {
 ApplicationModal.defaultProps = {
   application: null,
   companies: [],
+  contacts: [],
 };
