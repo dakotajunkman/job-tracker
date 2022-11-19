@@ -44,7 +44,7 @@ const refreshAccessToken = async token => {
     return {
       ...token,
       accessToken: access_token,
-      accessTokenExpires: Date.now() + expires_at * 1000,
+      accessTokenExpires: expires_at,
       refreshToken: refresh_token ?? token.refreshToken, // Fall back to old refresh token
     };
   } catch (error) {
@@ -100,7 +100,7 @@ const authOptions = {
       // Persist the OAuth access_token to the token right after signin
       if (account && user) {
         token.accessToken = account.access_token;
-        token.accessTokenExpires = Date.now() + account.expires_at * 1000;
+        token.accessTokenExpires = account.expires_at;
         token.refreshToken = account.refresh_token;
         token.jwt = account.id_token;
         token.user = user;
